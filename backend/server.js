@@ -1,16 +1,13 @@
-const express = require('express');
-const app = express();
-const port = 5000;
+require('dotenv').config();
+const app = require('./app');
+const connectDB = require('./utils/db');
 
-// Middleware pour parser JSON
-app.use(express.json());
+connectDB();
 
-// Test route
-app.get('/hello', (req, res) => {
-  res.json({ message: 'Yo depuis le backend 🚀' });
-});
+// const PORT = process.env.PORT || 5000; // For release build
 
-// Lancement du serveur
-app.listen(port, () => {
-  console.log(`Backend lancé sur http://localhost:${port}`);
+const PORT = process.env.PORT || 80; // For dev env
+
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });
