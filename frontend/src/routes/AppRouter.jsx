@@ -3,7 +3,7 @@ import MainLayout from "../layouts/MainLayout";
 import Home from "../pages/Home";
 import Test from "../pages/Test";
 import Auth from "../pages/Auth";
-// import Login from "../pages/Login/Login";
+import Profile from "../pages/Profile";
 
 function AppRouter() {
   return (
@@ -12,6 +12,7 @@ function AppRouter() {
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/test" element={<Test />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
         <Route path="/login" element={<Auth />} />
       </Routes>
