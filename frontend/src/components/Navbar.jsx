@@ -1,9 +1,12 @@
+import { useNavigate } from "react-router-dom";
+
 function Navbar({ className = "" }) {
+  const navigate = useNavigate();
   return (
     <>
       <div className={`flex flex-col justify-center items-center ${className}`}>
         <ul className="w-100 flex items-center justify-center gap-7 bg-gradient-to-b from-transparent to-[#1F1F1F] backdrop-blur-md p-4 rounded-2xl ring-2 ring-[#ff6600] shadow-[3px_2px_8.3px_3px_rgba(255,102,0,0.25)]">
-          <li className="text-orange-500">
+          <li className="text-orange-500" onClick={() => navigate('/')}>
             <svg
               viewBox="0 0 42 41"
               fill="none"
@@ -17,7 +20,7 @@ function Navbar({ className = "" }) {
               />
             </svg>
           </li>
-          <li className="text-orange-500">
+          <li className="text-orange-500" onClick={() => navigate('/profile')}>
             <svg
               viewBox="0 0 31 35"
               fill="none"
