@@ -1,28 +1,32 @@
-import User from "../models/user.js";
+
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
+const { UserInfo, Role } = require("../models/user");
+
 
 const createUser = async(req, res) => {
-        const{pseudo, email} = req.body, password = bcrypt.hashSync(req.body.password, 10);
+        console.log('req.body', req.body);
+        
+        const{pseudo, email,id_role,id_session} = req.body, password = bcrypt.hashSync(req.body.password, 10);
         if(!pseudo || !email || !password){
             return res.status(400).json({
                 "msg": "Missing parameters"
             });
         }
         try{
-            const newUser = new User(pseudo, email, password);
+            const newUser = new UserInfo({pseudo, email, password,id_role,id_session});
             await newUser.save();
             return res.status(201).json({
                 "msg": "New User created !"
             });
         }catch(err){
             return res.status(500).json({
-                "msg": err
+                "msg": err.message
             });
         }
        
-    }
+    };
 const getAllUsers = async(req, res) => {
         try{
             const users = await User.find();
@@ -32,7 +36,7 @@ const getAllUsers = async(req, res) => {
                 "msg": err
             });
         }
-    }
+    };
 const login = async(req, res) => {
       const { username, password } = req.body;
       const user = User_DB.find((u) => u.username === username && bcrypt.compareSync(password, u.password));
@@ -49,7 +53,7 @@ const login = async(req, res) => {
       } else {
         return res.status(401).json({ message: "Invalid credentials" });
       }
-    }
+    };
 const authenticate = async (req, res) => {
       let authHeader = req.headers["authorization"];
   
@@ -78,6 +82,6 @@ const authenticate = async (req, res) => {
       } catch (err) {
         return res.status(401).json({ message: "Token invalide ou expiré", error: err.message });
       }
-    }
+    };
 
 export {createUser, getAllUsers, login, authenticate}
