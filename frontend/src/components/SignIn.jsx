@@ -1,6 +1,11 @@
 import logo from "../assets/logo.png";
 import closeButton from "../assets/close-button.png";
-const SignUpModal = ({ isOpen, onClose }) => {
+import { useState } from "react";
+import SignUpModal from "./SignUp";
+
+const SignInModal = ({ isOpen, onClose, onSwitch }) => {
+  const [showSignUpModal, setShowSignUpModal] = useState(false);
+  const [showSignInModal, setShowSignInModal] = useState(false);
   if (!isOpen) return null;
 
   return (
@@ -34,7 +39,7 @@ const SignUpModal = ({ isOpen, onClose }) => {
           </div>
           <div className="modal-body w-full h-2/3 flex flex-col">
             <h1 className="font-koulen text-white text-xl md:text-4xl">
-              Create your account.
+              Sign in to Y.
             </h1>
           </div>
           <div className="relative flex flex-col gap-6 md:gap-10">
@@ -53,18 +58,6 @@ const SignUpModal = ({ isOpen, onClose }) => {
               </div>
               <div className="relative w-70 mt-6">
                 <label className="font-koulen absolute -top-3 left-9 px-3 bg-[#1F1F1F] text-xl text-white md:text-2xl">
-                  Email
-                </label>
-                <input
-                  type="text"
-                  id="email"
-                  placeholder="Type your email here..."
-                  required
-                  className="font-roboto text-sm pl-11 block w-full rounded-[8vw] border-2 border-[#FF6600] bg-transparent py-3 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FF6600] md:rounded-[0.9vw] md:py-4"
-                />
-              </div>
-              <div className="relative w-70 mt-6">
-                <label className="font-koulen absolute -top-3 left-9 px-3 bg-[#1F1F1F] text-xl text-white md:text-2xl">
                   Password
                 </label>
                 <input
@@ -77,8 +70,17 @@ const SignUpModal = ({ isOpen, onClose }) => {
               </div>
             </div>
             <button className="text-sm font-roboto mx-auto shadow-[3px_2px_8.3px_3px_rgba(0,0,0,0.25)] transition delay-50 bg-[#FF6600] font-roboto border-2 border-[#FF6600] hover:bg-transparent text-white py-2 px-4 rounded-[8vw] w-28 md:py-4 md:rounded-[0.9vw] md:w-80">
-              Sign Up
+              Sign In
             </button>
+            <p className="text-sm font-roboto mx-auto text-gray-400">
+              Don't have an account? Click{" "}
+              <span
+                onClick={onSwitch}
+                className="inline-flex items-center font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer"
+              >
+                here
+              </span>
+            </p>
           </div>
         </div>
       </div>
@@ -86,4 +88,4 @@ const SignUpModal = ({ isOpen, onClose }) => {
   );
 };
 
-export default SignUpModal;
+export default SignInModal;
