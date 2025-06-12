@@ -1,10 +1,6 @@
 const mongoose = require('mongoose');
 
 const UserInfoSchema = new mongoose.Schema({
-    id_user: {
-        type: Number,
-        required: true
-    },
     pseudo: {
         type: String,
         required: true
