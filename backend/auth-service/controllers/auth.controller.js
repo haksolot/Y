@@ -14,6 +14,19 @@ const createUser = async (req, res) => {
     });
   }
   try {
+    const existingUser = await UserInfo.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({
+        msg: "User already exists",
+      });
+    }
+    const existingPseudo = await UserInfo.findOne({ pseudo });
+    if (existingPseudo) {
+      return res.status(400).json({
+        msg: "Pseudo already exists",
+      });
+    }
+
     const newUser = new UserInfo({
       pseudo,
       email,
@@ -25,6 +38,7 @@ const createUser = async (req, res) => {
       msg: "New User created !",
     });
   } catch (err) {
+    console.log(err.message);
     return res.status(500).json({
       msg: err.message,
     });
@@ -54,12 +68,9 @@ const login = async (req, res) => {
     }
 
     const accessToken = jwt.sign(
-      {
-        _id: user._id,
-        role: user.role,
-        exp: Math.floor(Date.now() / 1000) + 120,
-      },
-      process.env.ACCESS_JWT_KEY
+      { _id: user._id, role: user.role },
+      process.env.ACCESS_JWT_KEY,
+      { expiresIn: "30s" }
     );
 
     res.cookie("token", accessToken, {

@@ -14,11 +14,13 @@ const SignUpModal = ({ isOpen, onClose }) => {
   const [errorPseudo, setErrorPseudo] = useState("");
   const [errorEmail, setErrorEmail] = useState("");
   const [errorPassword, setErrorPassword] = useState("");
+  const [globalError, setGlobalError] = useState("");
 
   const validateEmail = (email) => {
     return /\S+@\S+\.\S+/.test(email);
   };
   const create = async () => {
+    console.log("here");
     setErrorPseudo("");
     setErrorEmail("");
     setErrorPassword("");
@@ -50,9 +52,19 @@ const SignUpModal = ({ isOpen, onClose }) => {
         role: "User",
       });
       onClose();
-      console.log("Réponse:", res.data);
     } catch (err) {
-      console.error(err);
+      if (err.response && err.response.data && err.response.data.msg) {
+        const errorMsg = err.response.data.msg;
+        if (errorMsg === "User already exists") {
+          setErrorEmail("This email is already taken.");
+        } else if (errorMsg === "Pseudo already exists") {
+          setErrorPseudo("This pseudo is already taken.");
+        } else {
+          setGlobalError(errorMsg);
+        }
+      } else {
+        setGlobalError("An unexpected error occurred.");
+      }
     }
   };
 
@@ -158,6 +170,11 @@ const SignUpModal = ({ isOpen, onClose }) => {
                 )}
               </div>
             </div>
+            {globalError && (
+              <p className="text-red-500 text-sm text-center mb-2">
+                {globalError}
+              </p>
+            )}
             <button
               type="submit"
               onClick={create}
