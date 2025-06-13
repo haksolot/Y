@@ -62,11 +62,15 @@ const login = async (req, res) => {
       },
       process.env.ACCESS_JWT_KEY
     );
-    console.log(user._id);
 
-    return res
-      .status(200)
-      .json({ message: "You are now connected!", accessToken });
+    res.cookie("token", accessToken, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "Strict",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    return res.status(200).json({ message: "You are now connected!" });
   } catch (err) {
     return res.status(500).json({
       msg: err.message,
@@ -74,11 +78,10 @@ const login = async (req, res) => {
   }
 };
 const authenticate = async (req, res) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+  const token = req.cookies.token;
+  if (!token) {
     return res.status(401).json({ message: "No token provided" });
   }
-  const token = authHeader.split(" ")[1];
   try {
     const decodedToken = jwt.verify(token, process.env.ACCESS_JWT_KEY);
     if (!decodedToken) {
