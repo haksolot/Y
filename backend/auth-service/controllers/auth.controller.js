@@ -58,6 +58,7 @@ const login = async (req, res) => {
     const accessToken = jwt.sign(
       {
         _id: user._id,
+        role: user.id_role,
         exp: Math.floor(Date.now() / 1000) + 120,
       },
       process.env.ACCESS_JWT_KEY
