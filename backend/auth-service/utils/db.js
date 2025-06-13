@@ -1,5 +1,5 @@
 const port = 3000;
-// Cpnnexion à la base de données MongoDB
+
 const mongoose = require("mongoose");
 require('dotenv').config();
 const connectDB = async () =>{

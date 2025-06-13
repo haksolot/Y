@@ -1,7 +1,7 @@
-//Importation de express
+require('dotenv').config();
 const express = require('express');
 const mongoose = require("mongoose");
-//création d'une instance
+
 const app = express();
 const cors = require('cors');
 
