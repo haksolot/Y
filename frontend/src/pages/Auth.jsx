@@ -1,8 +1,11 @@
 import { useState } from "react";
 import logo from "../assets/logo.png";
-import InscritpionModal from "../components/SignUp";
+import SignUpModal from "../components/SignUp";
+import SignInModal from "../components/SignIn";
 const Home = () => {
-  const [showModal, setShowModal] = useState(false);
+  const [showSignUpModal, setShowSignUpModal] = useState(false);
+  const [showSignInModal, setShowSignInModal] = useState(false);
+
   return (
     <div
       id="parent"
@@ -36,24 +39,35 @@ const Home = () => {
         <div id="boutons" className="flex flex-col items-center">
           <button
             type="button"
-            onClick={() => setShowModal(true)}
+            onClick={() => setShowSignUpModal(true)}
             className="shadow-[3px_2px_8.3px_3px_rgba(0,0,0,0.25)] transition delay-50 bg-[#FF6600] font-roboto border-2 border-[#FF6600] hover:bg-transparent text-white py-4 px-4 rounded-[4vw] w-80 md:w-96 md:rounded-[0.9vw]"
           >
             Create an account
           </button>
-          <InscritpionModal
-            isOpen={showModal}
-            onClose={() => setShowModal(false)}
-          ></InscritpionModal>
+          <SignUpModal
+            isOpen={showSignUpModal}
+            onClose={() => setShowSignUpModal(false)}
+          />
           <div className="relative flex py-5 items-center w-80 md:w-96">
             <div className="flex-grow border-t border-white"></div>
             <span className="flex-shrink mx-2 text-white text-sm">OR</span>
             <div className="flex-grow border-t border-white"></div>
           </div>
 
-          <button className="shadow-[3px_2px_8.3px_3px_rgba(0,0,0,0.25)] transition delay-50 bg-transparent border-2 border-[#FF6600] font-roboto hover:bg-[#FF6600] text-white py-4 px-4 rounded-[4vw] w-80 md:w-96 md:rounded-[0.9vw]">
+          <button
+            onClick={() => setShowSignInModal(true)}
+            className="shadow-[3px_2px_8.3px_3px_rgba(0,0,0,0.25)] transition delay-50 bg-transparent border-2 border-[#FF6600] font-roboto hover:bg-[#FF6600] text-white py-4 px-4 rounded-[4vw] w-80 md:w-96 md:rounded-[0.9vw]"
+          >
             Sign in
           </button>
+          <SignInModal
+            isOpen={showSignInModal}
+            onClose={() => setShowSignInModal(false)}
+            onSwitch={() => {
+              setShowSignInModal(false);
+              setShowSignUpModal(true);
+            }}
+          />
         </div>
       </div>
     </div>
