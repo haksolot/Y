@@ -9,7 +9,31 @@ const SignInModal = ({ isOpen, onClose, onSwitch }) => {
   const navigate = useNavigate();
   const [pseudo, setPseudo] = useState("");
   const [password, setPassword] = useState("");
+
+  //erreur
+  const [errorPseudo, setErrorPseudo] = useState("");
+  const [errorPassword, setErrorPassword] = useState("");
+  const [globalError, setGlobalError] = useState("");
+
   const signIn = async () => {
+    setErrorPseudo("");
+    setErrorPassword("");
+    setGlobalError("");
+
+    let valid = true;
+
+    if (!pseudo.trim()) {
+      setErrorPseudo("Your pseudo is required");
+      valid = false;
+    }
+
+    if (!password.trim()) {
+      setErrorPassword("Your password is required");
+      valid = false;
+    }
+
+    if (!valid) return;
+
     try {
       const res = await api.post("/auth/login", {
         pseudo,
@@ -19,6 +43,7 @@ const SignInModal = ({ isOpen, onClose, onSwitch }) => {
       navigate("/");
       console.log("Réponse:", res.data);
     } catch (err) {
+      setGlobalError("Your pseudo or password is incorrect");
       console.error(err);
     }
   };
@@ -69,8 +94,15 @@ const SignInModal = ({ isOpen, onClose, onSwitch }) => {
                   required
                   value={pseudo}
                   onChange={(e) => setPseudo(e.target.value)}
-                  className="font-roboto text-sm pl-11 block w-full rounded-[8vw] border-2 border-[#FF6600] bg-transparent py-3 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FF6600] md:rounded-[0.9vw] md:py-4"
+                  className={`font-roboto text-sm pl-11 block w-full rounded-[8vw] border-2 ${
+                    errorPseudo ? "border-red-500" : "border-[#FF6600]"
+                  } bg-transparent py-3 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 ${
+                    errorPseudo ? "focus:ring-red-500" : "focus:ring-[#FF6600]"
+                  } md:rounded-[0.9vw] md:py-4`}
                 />
+                {errorPseudo && (
+                  <p className="text-red-500 text-sm mt-1">{errorPseudo}</p>
+                )}
               </div>
               <div className="relative w-70 mt-6">
                 <label className="font-koulen absolute -top-3 left-9 px-3 bg-[#1F1F1F] text-xl text-white md:text-2xl">
@@ -83,9 +115,23 @@ const SignInModal = ({ isOpen, onClose, onSwitch }) => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="font-roboto text-sm pl-11 block w-full rounded-[8vw] border-2 border-[#FF6600] bg-transparent py-3 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FF6600] md:rounded-[0.9vw] md:py-4"
+                  className={`font-roboto text-sm pl-11 block w-full rounded-[8vw] border-2 ${
+                    errorPassword ? "border-red-500" : "border-[#FF6600]"
+                  } bg-transparent py-3 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 ${
+                    errorPassword
+                      ? "focus:ring-red-500"
+                      : "focus:ring-[#FF6600]"
+                  } md:rounded-[0.9vw] md:py-4`}
                 />
+                {errorPassword && (
+                  <p className="text-red-500 text-sm mt-1">{errorPassword}</p>
+                )}
               </div>
+              {globalError && (
+                <p className="text-red-500 text-sm mt-4 text-center">
+                  {globalError}
+                </p>
+              )}
             </div>
             <button
               onClick={signIn}

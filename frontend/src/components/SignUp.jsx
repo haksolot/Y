@@ -10,13 +10,44 @@ const SignUpModal = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  //erreur
+  const [errorPseudo, setErrorPseudo] = useState("");
+  const [errorEmail, setErrorEmail] = useState("");
+  const [errorPassword, setErrorPassword] = useState("");
+
+  const validateEmail = (email) => {
+    return /\S+@\S+\.\S+/.test(email);
+  };
   const create = async () => {
+    setErrorPseudo("");
+    setErrorEmail("");
+    setErrorPassword("");
+
+    let valid = true;
+
+    if (!pseudo.trim()) {
+      setErrorPseudo("A pseudo is required");
+      valid = false;
+    }
+
+    if (!validateEmail(email)) {
+      setErrorEmail("Your email is not valid");
+      valid = false;
+    }
+
+    if (password.length < 6) {
+      setErrorPassword("Your password is too short (6 caracters minimum)");
+      valid = false;
+    }
+
+    if (!valid) return;
+
     try {
       const res = await api.post("/auth/register", {
         pseudo,
         email,
         password,
-        role: "Visitor",
+        role: "User",
       });
       onClose();
       console.log("Réponse:", res.data);
@@ -72,8 +103,15 @@ const SignUpModal = ({ isOpen, onClose }) => {
                   onChange={(e) => setPseudo(e.target.value)}
                   placeholder="Type your pseudo here..."
                   required
-                  className="font-roboto text-sm pl-11 block w-full rounded-[8vw] border-2 border-[#FF6600] bg-transparent py-3 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FF6600] md:rounded-[0.9vw] md:py-4"
+                  className={`font-roboto text-sm pl-11 block w-full rounded-[8vw] border-2 ${
+                    errorPseudo ? "border-red-500" : "border-[#FF6600]"
+                  } bg-transparent py-3 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 ${
+                    errorPseudo ? "focus:ring-red-500" : "focus:ring-[#FF6600]"
+                  } md:rounded-[0.9vw] md:py-4`}
                 />
+                {errorPseudo && (
+                  <p className="text-red-500 text-sm mt-1">{errorPseudo}</p>
+                )}
               </div>
               <div className="relative w-70 mt-6">
                 <label className="font-koulen absolute -top-3 left-9 px-3 bg-[#1F1F1F] text-xl text-white md:text-2xl">
@@ -86,8 +124,15 @@ const SignUpModal = ({ isOpen, onClose }) => {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Type your email here..."
                   required
-                  className="font-roboto text-sm pl-11 block w-full rounded-[8vw] border-2 border-[#FF6600] bg-transparent py-3 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FF6600] md:rounded-[0.9vw] md:py-4"
+                  className={`font-roboto text-sm pl-11 block w-full rounded-[8vw] border-2 ${
+                    errorEmail ? "border-red-500" : "border-[#FF6600]"
+                  } bg-transparent py-3 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 ${
+                    errorEmail ? "focus:ring-red-500" : "focus:ring-[#FF6600]"
+                  } md:rounded-[0.9vw] md:py-4`}
                 />
+                {errorEmail && (
+                  <p className="text-red-500 text-sm mt-1">{errorEmail}</p>
+                )}
               </div>
               <div className="relative w-70 mt-6">
                 <label className="font-koulen absolute -top-3 left-9 px-3 bg-[#1F1F1F] text-xl text-white md:text-2xl">
@@ -100,8 +145,17 @@ const SignUpModal = ({ isOpen, onClose }) => {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Type your password here..."
                   required
-                  className="font-roboto text-sm pl-11 block w-full rounded-[8vw] border-2 border-[#FF6600] bg-transparent py-3 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FF6600] md:rounded-[0.9vw] md:py-4"
+                  className={`font-roboto text-sm pl-11 block w-full rounded-[8vw] border-2 ${
+                    errorPassword ? "border-red-500" : "border-[#FF6600]"
+                  } bg-transparent py-3 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 ${
+                    errorPassword
+                      ? "focus:ring-red-500"
+                      : "focus:ring-[#FF6600]"
+                  } md:rounded-[0.9vw] md:py-4`}
                 />
+                {errorPassword && (
+                  <p className="text-red-500 text-sm mt-1">{errorPassword}</p>
+                )}
               </div>
             </div>
             <button
