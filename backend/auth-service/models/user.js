@@ -13,12 +13,8 @@ const UserInfoSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  id_role: {
-    type: Number,
-    required: true,
-  },
-  id_session: {
-    type: Number,
+  role: {
+    type: String,
     required: true,
   },
   created_at: {
@@ -27,14 +23,6 @@ const UserInfoSchema = new mongoose.Schema({
   },
 });
 
-const RoleSchema = new mongoose.Schema({
-  nom_role: {
-    type: String,
-    required: true,
-  },
-});
-
-const Role = mongoose.model("Role", RoleSchema);
 const UserInfo = mongoose.model("UserInfo", UserInfoSchema);
 
-module.exports = { UserInfo, Role };
+module.exports = { UserInfo };

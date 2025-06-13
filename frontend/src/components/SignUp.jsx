@@ -1,7 +1,29 @@
 import logo from "../assets/logo.png";
 import closeButton from "../assets/close-button.png";
+import React, { useState } from "react";
+import api from "../utils/axios";
+
 const SignUpModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
+
+  const [pseudo, setPseudo] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const create = async () => {
+    try {
+      const res = await api.post("/auth/register", {
+        pseudo,
+        email,
+        password,
+        role: "Visitor",
+      });
+      onClose();
+      console.log("Réponse:", res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div className="shadow-[0_10px_30px_-5px_rgba(0,0,0,0.6)] fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50">
@@ -46,6 +68,8 @@ const SignUpModal = ({ isOpen, onClose }) => {
                 <input
                   type="text"
                   id="pseudo"
+                  value={pseudo}
+                  onChange={(e) => setPseudo(e.target.value)}
                   placeholder="Type your pseudo here..."
                   required
                   className="font-roboto text-sm pl-11 block w-full rounded-[8vw] border-2 border-[#FF6600] bg-transparent py-3 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FF6600] md:rounded-[0.9vw] md:py-4"
@@ -58,6 +82,8 @@ const SignUpModal = ({ isOpen, onClose }) => {
                 <input
                   type="text"
                   id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="Type your email here..."
                   required
                   className="font-roboto text-sm pl-11 block w-full rounded-[8vw] border-2 border-[#FF6600] bg-transparent py-3 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FF6600] md:rounded-[0.9vw] md:py-4"
@@ -70,13 +96,19 @@ const SignUpModal = ({ isOpen, onClose }) => {
                 <input
                   type="text"
                   id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="Type your password here..."
                   required
                   className="font-roboto text-sm pl-11 block w-full rounded-[8vw] border-2 border-[#FF6600] bg-transparent py-3 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FF6600] md:rounded-[0.9vw] md:py-4"
                 />
               </div>
             </div>
-            <button className="text-sm font-roboto mx-auto shadow-[3px_2px_8.3px_3px_rgba(0,0,0,0.25)] transition delay-50 bg-[#FF6600] font-roboto border-2 border-[#FF6600] hover:bg-transparent text-white py-2 px-4 rounded-[8vw] w-28 md:py-4 md:rounded-[0.9vw] md:w-80">
+            <button
+              type="submit"
+              onClick={create}
+              className="text-sm font-roboto mx-auto shadow-[3px_2px_8.3px_3px_rgba(0,0,0,0.25)] transition delay-50 bg-[#FF6600] font-roboto border-2 border-[#FF6600] hover:bg-transparent text-white py-2 px-4 rounded-[8vw] w-28 md:py-4 md:rounded-[0.9vw] md:w-80"
+            >
               Sign Up
             </button>
           </div>

@@ -1,12 +1,12 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
-const { UserInfo, Role } = require("../models/user");
+const { UserInfo } = require("../models/user");
 
 const createUser = async (req, res) => {
   console.log("req.body", req.body);
 
-  const { pseudo, email, id_role, id_session } = req.body,
+  const { pseudo, email, role } = req.body,
     password = bcrypt.hashSync(req.body.password, 10);
   if (!pseudo || !email || !req.body.password) {
     return res.status(400).json({
@@ -18,8 +18,7 @@ const createUser = async (req, res) => {
       pseudo,
       email,
       password,
-      id_role,
-      id_session,
+      role,
     });
     await newUser.save();
     return res.status(201).json({
@@ -53,12 +52,11 @@ const login = async (req, res) => {
     if (!isValidePassword) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
-    console.log("JWT KEY:", process.env.ACCESS_JWT_KEY);
 
     const accessToken = jwt.sign(
       {
         _id: user._id,
-        role: user.id_role,
+        role: user.role,
         exp: Math.floor(Date.now() / 1000) + 120,
       },
       process.env.ACCESS_JWT_KEY
@@ -100,42 +98,9 @@ const authenticate = async (req, res) => {
   }
 };
 
-const createRole = async (req, res) => {
-  const { nom_role } = req.body;
-  if (!nom_role) {
-    return res.status(400).json({
-      msg: "Missing parameter",
-    });
-  }
-  try {
-    const newRole = new Role({ nom_role });
-    await newRole.save();
-    return res.status(201).json({
-      msg: "New Role created !",
-    });
-  } catch (err) {
-    return res.status(500).json({
-      msg: err.message,
-    });
-  }
-};
-
-const getAllRoles = async (req, res) => {
-  try {
-    const roles = await Role.find();
-    return res.status(200).json(roles);
-  } catch (err) {
-    return res.status(500).json({
-      msg: err,
-    });
-  }
-};
-
 module.exports = {
   createUser,
   getAllUsers,
   login,
   authenticate,
-  createRole,
-  getAllRoles,
 };

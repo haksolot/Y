@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import axios from "axios";
+import api from "../utils/axios";
 
 function ProtectedRoute() {
-  const [isAuth, setIsAuth] = useState(null); 
+  const [isAuth, setIsAuth] = useState(null);
   useEffect(() => {
-    axios
-      .post("/api/authenticate", {}, { withCredentials: true })
+    api
+      .post("/auth/authenticate", {}, { withCredentials: true })
       .then((res) => setIsAuth(true))
       .catch(() => setIsAuth(false));
   }, []);

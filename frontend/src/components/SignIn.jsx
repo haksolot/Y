@@ -1,13 +1,27 @@
 import logo from "../assets/logo.png";
 import closeButton from "../assets/close-button.png";
 import { useState } from "react";
-import SignUpModal from "./SignUp";
+import api from "../utils/axios";
+import { useNavigate } from "react-router-dom";
 
 const SignInModal = ({ isOpen, onClose, onSwitch }) => {
-  const [showSignUpModal, setShowSignUpModal] = useState(false);
-  const [showSignInModal, setShowSignInModal] = useState(false);
   if (!isOpen) return null;
-
+  const navigate = useNavigate();
+  const [pseudo, setPseudo] = useState("");
+  const [password, setPassword] = useState("");
+  const signIn = async () => {
+    try {
+      const res = await api.post("/auth/login", {
+        pseudo,
+        password,
+      });
+      onClose();
+      navigate("/");
+      console.log("Réponse:", res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
   return (
     <div className="shadow-[0_10px_30px_-5px_rgba(0,0,0,0.6)] fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50">
       <div
@@ -53,6 +67,8 @@ const SignInModal = ({ isOpen, onClose, onSwitch }) => {
                   id="pseudo"
                   placeholder="Type your pseudo here..."
                   required
+                  value={pseudo}
+                  onChange={(e) => setPseudo(e.target.value)}
                   className="font-roboto text-sm pl-11 block w-full rounded-[8vw] border-2 border-[#FF6600] bg-transparent py-3 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FF6600] md:rounded-[0.9vw] md:py-4"
                 />
               </div>
@@ -65,11 +81,17 @@ const SignInModal = ({ isOpen, onClose, onSwitch }) => {
                   id="password"
                   placeholder="Type your password here..."
                   required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="font-roboto text-sm pl-11 block w-full rounded-[8vw] border-2 border-[#FF6600] bg-transparent py-3 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FF6600] md:rounded-[0.9vw] md:py-4"
                 />
               </div>
             </div>
-            <button className="text-sm font-roboto mx-auto shadow-[3px_2px_8.3px_3px_rgba(0,0,0,0.25)] transition delay-50 bg-[#FF6600] font-roboto border-2 border-[#FF6600] hover:bg-transparent text-white py-2 px-4 rounded-[8vw] w-28 md:py-4 md:rounded-[0.9vw] md:w-80">
+            <button
+              onClick={signIn}
+              type="submit"
+              className="text-sm font-roboto mx-auto shadow-[3px_2px_8.3px_3px_rgba(0,0,0,0.25)] transition delay-50 bg-[#FF6600] font-roboto border-2 border-[#FF6600] hover:bg-transparent text-white py-2 px-4 rounded-[8vw] w-28 md:py-4 md:rounded-[0.9vw] md:w-80"
+            >
               Sign In
             </button>
             <p className="text-sm font-roboto mx-auto text-gray-400">

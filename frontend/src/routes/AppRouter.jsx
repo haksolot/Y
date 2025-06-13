@@ -13,9 +13,8 @@ function AppRouter() {
         <Route element={<MainLayout />}>
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<Home />} />
-            <Route path="/test" element={<Test />} />
             <Route path="/profile" element={<Profile />} />
-          </Route>  
+          </Route>
         </Route>
         <Route path="/login" element={<Auth />} />
       </Routes>
