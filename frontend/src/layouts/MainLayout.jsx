@@ -1,4 +1,5 @@
 ﻿import { Outlet } from "react-router-dom";
+
 import Navbar from "../components/Navbar.jsx";
 
 import logo from "../assets/logo.png";
