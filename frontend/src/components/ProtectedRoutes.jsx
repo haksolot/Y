@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import api from "../utils/axios";
+import { apiAuth } from "../utils/axios";
 import { useLocation } from "react-router-dom";
 
 function ProtectedRoute() {
@@ -8,7 +8,7 @@ function ProtectedRoute() {
   const location = useLocation();
 
   useEffect(() => {
-    api
+    apiAuth
       .post("/auth/authenticate", {}, { withCredentials: true })
       .then((res) => setIsAuth(true))
       .catch(() => setIsAuth(false));

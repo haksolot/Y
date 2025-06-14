@@ -1,7 +1,7 @@
 import logo from "../assets/logo.png";
 import closeButton from "../assets/close-button.png";
 import React, { useState } from "react";
-import api from "../utils/axios";
+import { registerUser, validateEmail } from "../services/authService";
 
 const SignUpModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
@@ -16,11 +16,7 @@ const SignUpModal = ({ isOpen, onClose }) => {
   const [errorPassword, setErrorPassword] = useState("");
   const [globalError, setGlobalError] = useState("");
 
-  const validateEmail = (email) => {
-    return /\S+@\S+\.\S+/.test(email);
-  };
   const create = async () => {
-    console.log("here");
     setErrorPseudo("");
     setErrorEmail("");
     setErrorPassword("");
@@ -45,12 +41,7 @@ const SignUpModal = ({ isOpen, onClose }) => {
     if (!valid) return;
 
     try {
-      const res = await api.post("/auth/register", {
-        pseudo,
-        email,
-        password,
-        role: "User",
-      });
+      const data = await registerUser(pseudo, email, password);
       onClose();
     } catch (err) {
       if (err.response && err.response.data && err.response.data.msg) {

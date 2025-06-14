@@ -1,0 +1,43 @@
+require("dotenv").config();
+const { Post } = require("../models/post")
+const createPost = async (req, res) => {
+  const { id_profile, content, created_at, commentaries, likes } = req.body;
+  if (!id_profile || !content || !created_at) {
+    return res.status(400).json({
+      msg: "Missing parameters",
+    });
+  }
+  try {
+    const newPost = new Post({
+      id_profile,
+      content,
+      created_at,
+      commentaries,
+      likes,
+    });
+    await newPost.save();
+    return res.status(201).json({
+      msg: "New Post created !",
+    });
+  } catch (err) {
+    return res.status(500).json({
+      msg: err.message,
+    });
+  }
+};
+
+const getAllPosts = async (req, res) => {
+  try {
+    const posts = await Post.find();
+    return res.status(200).json(posts);
+  } catch (err) {
+    return res.status(500).json({
+      msg: err,
+    });
+  }
+};
+
+module.exports = {
+  createPost,
+  getAllPosts,
+};

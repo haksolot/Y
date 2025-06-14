@@ -1,8 +1,8 @@
 import logo from "../assets/logo.png";
 import closeButton from "../assets/close-button.png";
 import { useState } from "react";
-import api from "../utils/axios";
 import { useNavigate } from "react-router-dom";
+import { loginUser } from "../services/authService";
 
 const SignInModal = ({ isOpen, onClose, onSwitch }) => {
   if (!isOpen) return null;
@@ -35,10 +35,8 @@ const SignInModal = ({ isOpen, onClose, onSwitch }) => {
     if (!valid) return;
 
     try {
-      const res = await api.post("/auth/login", {
-        pseudo,
-        password,
-      });
+      const data = await loginUser(pseudo, password);
+
       onClose();
       navigate("/");
       console.log("Réponse:", res.data);

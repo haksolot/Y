@@ -38,7 +38,6 @@ const createUser = async (req, res) => {
       msg: "New User created !",
     });
   } catch (err) {
-    console.log(err.message);
     return res.status(500).json({
       msg: err.message,
     });
@@ -70,7 +69,7 @@ const login = async (req, res) => {
     const accessToken = jwt.sign(
       { _id: user._id, role: user.role },
       process.env.ACCESS_JWT_KEY,
-      { expiresIn: "30s" }
+      { expiresIn: "2min" }
     );
 
     res.cookie("token", accessToken, {
@@ -98,10 +97,11 @@ const authenticate = async (req, res) => {
       return res.status(401).json({ message: "Invalid token" });
     }
     const userId = decodedToken._id;
+    console.log("id", userId);
     if (!userId) {
       return res.status(401).json({ message: "User not found" });
     }
-    return res.status(200).json({ message: "You are authenticated!" });
+    return res.status(200).json({ message: "You are authenticated!", userId });
   } catch (err) {
     return res.status(500).json({
       msg: err.message,

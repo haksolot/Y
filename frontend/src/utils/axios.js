@@ -1,8 +1,11 @@
 import axios from "axios";
 
-const api = axios.create({
+export const apiAuth = axios.create({
   baseURL: "http://localhost:3000/api",
   withCredentials: true,
 });
 
-export default api;
+export const apiPost = axios.create({
+  baseURL: "http://localhost:3100/api/post",
+  withCredentials: true,
+});

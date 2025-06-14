@@ -1,8 +1,10 @@
 ﻿import { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
+import { createPost, getUserIdFromCookie } from "../../services/postService";
 
 function PostCreationModal({ onClose }) {
   const [isVisible, setIsVisible] = useState(false);
+  const [content, setContent] = useState("");
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 10);
@@ -32,6 +34,8 @@ function PostCreationModal({ onClose }) {
         <textarea
           placeholder="Write something here..."
           className="w-full h-40 p-3 rounded bg-[#1F1F1F] text-white font-roboto text-base resize-none outline-none"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
         />
         <div className="flex justify-center mt-4 gap-7">
           <button
@@ -40,7 +44,17 @@ function PostCreationModal({ onClose }) {
           >
             Cancel
           </button>
-          <button className="px-4 py-2 rounded-lg bg-[#ff6600] ring-2 ring-[#ff6600] hover:bg-transparent">
+          <button
+            type="submit"
+            onClick={async () => {
+              console.log("Button clicked");
+              const userId = await getUserIdFromCookie();
+              console.log("userId after await:", userId);
+              createPost(userId, content, new Date().toISOString());
+              handleClose();
+            }}
+            className="px-4 py-2 rounded-lg bg-[#ff6600] ring-2 ring-[#ff6600] hover:bg-transparent"
+          >
             Yeet !
           </button>
         </div>
