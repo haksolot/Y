@@ -1,7 +1,7 @@
-﻿import { useState } from "react";
+﻿import { useState, useEffect } from "react";
 import Comments from "./Comments/Comments";
-
-function Post({ className = "", onClick }) {
+import { getAllPosts } from "../services/postService";
+function Post({ className = "", onClick, profileName, content }) {
   const [showComments, setShowComments] = useState(false);
 
   return (
@@ -22,12 +22,11 @@ function Post({ className = "", onClick }) {
             id="profile-name"
             className="text-white font-koulen text-lg bg-[#1F1F1F] pl-2 pr-2"
           >
-            Haksolot
+            {profileName}
           </div>
         </div>
         <p id="message" className="relative text-white font-roboto text-base">
-          This is just a basic message to check out if the post fonction is
-          working right ?
+          {content}
         </p>
         <div
           id="buttons-container"

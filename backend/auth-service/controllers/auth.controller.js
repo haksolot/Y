@@ -4,8 +4,6 @@ require("dotenv").config();
 const { UserInfo } = require("../models/user");
 
 const createUser = async (req, res) => {
-  console.log("req.body", req.body);
-
   const { pseudo, email, role } = req.body,
     password = bcrypt.hashSync(req.body.password, 10);
   if (!pseudo || !email || !req.body.password) {
@@ -54,6 +52,19 @@ const getAllUsers = async (req, res) => {
     });
   }
 };
+
+const getUserById = async (req, res) => {
+  try {
+    const { id } = req.query;
+    const user = await UserInfo.findById(id);
+    return res.status(200).json(user);
+  } catch (err) {
+    return res.status(500).json({
+      msg: err,
+    });
+  }
+};
+
 const login = async (req, res) => {
   const { pseudo, password } = req.body;
   try {
@@ -86,6 +97,7 @@ const login = async (req, res) => {
     });
   }
 };
+
 const authenticate = async (req, res) => {
   const token = req.cookies.token;
   if (!token) {
@@ -97,7 +109,6 @@ const authenticate = async (req, res) => {
       return res.status(401).json({ message: "Invalid token" });
     }
     const userId = decodedToken._id;
-    console.log("id", userId);
     if (!userId) {
       return res.status(401).json({ message: "User not found" });
     }
@@ -114,4 +125,5 @@ module.exports = {
   getAllUsers,
   login,
   authenticate,
+  getUserById,
 };

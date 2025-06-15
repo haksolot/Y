@@ -39,7 +39,6 @@ const SignInModal = ({ isOpen, onClose, onSwitch }) => {
 
       onClose();
       navigate("/");
-      console.log("Réponse:", res.data);
     } catch (err) {
       setGlobalError("Your pseudo or password is incorrect");
       console.error(err);

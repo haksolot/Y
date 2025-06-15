@@ -1,8 +1,8 @@
 ﻿import { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { createPost, getUserIdFromCookie } from "../../services/postService";
-
-function PostCreationModal({ onClose }) {
+import { getUserById } from "../../services/authService";
+function PostCreationModal({ onClose, onPostCreated }) {
   const [isVisible, setIsVisible] = useState(false);
   const [content, setContent] = useState("");
 
@@ -17,6 +17,19 @@ function PostCreationModal({ onClose }) {
       onClose();
     }, 300); // match duration of transition
   };
+
+  async function handleSubmit() {
+    const userId = await getUserIdFromCookie();
+    const newPost = {
+      content,
+      created_at: new Date().toISOString(),
+      id_profile: userId || "Unknown",
+    };
+
+    const createdPost = await createPost(newPost);
+    onPostCreated(createdPost.newPost); 
+    handleClose();
+  }
 
   const modal = (
     <div
@@ -46,13 +59,7 @@ function PostCreationModal({ onClose }) {
           </button>
           <button
             type="submit"
-            onClick={async () => {
-              console.log("Button clicked");
-              const userId = await getUserIdFromCookie();
-              console.log("userId after await:", userId);
-              createPost(userId, content, new Date().toISOString());
-              handleClose();
-            }}
+            onClick={handleSubmit}
             className="px-4 py-2 rounded-lg bg-[#ff6600] ring-2 ring-[#ff6600] hover:bg-transparent"
           >
             Yeet !

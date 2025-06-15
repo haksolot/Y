@@ -9,7 +9,7 @@ function ProtectedRoute() {
 
   useEffect(() => {
     apiAuth
-      .post("/auth/authenticate", {}, { withCredentials: true })
+      .post("/authenticate", {}, { withCredentials: true })
       .then((res) => setIsAuth(true))
       .catch(() => setIsAuth(false));
   }, [location.pathname]); //vérifie entre changement de route

@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { Post } = require("../models/post")
+const { Post } = require("../models/post");
 const createPost = async (req, res) => {
   const { id_profile, content, created_at, commentaries, likes } = req.body;
   if (!id_profile || !content || !created_at) {
@@ -18,6 +18,7 @@ const createPost = async (req, res) => {
     await newPost.save();
     return res.status(201).json({
       msg: "New Post created !",
+      newPost,
     });
   } catch (err) {
     return res.status(500).json({

@@ -1,11 +1,7 @@
 import {apiAuth, apiPost} from "../utils/axios";
-export const createPost = async (id_profile, content, created_at) => {
+export const createPost = async (post) => {
   try {
-    const res = await apiPost.post("/createPost", {
-      id_profile,
-      content,
-      created_at,
-    });
+    const res = await apiPost.post("/createPost", post);
     return res.data;
   } catch (error) {
     console.error(
@@ -15,12 +11,23 @@ export const createPost = async (id_profile, content, created_at) => {
   }
 };
 
+export const getAllPosts = async () => {
+  try {
+    const res = await apiPost.get("/");
+    return res.data;
+  } catch (error) {
+    console.error(
+      "Failed to get all posts:",
+      error.response?.data || error.message
+    );
+  }
+};
+
 export const getUserIdFromCookie = async () => {
   try {
-    const response = await apiAuth.post("/auth/authenticate", {
+    const response = await apiAuth.post("/authenticate", {}, {
       withCredentials: true,
     });
-    console.log("id", response.data.userId);
     return response.data.userId;
   } catch (error) {
     console.error("Failed to fetch user ID:", error);
