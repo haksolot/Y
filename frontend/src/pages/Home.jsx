@@ -13,6 +13,7 @@ function Home() {
       const data = await getAllPosts();
       const PostWithName = [];
       for (const post of data) {
+        console.log("idprofile", post.id_profile);
         const user = await getUserById(post.id_profile);
         PostWithName.push({
           ...post,
@@ -55,6 +56,7 @@ function Home() {
             className="w-3/4"
             profileName={post.profileName}
             content={post.content}
+            dateCreation={new Date(post.created_at).toLocaleString("fr-FR")}
           />
         ))}
       </div>

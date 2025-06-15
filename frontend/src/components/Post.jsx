@@ -1,7 +1,7 @@
 ﻿import { useState, useEffect } from "react";
 import Comments from "./Comments/Comments";
 import { getAllPosts } from "../services/postService";
-function Post({ className = "", onClick, profileName, content }) {
+function Post({ className = "", onClick, profileName, content, dateCreation }) {
   const [showComments, setShowComments] = useState(false);
 
   return (
@@ -23,6 +23,12 @@ function Post({ className = "", onClick, profileName, content }) {
             className="text-white font-koulen text-lg bg-[#1F1F1F] pl-2 pr-2"
           >
             {profileName}
+          </div>
+          <div
+            id="date-creation"
+            className="text-white font-koulen text-lg bg-[#1F1F1F] pl-2 pr-2"
+          >
+            {dateCreation}
           </div>
         </div>
         <p id="message" className="relative text-white font-roboto text-base">

@@ -20,6 +20,7 @@ function PostCreationModal({ onClose, onPostCreated }) {
 
   async function handleSubmit() {
     const userId = await getUserIdFromCookie();
+    console.log("user id", userId)
     const newPost = {
       content,
       created_at: new Date().toISOString(),
