@@ -21,7 +21,7 @@
         >
           <div id="trash-button">
             <svg
-              class="w-5 h-5 aspect-square"
+              class="w-5 h-5 aspect-square cursor-pointer"
               viewBox="0 0 24 28"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +34,7 @@
           </div>
           <div id="edit-post-button">
             <svg
-              class="w-5 h-5 aspect-square"
+              class="w-5 h-5 aspect-square cursor-pointer"
               viewBox="0 0 28 28"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
