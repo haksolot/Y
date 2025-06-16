@@ -19,7 +19,7 @@ function Comments({ onClose }) {
 
   const content = (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center 
+      className={`flex-col gap-4 fixed inset-0 z-50 flex items-center justify-center 
                   bg-black/40 backdrop-blur-sm transition-opacity duration-300 
                   ${isVisible ? "opacity-100" : "opacity-0"}`}
       onClick={handleClose}
@@ -34,7 +34,7 @@ function Comments({ onClose }) {
                     }`}
       >
         <h2 className="text-white text-xl font-bold mb-6">Comments</h2>
-        <div className="flex flex-col items-center gap-6">
+        <div className="flex flex-col items-center gap-8">
           <Comment />
           <Comment />
           <Comment />
@@ -43,12 +43,12 @@ function Comments({ onClose }) {
           <Comment />
           <Comment />
         </div>
-
-        {/* Zone de saisie fixée en bas du modal */}
+      </div>
+      <div id="buttons" className="flex flex-row items-center justify-center gap-0 w-11/12 sm:w-3/4 md:w-1/2">
         <div
+          onClick={(e) => e.stopPropagation()}
           id="post-comment-button"
-          className="fixed bottom-10 left-1/2 -translate-x-1/2 
-                     flex items-center gap-4 px-6 py-2
+          className="flex flex-1 items-center gap-4 px-6 py-2
                      bg-gradient-to-b from-transparent to-[#1F1F1F] 
                      backdrop-blur-md rounded-2xl ring-2 ring-[#ff6600] 
                      text-[#ffffffcc] text-sm font-roboto select-none z-50"
@@ -56,10 +56,10 @@ function Comments({ onClose }) {
           <textarea
             placeholder="Write something here..."
             className="h-8 resize-none outline-none bg-transparent text-white 
-                       font-roboto text-base leading-[2] w-64"
+                       font-roboto text-base leading-[2] flex-1"
           />
           <svg
-            className="w-4 h-4 aspect-square"
+            className="w-5 h-5 aspect-square cursor-pointer"
             viewBox="0 0 20 17"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -71,11 +71,26 @@ function Comments({ onClose }) {
           </svg>
         </div>
 
-        <button
-          onClick={handleClose}
-          className="mt-6 px-4 py-2 text-sm bg-orange-600 rounded hover:bg-orange-700 text-white"
-        >
-          Fermer
+        <button onClick={handleClose} className="p-4">
+          <svg
+            className="w-8 h-8 aspect-square"
+            viewBox="0 0 27 27"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="13.5"
+              cy="13.5"
+              r="12.5"
+              fill="#1F1F1F"
+              stroke="#FF6600"
+              stroke-width="2"
+            />
+            <path
+              d="M19.0342 9.62684C19.4935 9.1675 19.4935 8.42153 19.0342 7.96218C18.5749 7.50284 17.8289 7.50284 17.3695 7.96218L13.5 11.8354L9.62684 7.96586C9.1675 7.50651 8.42153 7.50651 7.96218 7.96586C7.50284 8.4252 7.50284 9.17118 7.96218 9.63052L11.8354 13.5L7.96586 17.3732C7.50651 17.8326 7.50651 18.5785 7.96586 19.0379C8.4252 19.4972 9.17118 19.4972 9.63052 19.0379L13.5 15.1647L17.3732 19.0342C17.8326 19.4935 18.5785 19.4935 19.0379 19.0342C19.4972 18.5749 19.4972 17.8289 19.0379 17.3695L15.1647 13.5L19.0342 9.62684Z"
+              fill="#FF6600"
+            />
+          </svg>
         </button>
       </div>
     </div>

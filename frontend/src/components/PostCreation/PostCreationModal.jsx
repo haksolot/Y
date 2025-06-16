@@ -13,7 +13,7 @@ function PostCreationModal({ onClose }) {
     setIsVisible(false);
     setTimeout(() => {
       onClose();
-    }, 300); // match duration of transition
+    }, 300); 
   };
 
   const modal = (
