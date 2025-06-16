@@ -1,17 +1,29 @@
-const port = 3200;
+﻿const mongoose = require("mongoose");
+require("dotenv").config();
+const connectDB = async () => {
+  try {
+    await mongoose.connect(
+      "mongodb://" +
+        process.env.MONGO_HOST +
+        ":" +
+        process.env.MONGO_PORT +
+        "/" +
+        process.env.MONGO_DATABASE_NAME
+    );
+    console.log("MongoDB Connected...");
+  } catch (err) {
+    console.error(err.message);
+    console.log(
+      "mongodb://" +
+        process.env.MONGO_HOST +
+        ":" +
+        process.env.MONGO_PORT +
+        "/" +
+        process.env.MONGO_DATABASE_NAME
+    );
 
-const mongoose = require("mongoose");
-require('dotenv').config();
-const connectDB = async () =>{
-    try {
-        await mongoose.connect("mongodb://" + process.env.MONGO_HOST + ":" + process.env.MONGO_PORT + "/" + process.env.MONGO_DATABASE_NAME)
-        console.log('MongoDB Connected...');
-    } catch (err) {
-        console.error(err.message);
-        console.log("mongodb://" + process.env.MONGO_HOST + ":" + process.env.MONGO_PORT + "/" + process.env.MONGO_DATABASE_NAME);
-        
-        process.exit(1);
-    }
-}
+    process.exit(1);
+  }
+};
 
-module.exports = connectDB
+module.exports = connectDB;
