@@ -15,7 +15,7 @@ function PostCreationModal({ onClose, onPostCreated }) {
     setIsVisible(false);
     setTimeout(() => {
       onClose();
-    }, 300); // match duration of transition
+    }, 300); 
   };
 
   async function handleSubmit() {
