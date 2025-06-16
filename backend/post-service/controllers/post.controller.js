@@ -1,0 +1,72 @@
+require("dotenv").config();
+const { Post } = require("../models/post");
+const createPost = async (req, res) => {
+  const { id_profile, content, created_at, commentaries, likes } = req.body;
+  if (!id_profile || !content || !created_at) {
+    return res.status(400).json({
+      msg: "Missing parameters",
+    });
+  }
+  try {
+    const newPost = new Post({
+      id_profile,
+      content,
+      created_at,
+      commentaries,
+      likes,
+    });
+    await newPost.save();
+    return res.status(201).json({
+      msg: "New Post created !",
+      newPost,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      msg: err.message,
+    });
+  }
+};
+
+const getAllPosts = async (req, res) => {
+  try {
+    const posts = await Post.find();
+    return res.status(200).json(posts);
+  } catch (err) {
+    return res.status(500).json({
+      msg: err,
+    });
+  }
+};
+
+const getPostById = async (req, res) => {
+  try {
+    const { id } = req.query;
+    const post = await Post.findById(id);
+    return res.status(200).json(post);
+  } catch (err) {
+    return res.status(500).json({
+      msg: err,
+    });
+  }
+};
+
+const addCommentOnPost = async (req, res) => {
+  try {
+    const { id, id_comment } = req.body;
+    const post = await Post.findById(id);
+    post.commentaries.push(id_comment);
+    await post.save();
+    return res.status(200).json(post);
+  } catch (err) {
+    return res.status(500).json({
+      msg: err,
+    });
+  }
+};
+
+module.exports = {
+  createPost,
+  getAllPosts,
+  getPostById,
+  addCommentOnPost,
+};
