@@ -30,6 +30,7 @@ function Comments({ onClose, id_post, onPostCreated }) {
         const commentsData = await Promise.all(
           comments.map((id) => getCommentById(id))
         );
+        console.log("comment", commentsData)
         const enrichedComments = await Promise.all(
           commentsData.map(async (comment) => {
             const user = await getUserById(comment.id_profile);
