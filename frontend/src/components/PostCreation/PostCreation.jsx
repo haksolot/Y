@@ -7,7 +7,7 @@
     >
       Type something in here...
       <svg
-        class="w-4 h-4 aspect-square"
+        className="w-4 h-4 aspect-square"
         viewBox="0 0 20 17"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

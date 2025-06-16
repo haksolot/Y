@@ -1,7 +1,63 @@
 import logo from "../assets/logo.png";
 import closeButton from "../assets/close-button.png";
+import React, { useState } from "react";
+import { registerUser, validateEmail } from "../services/authService";
+
 const SignUpModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
+
+  const [pseudo, setPseudo] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  //erreur
+  const [errorPseudo, setErrorPseudo] = useState("");
+  const [errorEmail, setErrorEmail] = useState("");
+  const [errorPassword, setErrorPassword] = useState("");
+  const [globalError, setGlobalError] = useState("");
+
+  const create = async () => {
+    setErrorPseudo("");
+    setErrorEmail("");
+    setErrorPassword("");
+
+    let valid = true;
+
+    if (!pseudo.trim()) {
+      setErrorPseudo("A pseudo is required");
+      valid = false;
+    }
+
+    if (!validateEmail(email)) {
+      setErrorEmail("Your email is not valid");
+      valid = false;
+    }
+
+    if (password.length < 6) {
+      setErrorPassword("Your password is too short (6 caracters minimum)");
+      valid = false;
+    }
+
+    if (!valid) return;
+
+    try {
+      const data = await registerUser(pseudo, email, password);
+      onClose();
+    } catch (err) {
+      if (err.response && err.response.data && err.response.data.msg) {
+        const errorMsg = err.response.data.msg;
+        if (errorMsg === "User already exists") {
+          setErrorEmail("This email is already taken.");
+        } else if (errorMsg === "Pseudo already exists") {
+          setErrorPseudo("This pseudo is already taken.");
+        } else {
+          setGlobalError(errorMsg);
+        }
+      } else {
+        setGlobalError("An unexpected error occurred.");
+      }
+    }
+  };
 
   return (
     <div className="shadow-[0_10px_30px_-5px_rgba(0,0,0,0.6)] fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50">
@@ -46,10 +102,19 @@ const SignUpModal = ({ isOpen, onClose }) => {
                 <input
                   type="text"
                   id="pseudo"
+                  value={pseudo}
+                  onChange={(e) => setPseudo(e.target.value)}
                   placeholder="Type your pseudo here..."
                   required
-                  className="font-roboto text-sm pl-11 block w-full rounded-[8vw] border-2 border-[#FF6600] bg-transparent py-3 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FF6600] md:rounded-[0.9vw] md:py-4"
+                  className={`font-roboto text-sm pl-11 block w-full rounded-[8vw] border-2 ${
+                    errorPseudo ? "border-red-500" : "border-[#FF6600]"
+                  } bg-transparent py-3 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 ${
+                    errorPseudo ? "focus:ring-red-500" : "focus:ring-[#FF6600]"
+                  } md:rounded-[0.9vw] md:py-4`}
                 />
+                {errorPseudo && (
+                  <p className="text-red-500 text-sm mt-1">{errorPseudo}</p>
+                )}
               </div>
               <div className="relative w-70 mt-6">
                 <label className="font-koulen absolute -top-3 left-9 px-3 bg-[#1F1F1F] text-xl text-white md:text-2xl">
@@ -58,10 +123,19 @@ const SignUpModal = ({ isOpen, onClose }) => {
                 <input
                   type="text"
                   id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="Type your email here..."
                   required
-                  className="font-roboto text-sm pl-11 block w-full rounded-[8vw] border-2 border-[#FF6600] bg-transparent py-3 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FF6600] md:rounded-[0.9vw] md:py-4"
+                  className={`font-roboto text-sm pl-11 block w-full rounded-[8vw] border-2 ${
+                    errorEmail ? "border-red-500" : "border-[#FF6600]"
+                  } bg-transparent py-3 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 ${
+                    errorEmail ? "focus:ring-red-500" : "focus:ring-[#FF6600]"
+                  } md:rounded-[0.9vw] md:py-4`}
                 />
+                {errorEmail && (
+                  <p className="text-red-500 text-sm mt-1">{errorEmail}</p>
+                )}
               </div>
               <div className="relative w-70 mt-6">
                 <label className="font-koulen absolute -top-3 left-9 px-3 bg-[#1F1F1F] text-xl text-white md:text-2xl">
@@ -70,13 +144,33 @@ const SignUpModal = ({ isOpen, onClose }) => {
                 <input
                   type="text"
                   id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="Type your password here..."
                   required
-                  className="font-roboto text-sm pl-11 block w-full rounded-[8vw] border-2 border-[#FF6600] bg-transparent py-3 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FF6600] md:rounded-[0.9vw] md:py-4"
+                  className={`font-roboto text-sm pl-11 block w-full rounded-[8vw] border-2 ${
+                    errorPassword ? "border-red-500" : "border-[#FF6600]"
+                  } bg-transparent py-3 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 ${
+                    errorPassword
+                      ? "focus:ring-red-500"
+                      : "focus:ring-[#FF6600]"
+                  } md:rounded-[0.9vw] md:py-4`}
                 />
+                {errorPassword && (
+                  <p className="text-red-500 text-sm mt-1">{errorPassword}</p>
+                )}
               </div>
             </div>
-            <button className="text-sm font-roboto mx-auto shadow-[3px_2px_8.3px_3px_rgba(0,0,0,0.25)] transition delay-50 bg-[#FF6600] font-roboto border-2 border-[#FF6600] hover:bg-transparent text-white py-2 px-4 rounded-[8vw] w-28 md:py-4 md:rounded-[0.9vw] md:w-80">
+            {globalError && (
+              <p className="text-red-500 text-sm text-center mb-2">
+                {globalError}
+              </p>
+            )}
+            <button
+              type="submit"
+              onClick={create}
+              className="text-sm font-roboto mx-auto shadow-[3px_2px_8.3px_3px_rgba(0,0,0,0.25)] transition delay-50 bg-[#FF6600] font-roboto border-2 border-[#FF6600] hover:bg-transparent text-white py-2 px-4 rounded-[8vw] w-28 md:py-4 md:rounded-[0.9vw] md:w-80"
+            >
               Sign Up
             </button>
           </div>

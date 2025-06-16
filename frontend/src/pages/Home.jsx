@@ -1,10 +1,40 @@
-﻿import { useState } from "react";
+﻿import { useState, useEffect } from "react";
 import Post from "../components/Post.jsx";
 import PostCreationButton from "../components/PostCreation/PostCreation.jsx";
 import PostCreationModal from "../components/PostCreation/PostCreationModal.jsx";
-
+import { getAllPosts } from "../services/postService.js";
+import { getUserById } from "../services/authService.js";
 function Home() {
   const [isPostModalOpen, setIsPostModalOpen] = useState(false);
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    async function getPosts() {
+      const data = await getAllPosts();
+      const PostWithName = [];
+      for (const post of data) {
+        console.log("idprofile", post.id_profile);
+        const user = await getUserById(post.id_profile);
+        PostWithName.push({
+          ...post,
+          profileName: user.pseudo,
+        });
+      }
+      setPosts(PostWithName);
+    }
+    getPosts();
+  }, []);
+
+  async function handlePostCreated(newPost) {
+    console.log("crée");
+    const user = await getUserById(newPost.id_profile);
+    const enrichedPost = {
+      ...newPost,
+      profileName: user.pseudo,
+    };
+
+    setPosts((prevPosts) => [enrichedPost, ...prevPosts]);
+  }
 
   return (
     <>
@@ -14,17 +44,24 @@ function Home() {
       />
 
       {isPostModalOpen && (
-        <PostCreationModal onClose={() => setIsPostModalOpen(false)} />
+        <PostCreationModal
+          onClose={() => setIsPostModalOpen(false)}
+          onPostCreated={handlePostCreated}
+        />
       )}
-      <div className="flex flex-col items-center gap-14 pt-24 pb-32 min-h-screen overflow-y-auto sm:w-3/4 md:w-3/5">
-        <Post className="w-3/4" />
-        <Post className="w-3/4" />
-        <Post className="w-3/4" />
-        <Post className="w-3/4" />
-        <Post className="w-3/4" />
-        <Post className="w-3/4" />
-        <Post className="w-3/4" />
-        <Post className="w-3/4" />
+      <div className="flex flex-col items-center gap-14 pt-24 pb-32 min-h-screen overflow-y-auto w-full sm:w-3/4 md:w-3/5">
+        {posts
+         .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+        .map((post) => (
+          <Post
+            key={post.id}
+            className="w-3/4"
+            profileName={post.profileName}
+            content={post.content}
+            dateCreation={new Date(post.created_at).toLocaleString("fr-FR")}
+            id_post={post._id}
+          />
+        ))}
       </div>
     </>
   );
