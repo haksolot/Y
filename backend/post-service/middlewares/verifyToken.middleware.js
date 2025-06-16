@@ -1,9 +1,7 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-
 const verifyToken = (req, res, next) => {
-  const token = req.cookies.token;
-
+  const token = req.cookies?.token;
   if (!token) {
     return res.status(401).json({ message: "No token provided in cookie" });
   }
@@ -16,5 +14,6 @@ const verifyToken = (req, res, next) => {
     return res.status(401).json({ message: "Invalid or expired token" });
   }
 };
+
 
 module.exports = verifyToken;

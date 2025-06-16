@@ -1,9 +1,23 @@
 ﻿import { useState, useEffect } from "react";
 import Comments from "./Comments/Comments";
-import { getAllPosts } from "../services/postService";
-function Post({ className = "", onClick, profileName, content, dateCreation }) {
+import { getUserById } from "../services/authService";
+function Post({ className = "", onClick, profileName, content, dateCreation, id_post }) {
   const [showComments, setShowComments] = useState(false);
-
+  const [comment, setComments] = useState([]);
+    async function handlePostCreated(newComment) {
+       try {
+         const user = await getUserById(newComment.id_profile); 
+         const enrichedComment = {
+           ...newComment,
+           profileName: user.pseudo,
+         };
+     
+         setComments((prevComments) => [enrichedComment, ...prevComments]); 
+       } catch (error) {
+         console.error("Erreur lors de l'enrichissement du commentaire :", error);
+       }
+     }
+   
   return (
     <>
       <div
@@ -26,12 +40,12 @@ function Post({ className = "", onClick, profileName, content, dateCreation }) {
           </div>
           <div
             id="date-creation"
-            className="text-white font-koulen text-lg bg-[#1F1F1F] pl-2 pr-2"
+            className="text-white font-roboto text-sm bg-[#1F1F1F] pl-2 pr-2"
           >
             {dateCreation}
           </div>
         </div>
-        <p id="message" className="relative text-white font-roboto text-base">
+        <p id="message" className="relative text-white font-roboto text-base ">
           {content}
         </p>
         <div
@@ -65,7 +79,13 @@ function Post({ className = "", onClick, profileName, content, dateCreation }) {
               />
             </svg>
           </div>
-          {showComments && <Comments onClose={() => setShowComments(false)} />}
+          {showComments && (
+            <Comments
+              onClose={() => setShowComments(false)}
+              id_post={id_post}
+               onPostCreated={handlePostCreated}
+            />
+          )}
 
           <div id="repost-button">
             <svg

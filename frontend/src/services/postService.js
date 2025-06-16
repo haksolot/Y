@@ -1,4 +1,4 @@
-import {apiAuth, apiPost} from "../utils/axios";
+import { apiAuth, apiPost, apiComment } from "../utils/axios";
 export const createPost = async (post) => {
   try {
     const res = await apiPost.post("/createPost", post);
@@ -6,6 +6,18 @@ export const createPost = async (post) => {
   } catch (error) {
     console.error(
       "Failed to create post:",
+      error.response?.data || error.message
+    );
+  }
+};
+
+export const createComment = async (post) => {
+  try {
+    const res = await apiComment.post("/createComment", post);
+    return res.data;
+  } catch (error) {
+    console.error(
+      "Failed to create comment:",
       error.response?.data || error.message
     );
   }
@@ -25,12 +37,42 @@ export const getAllPosts = async () => {
 
 export const getUserIdFromCookie = async () => {
   try {
-    const response = await apiAuth.post("/authenticate", {}, {
-      withCredentials: true,
-    });
+    const response = await apiAuth.post(
+      "/authenticate",
+      {},
+      {
+        withCredentials: true,
+      }
+    );
     return response.data.userId;
   } catch (error) {
     console.error("Failed to fetch user ID:", error);
     return null;
   }
+};
+
+export const addCommentOnPost = async (id, id_comment) => {
+  try {
+    const res = await apiPost.post("/addCommentOnPost", { id, id_comment });
+    return res.data;
+  } catch (error) {
+    console.error(
+      "Failed to add comment on post:",
+      error.response?.data || error.message
+    );
+  }
+};
+
+export const getPostById = async (id) => {
+  const res = await apiPost.get("/getPostById", {
+    params: { id },
+  });
+  return res.data;
+};
+
+export const getCommentById = async (id) => {
+  const res = await apiComment.get("/getCommentById", {
+    params: { id },
+  });
+  return res.data;
 };

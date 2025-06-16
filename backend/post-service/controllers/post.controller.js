@@ -38,7 +38,35 @@ const getAllPosts = async (req, res) => {
   }
 };
 
+const getPostById = async (req, res) => {
+  try {
+    const { id } = req.query;
+    const post = await Post.findById(id);
+    return res.status(200).json(post);
+  } catch (err) {
+    return res.status(500).json({
+      msg: err,
+    });
+  }
+};
+
+const addCommentOnPost = async (req, res) => {
+  try {
+    const { id, id_comment } = req.body;
+    const post = await Post.findById(id);
+    post.commentaries.push(id_comment);
+    await post.save();
+    return res.status(200).json(post);
+  } catch (err) {
+    return res.status(500).json({
+      msg: err,
+    });
+  }
+};
+
 module.exports = {
   createPost,
   getAllPosts,
+  getPostById,
+  addCommentOnPost,
 };

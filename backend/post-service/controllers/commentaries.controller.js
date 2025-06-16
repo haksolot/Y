@@ -16,6 +16,7 @@ const createComment = async (req, res) => {
     await newComment.save();
     return res.status(201).json({
       msg: "New Comment created !",
+      newComment
     });
   } catch (err) {
     return res.status(500).json({
@@ -35,7 +36,20 @@ const getAllCommentaries = async (req, res) => {
   }
 };
 
+const getCommentById = async (req, res) => {
+  try {
+    const { id } = req.query;
+    const comment = await Commentaries.findById(id);
+    return res.status(200).json(comment);
+  } catch (err) {
+    return res.status(500).json({
+      msg: err,
+    });
+  }
+};
+
 module.exports = {
   createComment,
   getAllCommentaries,
+  getCommentById
 };

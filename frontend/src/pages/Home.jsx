@@ -49,14 +49,17 @@ function Home() {
           onPostCreated={handlePostCreated}
         />
       )}
-      <div className="flex flex-col items-center gap-14 pt-24 pb-32 min-h-screen overflow-y-auto sm:w-3/4 md:w-3/5">
-        {posts.map((post) => (
+      <div className="flex flex-col items-center gap-14 pt-24 pb-32 min-h-screen overflow-y-auto w-full sm:w-3/4 md:w-3/5">
+        {posts
+         .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+        .map((post) => (
           <Post
             key={post.id}
             className="w-3/4"
             profileName={post.profileName}
             content={post.content}
             dateCreation={new Date(post.created_at).toLocaleString("fr-FR")}
+            id_post={post._id}
           />
         ))}
       </div>
