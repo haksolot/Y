@@ -63,6 +63,31 @@ export const addCommentOnPost = async (id, id_comment) => {
   }
 };
 
+
+export const addLikeOnPost = async (id_post, id_profile) => {
+  try {
+    const res = await apiPost.post("/addLikeOnPost", { id_post, id_profile });
+    return res.data;
+  } catch (error) {
+    console.error(
+      "Failed to add like on post:",
+      error.response?.data || error.message
+    );
+  }
+};
+
+export const deleteLikeOnPost = async (id_post, id_profile) => {
+  try {
+    const res = await apiPost.delete("/deleteLikeOnPost", {params: { id_post, id_profile }});
+    return res.data;
+  } catch (error) {
+    console.error(
+      "Failed to delete like on post:",
+      error.response?.data || error.message
+    );
+  }
+};
+
 export const getPostById = async (id) => {
   const res = await apiPost.get("/getPostById", {
     params: { id },

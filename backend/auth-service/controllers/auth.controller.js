@@ -80,7 +80,7 @@ const login = async (req, res) => {
     const accessToken = jwt.sign(
       { _id: user._id, role: user.role },
       process.env.ACCESS_JWT_KEY,
-      { expiresIn: "2min" }
+      { expiresIn: "20min" }
     );
 
     res.cookie("token", accessToken, {

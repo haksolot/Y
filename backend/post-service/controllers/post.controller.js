@@ -64,9 +64,39 @@ const addCommentOnPost = async (req, res) => {
   }
 };
 
+const addLikeOnPost = async (req, res) => {
+  try {
+    const { id_post, id_profile } = req.body;
+    const post = await Post.findById(id_post);
+    post.likes.push(id_profile);
+    await post.save();
+    return res.status(200).json(post);
+  } catch (err) {
+    return res.status(500).json({
+      msg: err,
+    });
+  }
+};
+
+const deleteLikeOnPost = async (req, res) => {
+  try {
+    const { id_post, id_profile } = req.query;
+    const post = await Post.findById(id_post);
+    post.likes.remove(id_profile);
+    await post.save();
+    return res.status(200).json(post);
+  } catch (err) {
+    return res.status(500).json({
+      msg: err,
+    });
+  }
+};
+
 module.exports = {
   createPost,
   getAllPosts,
   getPostById,
   addCommentOnPost,
+  addLikeOnPost,
+  deleteLikeOnPost,
 };

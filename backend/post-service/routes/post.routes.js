@@ -7,4 +7,11 @@ router.get("/", postController.getAllPosts);
 router.post("/createPost", verifyToken, postController.createPost);
 router.get("/getPostById", postController.getPostById);
 router.post("/addCommentOnPost", postController.addCommentOnPost);
+router.post("/addLikeOnPost", verifyToken, postController.addLikeOnPost);
+router.delete(
+  "/deleteLikeOnPost",
+  verifyToken,
+  postController.deleteLikeOnPost
+);
+
 module.exports = router;
