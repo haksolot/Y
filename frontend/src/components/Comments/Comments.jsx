@@ -25,18 +25,31 @@ function Comments({ onClose, id_post, onPostCreated }) {
     async function getCommentsFromPost() {
       try {
         const data = await getPostById(id_post);
-        console.log("Données du post :", data);
         const comments = data.commentaries;
         const commentsData = await Promise.all(
           comments.map((id) => getCommentById(id))
         );
-        console.log("comment", commentsData)
+
         const enrichedComments = await Promise.all(
           commentsData.map(async (comment) => {
             const user = await getUserById(comment.id_profile);
+
+            const enrichedReplies = await Promise.all(
+              (comment.replies || []).map(async (replyId) => {
+                const replyData = await getCommentById(replyId);
+                const replyUser = await getUserById(replyData.id_profile);
+
+                return {
+                  ...replyData,
+                  profileName: replyUser.pseudo,
+                };
+              })
+            );
+
             return {
               ...comment,
               profileName: user.pseudo,
+              replies: enrichedReplies,
             };
           })
         );
@@ -57,6 +70,7 @@ function Comments({ onClose, id_post, onPostCreated }) {
   };
 
   async function handleSubmit() {
+    console.log("Soumission du commentaire, contenu :", content);
     const userId = await getUserIdFromCookie();
     const newComment = {
       content,
@@ -65,6 +79,7 @@ function Comments({ onClose, id_post, onPostCreated }) {
     };
 
     const createdComment = await createComment(newComment);
+    console.log("Réponse createComment :", createdComment);
     await addCommentOnPost(id_post, createdComment.newComment._id);
 
     const user = await getUserById(createdComment.newComment.id_profile);
@@ -73,7 +88,7 @@ function Comments({ onClose, id_post, onPostCreated }) {
       ...createdComment.newComment,
       profileName: user.pseudo,
     };
-
+    console.log("Commentaire enrichi à ajouter :", enrichedComment);
     setComments((prevComments) => [enrichedComment, ...prevComments]);
 
     setContent("");
@@ -84,37 +99,43 @@ function Comments({ onClose, id_post, onPostCreated }) {
   const contentComment = (
     <div
       className={`flex-col gap-4 fixed inset-0 z-50 flex items-center justify-center 
-                  bg-black/40 backdrop-blur-sm transition-opacity duration-300 
+                  bg-black/40 scrollbar backdrop-blur-sm transition-opacity duration-300 
                   ${isVisible ? "opacity-100" : "opacity-0"}`}
       onClick={handleClose}
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`relative w-11/12 sm:w-3/4 md:w-1/2 max-h-[80vh] 
-                    overflow-y-auto bg-[#1F1F1F] p-6 pb-28 
-                    rounded-2xl ring-2 ring-[#ff6600] shadow-xl 
-                    transition-transform duration-300 transform ${
-                      isVisible ? "scale-100" : "scale-90"
-                    }`}
+        className={`relative w-11/12 sm:w-3/4 md:w-1/2 
+              overflow-hidden rounded-2xl ring-2 ring-[#ff6600] 
+              shadow-xl transition-transform duration-300 transform ${
+                isVisible ? "scale-100" : "scale-90"
+              }`}
       >
-        <h2 className="text-white text-xl font-bold mb-6">Comments</h2>
-        <div className="flex flex-col items-center gap-6">
-          {comments
-            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-            .map((comment) => (
-              <Comment
-                key={comment.id}
-                className="w-3/4"
-                profileName={comment.profileName}
-                content={comment.content}
-                dateCreation={new Date(comment.created_at).toLocaleString(
-                  "fr-FR"
-                )}
-              />
-            ))}
+        <div className="max-h-[80vh] overflow-y-auto bg-[#1F1F1F] p-6 pb-28">
+          <h2 className="text-white text-xl font-bold mb-6">Comments</h2>
+          <div className="flex flex-col items-center gap-6">
+            {comments
+              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+              .map((comment) => (
+                <Comment
+                  key={comment._id}
+                  initialReplies={comment.replies || []}
+                  id_comment={comment._id}
+                  className="w-3/4"
+                  profileName={comment.profileName}
+                  content={comment.content}
+                  dateCreation={new Date(comment.created_at).toLocaleString(
+                    "fr-FR"
+                  )}
+                />
+              ))}
+          </div>
         </div>
       </div>
-      <div id="buttons" className="flex flex-row items-center justify-center gap-0 w-11/12 sm:w-3/4 md:w-1/2">
+      <div
+        id="buttons"
+        className="flex flex-row items-center justify-center gap-0 w-11/12 sm:w-3/4 md:w-1/2"
+      >
         <div
           onClick={(e) => e.stopPropagation()}
           id="post-comment-button"
