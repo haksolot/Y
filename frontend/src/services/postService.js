@@ -101,3 +101,15 @@ export const getCommentById = async (id) => {
   });
   return res.data;
 };
+
+export const replyToComment = async (id_profile, id_comment, content_reply, created_at) => {
+  try {
+    const res = await apiComment.post("/replyToComment", { id_profile, id_comment, content_reply, created_at });
+    return res.data;
+  } catch (error) {
+    console.error(
+      "Failed to reply to comment:",
+      error.response?.data || error.message
+    );
+  }
+}
