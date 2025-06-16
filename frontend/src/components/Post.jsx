@@ -1,23 +1,67 @@
 ﻿import { useState, useEffect } from "react";
 import Comments from "./Comments/Comments";
 import { getUserById } from "../services/authService";
-function Post({ className = "", onClick, profileName, content, dateCreation, id_post }) {
+import {
+  addLikeOnPost,
+  deleteLikeOnPost,
+  getAllPosts,
+  getPostById,
+} from "../services/postService";
+import { getUserIdFromCookie } from "../services/postService";
+function Post({
+  className = "",
+  onClick,
+  profileName,
+  content,
+  dateCreation,
+  id_post,
+}) {
   const [showComments, setShowComments] = useState(false);
   const [comment, setComments] = useState([]);
-    async function handlePostCreated(newComment) {
-       try {
-         const user = await getUserById(newComment.id_profile); 
-         const enrichedComment = {
-           ...newComment,
-           profileName: user.pseudo,
-         };
-     
-         setComments((prevComments) => [enrichedComment, ...prevComments]); 
-       } catch (error) {
-         console.error("Erreur lors de l'enrichissement du commentaire :", error);
-       }
-     }
-   
+  const [liked, setLiked] = useState(false);
+
+  useEffect(() => {
+    async function LikedStatus() {
+      const infoPost = await getPostById(id_post);
+      const likers = infoPost.likes;
+      const userId = await getUserIdFromCookie();
+      const hasAlreadyLiked = likers.includes(userId); 
+      setLiked(hasAlreadyLiked);
+    }
+
+    LikedStatus();
+  }, [id_post]);
+
+  async function handleLike() {
+    const infoPost = await getPostById(id_post);
+    const likers = infoPost.likes;
+    const userId = await getUserIdFromCookie();
+    const hasAlreadyLiked = likers.some((id) => id === userId);
+
+    if (hasAlreadyLiked) {
+      console.log("id", id_post, userId);
+      await deleteLikeOnPost(id_post, userId);
+      setLiked(false);
+    } else {
+      await addLikeOnPost(id_post, userId);
+      setLiked(true);
+    }
+  }
+
+  async function handlePostCreated(newComment) {
+    try {
+      const user = await getUserById(newComment.id_profile);
+      const enrichedComment = {
+        ...newComment,
+        profileName: user.pseudo,
+      };
+
+      setComments((prevComments) => [enrichedComment, ...prevComments]);
+    } catch (error) {
+      console.error("Erreur lors de l'enrichissement du commentaire :", error);
+    }
+  }
+
   return (
     <>
       <div
@@ -58,10 +102,12 @@ function Post({ className = "", onClick, profileName, content, dateCreation, id_
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               className="w-5 h-5 aspect-square cursor-pointer"
+              onClick={handleLike}
             >
               <path
+                className={liked ? "fill-white" : "fill-[#FF6600]"}
                 d="M2.60125 14.6705L12.4762 24.254C12.886 24.6516 13.4271 24.8732 13.9899 24.8732C14.5528 24.8732 15.0938 24.6516 15.5037 24.254L25.3786 14.6705C27.0399 13.0629 27.9799 10.8076 27.9799 8.45008V8.1206C27.9799 4.14975 25.2201 0.764012 21.4549 0.110724C18.9629 -0.321014 16.4272 0.52542 14.6457 2.37735L13.9899 3.05904L13.3342 2.37735C11.5526 0.52542 9.01695 -0.321014 6.52499 0.110724C2.75973 0.764012 0 4.14975 0 8.1206V8.45008C0 10.8076 0.939949 13.0629 2.60125 14.6705Z"
-                fill="#FF6600"
+                // fill="#FF6600"
               />
             </svg>
           </div>
@@ -83,7 +129,7 @@ function Post({ className = "", onClick, profileName, content, dateCreation, id_
             <Comments
               onClose={() => setShowComments(false)}
               id_post={id_post}
-               onPostCreated={handlePostCreated}
+              onPostCreated={handlePostCreated}
             />
           )}
 

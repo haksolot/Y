@@ -5,6 +5,7 @@ import { getUserById } from "../../services/authService";
 function PostCreationModal({ onClose, onPostCreated }) {
   const [isVisible, setIsVisible] = useState(false);
   const [content, setContent] = useState("");
+  const [errorContent, setErrorContent] = useState("");
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 10);
@@ -15,12 +16,19 @@ function PostCreationModal({ onClose, onPostCreated }) {
     setIsVisible(false);
     setTimeout(() => {
       onClose();
-    }, 300); 
+    }, 300);
   };
 
   async function handleSubmit() {
     const userId = await getUserIdFromCookie();
-    console.log("user id", userId)
+    console.log("user id", userId);
+    setErrorContent("");
+
+    if (content.trim().length === 0) {
+      setErrorContent("Your post is empty");
+      return;
+    }
+
     const newPost = {
       content,
       created_at: new Date().toISOString(),
@@ -28,7 +36,7 @@ function PostCreationModal({ onClose, onPostCreated }) {
     };
 
     const createdPost = await createPost(newPost);
-    onPostCreated(createdPost.newPost); 
+    onPostCreated(createdPost.newPost);
     handleClose();
   }
 
@@ -49,8 +57,12 @@ function PostCreationModal({ onClose, onPostCreated }) {
           placeholder="Write something here..."
           className="w-full h-40 p-3 rounded bg-[#1F1F1F] text-white font-roboto text-base resize-none outline-none"
           value={content}
+          maxLength={280}
           onChange={(e) => setContent(e.target.value)}
         />
+        {errorContent && (
+          <p className="text-red-500 text-sm mt-1">{errorContent}</p>
+        )}
         <div className="flex justify-center mt-4 gap-7">
           <button
             onClick={handleClose}
