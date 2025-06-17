@@ -124,6 +124,21 @@ const authenticate = async (req, res) => {
   }
 };
 
+const getUserByProfileName = async (req, res) => {
+  try {
+    const { profileName } = req.query;
+    const user = await UserInfo.findOne({ pseudo: profileName });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(200).json(user);
+  } catch (err) {
+    return res.status(500).json({ msg: err.message });
+  }
+};
+
 const logout = async (req, res) => {
   try {
     res.clearCookie("token");
@@ -161,4 +176,5 @@ module.exports = {
   authenticate,
   getUserById,
   logout,
+  getUserByProfileName,
 };

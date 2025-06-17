@@ -31,8 +31,9 @@ function Profile({ onClick }) {
           profileName: user.pseudo,
         });
       }
-      setNumberPost(posts.length);
+
       setPosts(PostWithName);
+      setNumberPost(PostWithName.length);
     }
     getPosts();
   }, []);

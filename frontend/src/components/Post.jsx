@@ -1,12 +1,18 @@
 ﻿import { useState, useEffect } from "react";
 import Comments from "./Comments/Comments";
-import { getUserById, getUserIdFromCookie } from "../services/authService";
+import {
+  getUserById,
+  getUserIdFromCookie,
+  getUserByProfileName,
+} from "../services/authService";
 import {
   addLikeOnPost,
   deleteLikeOnPost,
   getAllPosts,
   getPostById,
 } from "../services/postService";
+import { followProfile, getProfileByUserId } from "../services/profileService";
+
 function Post({
   className = "",
   onClick,
@@ -30,6 +36,13 @@ function Post({
 
     LikedStatus();
   }, [id_post]);
+
+  async function handleAddingFollowers(profileName) {
+    const userId = await getUserIdFromCookie();
+    const id_user_targeted = await getUserByProfileName(profileName);
+    const id_profile_targeted = await getProfileByUserId(id_user_targeted._id);
+    await followProfile(userId, id_profile_targeted._id);
+  }
 
   async function handleLike() {
     const infoPost = await getPostById(id_post);
@@ -76,6 +89,8 @@ function Post({
             className="w-10 h-10 aspect-square bg-red-500 ring-2 ring-[#ff6600] rounded-xl"
           ></div>
           <svg
+            onClick={() => handleAddingFollowers(profileName)}
+            id="add-button"
             width="14"
             height="11"
             viewBox="0 0 14 11"
