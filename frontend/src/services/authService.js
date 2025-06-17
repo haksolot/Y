@@ -27,3 +27,8 @@ export const getUserById = async (id) => {
   });
   return res.data;
 };
+
+export const logout = async () => {
+  const res = await apiAuth.post("/logout");
+  return res.data;
+};

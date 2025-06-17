@@ -92,6 +92,18 @@ const deleteLikeOnPost = async (req, res) => {
   }
 };
 
+const getPostByIdProfile = async (req, res) => {
+  try {
+    const { id_profile } = req.query;
+    const posts = await Post.find({ id_profile });
+    return res.status(200).json(posts);
+  } catch (err) {
+    return res.status(500).json({
+      msg: err,
+    });
+  }
+};
+
 module.exports = {
   createPost,
   getAllPosts,
@@ -99,4 +111,5 @@ module.exports = {
   addCommentOnPost,
   addLikeOnPost,
   deleteLikeOnPost,
+  getPostByIdProfile
 };
