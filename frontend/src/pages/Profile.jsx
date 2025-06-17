@@ -12,12 +12,10 @@ function Profile({ onClick }) {
   const [numberPost, setNumberPost] = useState(0);
   const [numberFollowers, setnumberFollowers] = useState(0);
   const [numberFollowing, setnumberFollowing] = useState(0);
-  const [displayName, setDisplayName] = useState("Haksolot");
-  const [username, setUsername] = useState("@haksolot");
-  const [bio, setBio] = useState(
-    "Just a random dude making random stuff like brrr goofy ha stuff"
-  );
-  const [avatarColor, setAvatarColor] = useState("bg-red-500");
+  const [displayName, setDisplayName] = useState();
+  const [username, setUsername] = useState();
+  const [bio, setBio] = useState();
+  const [avatar, setAvatar] = useState();
   useEffect(() => {
     async function getPosts() {
       const userId = await getUserIdFromCookie();
@@ -40,11 +38,17 @@ function Profile({ onClick }) {
   useEffect(() => {
     async function getProfile() {
       const userId = await getUserIdFromCookie();
+      const user = await getUserById(userId);
       const data = await getProfileByUserId(userId);
+      console.log(data);
       const numberFollowers = data.followers;
       const numberFollowing = data.following;
       setnumberFollowers(numberFollowers.length);
       setnumberFollowing(numberFollowing.length);
+      setDisplayName(data.display_name);
+      setUsername(user.pseudo);
+      setBio(data.bio);
+      setAvatar(data.avatar);
     }
     getProfile();
   }, []);
@@ -57,7 +61,7 @@ function Profile({ onClick }) {
       >
         <div id="first" className="flex flex-row items-center gap-4">
           <div id="display-name" className="font-koulen text-4xl text-white">
-            Haksolot
+            {displayName}
           </div>
           <div onClick={() => setProfileEdit(true)}>
             <svg
@@ -78,7 +82,7 @@ function Profile({ onClick }) {
               displayName={displayName}
               username={username}
               bio={bio}
-              avatarColor={avatarColor}
+              avatar={avatar}
             />
           )}
         </div>
@@ -92,10 +96,10 @@ function Profile({ onClick }) {
               id="username"
               className="font-roboto font-bold text-white text-sm"
             >
-              @haksolot
+              @{username}
             </div>
             <div id="bio" className="font-roboto text-white text-base">
-              Just a random dude making random stuff like brrr goofy ha stuff
+              {bio}
             </div>
           </div>
         </div>

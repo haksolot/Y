@@ -6,7 +6,7 @@ function ProfileEditModal({
   displayName,
   username,
   bio,
-  avatarColor,
+  avatar,
 }) {
   const fileInputRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -54,7 +54,7 @@ function ProfileEditModal({
           {preview ? (
             <img src={preview} className="w-full h-full object-cover" />
           ) : (
-            <div className={`${avatarColor} w-full h-full`} />
+            <div className={`${avatar} w-full h-full`} />
           )}
         </div>
 
@@ -69,7 +69,7 @@ function ProfileEditModal({
           defaultValue={displayName}
           className="text-lg font-bold h-auto w-auto p-2 bg-[#1F1F1F] text-white resize-none border border-[#ff6600] rounded-lg"
         />
-        <div className="text-sm text-[#ffffff88]">{username}</div>
+        <div className="text-sm text-[#ffffff88]">@{username}</div>
         <textarea
           defaultValue={bio}
           className="w-full h-24 p-2 bg-[#1F1F1F] text-white resize-none border border-[#ff6600] rounded-lg"
