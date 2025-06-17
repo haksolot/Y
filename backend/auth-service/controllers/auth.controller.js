@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const axios = require("axios");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
 const { UserInfo } = require("../models/user");
@@ -32,6 +33,9 @@ const createUser = async (req, res) => {
       role,
     });
     await newUser.save();
+    const newUserId = newUser._id;
+    const newProfileData = { userId: newUserId, display_name: pseudo };
+    await createProfile(newUserId, newProfileData);
     return res.status(201).json({
       msg: "New User created !",
     });
@@ -128,6 +132,28 @@ const logout = async (req, res) => {
     return res.status(500).json({
       msg: err.message,
     });
+  }
+};
+
+const createProfile = async (userId, data) => {
+  try {
+    const response = await axios.post(
+      `http://localhost:5000/api/profile/${userId}`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "y-service-auth": process.env.SERVICE_SECRET,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Erreur lors de l’appel interne :",
+      error.response?.data || error.message
+    );
+    throw error;
   }
 };
 

@@ -22,7 +22,6 @@ exports.deleteProfile = async (userId) => {
   return result !== null;
 };
 
-
 exports.followProfileService = async (userId, targetProfileId) => {
   const profile = await Profile.findOne({ userId: userId });
   const target = await Profile.findById(targetProfileId);
