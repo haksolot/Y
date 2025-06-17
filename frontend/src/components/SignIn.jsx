@@ -9,7 +9,7 @@ const SignInModal = ({ isOpen, onClose, onSwitch }) => {
   const navigate = useNavigate();
   const [pseudo, setPseudo] = useState("");
   const [password, setPassword] = useState("");
-
+  const [showPassword, setShowPassword] = useState(false);
   //erreur
   const [errorPseudo, setErrorPseudo] = useState("");
   const [errorPassword, setErrorPassword] = useState("");
@@ -106,20 +106,29 @@ const SignInModal = ({ isOpen, onClose, onSwitch }) => {
                   Password
                 </label>
                 <input
-                  type="text"
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   placeholder="Type your password here..."
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className={`font-roboto text-sm pl-11 block w-full rounded-[8vw] border-2 ${
+                  className={`font-roboto text-sm block w-full rounded-[8vw] border-2 ${
                     errorPassword ? "border-red-500" : "border-[#FF6600]"
-                  } bg-transparent py-3 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 ${
+                  } bg-transparent py-3 px-4 pr-12 text-white placeholder-gray-400 focus:outline-none focus:ring-2 ${
                     errorPassword
                       ? "focus:ring-red-500"
                       : "focus:ring-[#FF6600]"
                   } md:rounded-[0.9vw] md:py-4`}
                 />
+
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#FF6600] text-xl select-none"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  🦐
+                </button>
                 {errorPassword && (
                   <p className="text-red-500 text-sm mt-1">{errorPassword}</p>
                 )}

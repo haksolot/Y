@@ -120,10 +120,22 @@ const authenticate = async (req, res) => {
   }
 };
 
+const logout = async (req, res) => {
+  try {
+    res.clearCookie("token");
+    return res.status(200).json({ message: "You are now logged out!" });
+  } catch (err) {
+    return res.status(500).json({
+      msg: err.message,
+    });
+  }
+};
+
 module.exports = {
   createUser,
   getAllUsers,
   login,
   authenticate,
   getUserById,
+  logout
 };

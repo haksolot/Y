@@ -1,4 +1,5 @@
-﻿function ProfilePost({ className = "" }) {
+﻿import { useState } from "react";
+function ProfilePost({ className = "", content, date_creation }) {
   return (
     <>
       <div
@@ -9,11 +10,10 @@
           id="post-timestamp"
           className="italic text-nowrap -top-3 left-1/2 -translate-x-1/2 absolute text-white font-roboto text-sm bg-[#1F1F1F] pl-2 pr-2"
         >
-          Tuesday May 31, 2023
+          {date_creation}
         </div>
         <p id="message" className="relative text-white font-roboto text-base">
-          This is just a basic message to check out if the post fonction is
-          working right ?
+          {content}
         </p>
         <div
           id="buttons-container"

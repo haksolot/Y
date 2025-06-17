@@ -13,5 +13,5 @@ router.delete(
   verifyToken,
   postController.deleteLikeOnPost
 );
-
+router.get("/getPostByIdProfile", postController.getPostByIdProfile);
 module.exports = router;
