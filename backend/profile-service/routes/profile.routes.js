@@ -3,8 +3,9 @@ const router = express.Router();
 const profileController = require('../controllers/profile.controller');
 const verifyToken = require('../middlewares/verifyToken.middleware');
 const verifyUser = require('../middlewares/verifyUser.middleware');
+const verifyInternalService = require('../middlewares/verifyInternalService.middleware');
 
-router.post('/:userId', verifyUser, profileController.createProfile);
+router.post('/:userId', verifyInternalService, profileController.createProfile);
 
 router.get('/:userId', verifyToken, profileController.getProfileByUserId);
 
