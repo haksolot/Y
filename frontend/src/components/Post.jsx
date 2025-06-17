@@ -1,13 +1,12 @@
 ﻿import { useState, useEffect } from "react";
 import Comments from "./Comments/Comments";
-import { getUserById } from "../services/authService";
+import { getUserById, getUserIdFromCookie } from "../services/authService";
 import {
   addLikeOnPost,
   deleteLikeOnPost,
   getAllPosts,
   getPostById,
 } from "../services/postService";
-import { getUserIdFromCookie } from "../services/postService";
 function Post({
   className = "",
   onClick,

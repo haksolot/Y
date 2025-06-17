@@ -1,17 +1,17 @@
 ﻿import { useEffect, useState } from "react";
 import Post from "../components/ProfilePost.jsx";
 import ProfileEditModal from "../components/ProfileEditModal.jsx";
-import {
-  getPostByIdProfile,
-  getUserIdFromCookie,
-} from "../services/postService.js";
-import { getUserById } from "../services/authService.js";
+import { getPostByIdProfile } from "../services/postService.js";
+import { getUserIdFromCookie, getUserById } from "../services/authService.js";
 import { apiAuth } from "../utils/axios.js";
 import { getProfileByUserId } from "../services/profileService.js";
 
 function Profile({ onClick }) {
   const [showProfileEdit, setProfileEdit] = useState(false);
   const [posts, setPosts] = useState([]);
+  const [numberPost, setNumberPost] = useState(0);
+  const [numberFollowers, setnumberFollowers] = useState(0);
+  const [numberFollowing, setnumberFollowing] = useState(0);
   const [displayName, setDisplayName] = useState("Haksolot");
   const [username, setUsername] = useState("@haksolot");
   const [bio, setBio] = useState(
@@ -31,17 +31,20 @@ function Profile({ onClick }) {
           profileName: user.pseudo,
         });
       }
+      setNumberPost(posts.length);
       setPosts(PostWithName);
     }
     getPosts();
   }, []);
 
-    useEffect(() => {
+  useEffect(() => {
     async function getProfile() {
       const userId = await getUserIdFromCookie();
       const data = await getProfileByUserId(userId);
-      const followers = data.followers;
-      console.log(followers)
+      const numberFollowers = data.followers;
+      const numberFollowing = data.following;
+      setnumberFollowers(numberFollowers.length);
+      setnumberFollowing(numberFollowing.length);
     }
     getProfile();
   }, []);
@@ -120,7 +123,9 @@ function Profile({ onClick }) {
               />
             </svg>
             <p className="mt-2 font-roboto text-sm text-white">Yolowers</p>
-            <p className="mt-4 font-koulen text-sm text-[#ff6600]">40</p>
+            <p className="mt-4 font-koulen text-sm text-[#ff6600]">
+              {numberFollowers}
+            </p>
           </div>
 
           <div class="flex flex-col items-center">
@@ -146,7 +151,9 @@ function Profile({ onClick }) {
             </svg>
 
             <p className="mt-2 font-roboto text-sm text-white">Yolowing</p>
-            <p className="mt-4 font-koulen text-sm text-[#ff6600]">30</p>
+            <p className="mt-4 font-koulen text-sm text-[#ff6600]">
+              {numberFollowing}
+            </p>
           </div>
 
           <div class="flex flex-col items-center">
@@ -163,7 +170,9 @@ function Profile({ onClick }) {
               />
             </svg>
             <p className="mt-4 font-roboto text-sm text-white">Yeets</p>
-            <p className="mt-4 font-koulen text-sm text-[#ff6600]">20</p>
+            <p className="mt-4 font-koulen text-sm text-[#ff6600]">
+              {numberPost}
+            </p>
           </div>
         </div>
       </div>

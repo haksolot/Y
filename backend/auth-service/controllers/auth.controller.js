@@ -138,7 +138,7 @@ const logout = async (req, res) => {
 const createProfile = async (userId, data) => {
   try {
     const response = await axios.post(
-      `http://localhost:5000/api/profile/${userId}`,
+      `http://localhost:3200/api/profile/${userId}`,
       data,
       {
         headers: {
@@ -149,10 +149,7 @@ const createProfile = async (userId, data) => {
     );
     return response.data;
   } catch (error) {
-    console.error(
-      "Erreur lors de l’appel interne :",
-      error.response?.data || error.message
-    );
+    console.error("Erreur lors de l’appel interne :", error);
     throw error;
   }
 };
@@ -163,5 +160,5 @@ module.exports = {
   login,
   authenticate,
   getUserById,
-  logout
+  logout,
 };

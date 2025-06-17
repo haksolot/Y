@@ -1,7 +1,7 @@
 ﻿import { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-import { createPost, getUserIdFromCookie } from "../../services/postService";
-import { getUserById } from "../../services/authService";
+import { createPost } from "../../services/postService";
+import { getUserById, getUserIdFromCookie } from "../../services/authService";
 function PostCreationModal({ onClose, onPostCreated }) {
   const [isVisible, setIsVisible] = useState(false);
   const [content, setContent] = useState("");

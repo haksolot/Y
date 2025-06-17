@@ -6,11 +6,8 @@ import {
   createComment,
   getPostById,
 } from "../../services/postService";
-import {
-  getUserIdFromCookie,
-  getCommentById,
-} from "../../services/postService";
-import { getUserById } from "../../services/authService";
+import { getCommentById } from "../../services/postService";
+import { getUserIdFromCookie, getUserById } from "../../services/authService";
 function Comments({ onClose, id_post, onPostCreated }) {
   const [isVisible, setIsVisible] = useState(false);
   const [comments, setComments] = useState([]);
