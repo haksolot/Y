@@ -47,10 +47,10 @@ exports.deleteProfile = async (req, res) => {
 
 exports.followProfile = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { userId } = req.params;
     const { targetProfileId } = req.body;
 
-    const updatedProfile = await profileService.followProfileService(id, targetProfileId);
+    const updatedProfile = await profileService.followProfileService(userId, targetProfileId);
     res.status(200).json(updatedProfile);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -59,10 +59,10 @@ exports.followProfile = async (req, res) => {
 
 exports.unfollowProfile = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { userId } = req.params;
     const { targetProfileId } = req.body;
 
-    const updatedProfile = await profileService.unfollowProfileService(id, targetProfileId);
+    const updatedProfile = await profileService.unfollowProfileService(userId, targetProfileId);
     res.status(200).json(updatedProfile);
   } catch (err) {
     res.status(500).json({ error: err.message });
