@@ -35,22 +35,6 @@ export const getAllPosts = async () => {
   }
 };
 
-export const getUserIdFromCookie = async () => {
-  try {
-    const response = await apiAuth.post(
-      "/authenticate",
-      {},
-      {
-        withCredentials: true,
-      }
-    );
-    return response.data.userId;
-  } catch (error) {
-    console.error("Failed to fetch user ID:", error);
-    return null;
-  }
-};
-
 export const addCommentOnPost = async (id, id_comment) => {
   try {
     const res = await apiPost.post("/addCommentOnPost", { id, id_comment });
@@ -62,7 +46,6 @@ export const addCommentOnPost = async (id, id_comment) => {
     );
   }
 };
-
 
 export const addLikeOnPost = async (id_post, id_profile) => {
   try {
@@ -78,7 +61,9 @@ export const addLikeOnPost = async (id_post, id_profile) => {
 
 export const deleteLikeOnPost = async (id_post, id_profile) => {
   try {
-    const res = await apiPost.delete("/deleteLikeOnPost", {params: { id_post, id_profile }});
+    const res = await apiPost.delete("/deleteLikeOnPost", {
+      params: { id_post, id_profile },
+    });
     return res.data;
   } catch (error) {
     console.error(
@@ -102,9 +87,19 @@ export const getCommentById = async (id) => {
   return res.data;
 };
 
-export const replyToComment = async (id_profile, id_comment, content_reply, created_at) => {
+export const replyToComment = async (
+  id_profile,
+  id_comment,
+  content_reply,
+  created_at
+) => {
   try {
-    const res = await apiComment.post("/replyToComment", { id_profile, id_comment, content_reply, created_at });
+    const res = await apiComment.post("/replyToComment", {
+      id_profile,
+      id_comment,
+      content_reply,
+      created_at,
+    });
     return res.data;
   } catch (error) {
     console.error(
@@ -112,4 +107,4 @@ export const replyToComment = async (id_profile, id_comment, content_reply, crea
       error.response?.data || error.message
     );
   }
-}
+};

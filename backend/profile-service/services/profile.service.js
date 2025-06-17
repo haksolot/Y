@@ -23,25 +23,6 @@ exports.deleteProfile = async (userId) => {
   return result !== null;
 };
 
-exports.followProfileService = async (profileId, targetProfileId) => {
-  const profile = await Profile.findById(profileId);
-  const target = await Profile.findById(targetProfileId);
-
-  if (!profile || !target) throw new Error("Profile not found");
-
-  if (!profile.following.includes(targetProfileId)) {
-    profile.following.push(targetProfileId);
-    await profile.save();
-  }
-
-  if (!target.followers.includes(profileId)) {
-    target.followers.push(profileId);
-    await target.save();
-  }
-
-  return profile;
-};
-
 exports.followProfileService = async (userId, targetProfileId) => {
   const profile = await Profile.findOne({ userId: userId });
   const target = await Profile.findById(targetProfileId);
