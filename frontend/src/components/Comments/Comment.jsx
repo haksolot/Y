@@ -93,7 +93,7 @@ function Comment({
       {replies.length > 0 && (
         <button
           onClick={handleShowRepliesToggle}
-          className="text-left mt-0 text-sm text-[#ff6600] hover:underline"
+          className="text-left mt-0 text-sm font-roboto text-[#ff6600] hover:underline"
         >
           {showReplies
             ? "Hide replies"
@@ -110,13 +110,12 @@ function Comment({
             value={replyContent}
             onChange={(e) => setReplyContent(e.target.value)}
             placeholder="Write a reply..."
-            className="cursor-pointer h-8 resize-none outline-none bg-transparent text-white font-roboto text-sm leading-[2] flex-1"
+            className="h-8 resize-none outline-none bg-transparent text-white 
+                       font-roboto text-base leading-[2] flex-1"
           />
           <svg
-            className={"cursor-pointer"}
+            className={"w-5 h-5 aspect-square cursor-pointer"}
             onClick={handleSubmitReply}
-            width="20"
-            height="24"
             viewBox="0 0 32 37"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -136,25 +135,25 @@ function Comment({
         </div>
       )}
       {showReplies && (
-        <div className="mt-1 ml-2 space-y-1 max-h-[300px] overflow-y-auto scrollbar">
+        <div className="w-100 w-3/4 mb-4 px-6 max-h-[25vh] overflow-y-auto scrollbar">
           {replies
             .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
             .map((reply, index) => (
               <div
                 key={index}
-                className=" border-t w-full border-[#ff6600]/40 px-4 py-3 flex items-start gap-3"
+                className=" border-t w-full border-[#ff6600]/100 px-4 py-1 flex items-start gap-3"
               >
                 <div className="flex flex-col w-full">
                   <div className="flex items-center gap-2">
-                    <p className="text-white font-koulen  text-xs">
+                    <p className="text-white font-koulen text-lg">
                       {reply.profileName}
                     </p>
-                    <span className="text-[10px] text-gray-500">
+                    <span className="text-sm text-gray-500">
                       {new Date(reply.created_at).toLocaleString("fr-FR")}
                     </span>
                   </div>
 
-                  <p className="text-gray-300 font-roboto text-sm mt-1 whitespace-pre-line">
+                  <p className="text-gray-300 font-roboto text-base whitespace-pre-line">
                     {reply.content}
                   </p>
                 </div>
