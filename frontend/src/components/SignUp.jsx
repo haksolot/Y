@@ -9,7 +9,7 @@ const SignUpModal = ({ isOpen, onClose }) => {
   const [pseudo, setPseudo] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [showPassword, setShowPassword] = useState(false);
   //erreur
   const [errorPseudo, setErrorPseudo] = useState("");
   const [errorEmail, setErrorEmail] = useState("");
@@ -142,7 +142,7 @@ const SignUpModal = ({ isOpen, onClose }) => {
                   Password
                 </label>
                 <input
-                  type="text"
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -159,8 +159,17 @@ const SignUpModal = ({ isOpen, onClose }) => {
                 {errorPassword && (
                   <p className="text-red-500 text-sm mt-1">{errorPassword}</p>
                 )}
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#FF6600] text-xl select-none"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  🦐
+                </button>
               </div>
             </div>
+
             {globalError && (
               <p className="text-red-500 text-sm text-center mb-2">
                 {globalError}

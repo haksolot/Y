@@ -120,7 +120,6 @@ const SignInModal = ({ isOpen, onClose, onSwitch }) => {
                       : "focus:ring-[#FF6600]"
                   } md:rounded-[0.9vw] md:py-4`}
                 />
-
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
