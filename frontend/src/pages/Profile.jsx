@@ -7,6 +7,7 @@ import {
 } from "../services/postService.js";
 import { getUserById } from "../services/authService.js";
 import { apiAuth } from "../utils/axios.js";
+import { getProfileByUserId } from "../services/profileService.js";
 
 function Profile({ onClick }) {
   const [showProfileEdit, setProfileEdit] = useState(false);
@@ -34,6 +35,17 @@ function Profile({ onClick }) {
     }
     getPosts();
   }, []);
+
+    useEffect(() => {
+    async function getProfile() {
+      const userId = await getUserIdFromCookie();
+      const data = await getProfileByUserId(userId);
+      const followers = data.followers;
+      console.log(followers)
+    }
+    getProfile();
+  }, []);
+
   return (
     <div className="flex flex-col h-screen">
       <div

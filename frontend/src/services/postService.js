@@ -35,6 +35,7 @@ export const getAllPosts = async () => {
   }
 };
 
+
 export const getUserIdFromCookie = async () => {
   try {
     const response = await apiAuth.post(

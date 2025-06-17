@@ -2,7 +2,7 @@
 const app = require("./app");
 const connectDB = require("./utils/db");
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3200;
 
 connectDB().then(() => {
   app.listen(port, () => {
