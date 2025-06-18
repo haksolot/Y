@@ -11,7 +11,11 @@ import {
   getAllPosts,
   getPostById,
 } from "../services/postService";
-import { followProfile, getProfileByUserId } from "../services/profileService";
+import {
+  followProfile,
+  getProfileByUserId,
+  unfollowProfile,
+} from "../services/profileService";
 
 function Post({
   className = "",
@@ -24,8 +28,7 @@ function Post({
   const [showComments, setShowComments] = useState(false);
   const [comment, setComments] = useState([]);
   const [liked, setLiked] = useState(false);
-  const [isFollower, setIsFollower] = useState(false);
-
+  const [isFollowing, setIsFollowing] = useState(null); // null = pas encore chargé
   useEffect(() => {
     async function LikedStatus() {
       const infoPost = await getPostById(id_post);
@@ -39,33 +42,56 @@ function Post({
   }, [id_post]);
 
   useEffect(() => {
-    async function checkIfFollower() {
+    async function checkIfFollowing() {
+      if (!profileName) return;
+
       const userIdByCookie = await getUserIdFromCookie();
       const profile = await getProfileByUserId(userIdByCookie);
-      const followers = profile.followers || [];
+      const following = profile.following || [];
 
       const userTargeted = await getUserByProfileName(profileName);
-      const targetedUserId = userTargeted._id;
+      if (!userTargeted) {
+        setIsFollowing(false);
+        return;
+      }
+      const targetedUserId = String(userTargeted._id);
 
-      const followerStatus = followers.some((follower) => {
-        if (typeof follower === "string") return follower === targetedUserId;
-        return follower._id === targetedUserId;
-      });
+      const followingStatus = following.some(
+        (followedId) => String(followedId) === targetedUserId
+      );
 
-      console.log("followers:", followers);
-      console.log("targetedUserId:", targetedUserId);
-      console.log("followerStatus:", followerStatus);
-      setIsFollower(followerStatus);
+      setIsFollowing(followingStatus);
     }
 
-    checkIfFollower();
+    checkIfFollowing();
   }, [profileName]);
 
   async function handleAddingFollowers(profileName) {
     const userId = await getUserIdFromCookie();
-    const id_user_targeted = await getUserByProfileName(profileName);
-    const id_profile_targeted = await getProfileByUserId(id_user_targeted._id);
-    await followProfile(userId, id_profile_targeted._id);
+    const userTargeted = await getUserByProfileName(profileName);
+    const profileTargeted = await getProfileByUserId(userTargeted._id);
+
+    const currentUserProfile = await getProfileByUserId(userId);
+    const following = currentUserProfile.following || [];
+
+    const currentlyFollowing = following.some(
+      (followedId) => String(followedId) === String(profileTargeted._id)
+    );
+
+    if (currentlyFollowing) {
+      await unfollowProfile(userId, profileTargeted._id);
+    } else {
+      await followProfile(userId, profileTargeted._id);
+    }
+
+    const updatedUserProfile = await getProfileByUserId(userId);
+    const updatedFollowing = updatedUserProfile.following || [];
+
+    const updatedFollowingStatus = updatedFollowing.some(
+      (followedId) => String(followedId) === String(profileTargeted._id)
+    );
+
+    setIsFollowing(updatedFollowingStatus);
   }
 
   async function handleLike() {
@@ -97,7 +123,7 @@ function Post({
       console.error("Erreur lors de l'enrichissement du commentaire :", error);
     }
   }
-
+  console.log("isFollowing:", isFollowing);
   return (
     <>
       <div
@@ -112,7 +138,7 @@ function Post({
             id="profile-image"
             onClick={() => handleAddingFollowers(profileName)}
             className={`cursor-pointer w-10 h-10 aspect-square bg-red-500 rounded-xl ring-2 ${
-              isFollower ? "ring-white" : "ring-[#ff6600]"
+              isFollowing ? "ring-white" : "ring-[#ff6600]"
             }`}
           ></div>
 
