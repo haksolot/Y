@@ -8,6 +8,7 @@ function Home() {
   const [isPostModalOpen, setIsPostModalOpen] = useState(false);
   const [posts, setPosts] = useState([]);
 
+  
   useEffect(() => {
     async function getPosts() {
       const data = await getAllPosts();
