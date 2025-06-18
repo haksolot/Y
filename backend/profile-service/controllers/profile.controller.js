@@ -11,7 +11,9 @@ exports.createProfile = async (req, res) => {
 
 exports.getProfileByUserId = async (req, res) => {
   try {
+    console.log("req.params.userId", req.params.userId);
     const profile = await profileService.getProfileByUserId(req.params.userId);
+    console.log("profile", profile);
     if (!profile)
       return res.status(404).json({ message: "Profil introuvable" });
     res.json(profile);
@@ -47,10 +49,10 @@ exports.deleteProfile = async (req, res) => {
 
 exports.followProfile = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { userId } = req.params;
     const { targetProfileId } = req.body;
 
-    const updatedProfile = await profileService.followProfileService(id, targetProfileId);
+    const updatedProfile = await profileService.followProfileService(userId, targetProfileId);
     res.status(200).json(updatedProfile);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -59,10 +61,10 @@ exports.followProfile = async (req, res) => {
 
 exports.unfollowProfile = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { userId } = req.params;
     const { targetProfileId } = req.body;
 
-    const updatedProfile = await profileService.unfollowProfileService(id, targetProfileId);
+    const updatedProfile = await profileService.unfollowProfileService(userId, targetProfileId);
     res.status(200).json(updatedProfile);
   } catch (err) {
     res.status(500).json({ error: err.message });

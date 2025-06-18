@@ -1,17 +1,20 @@
 ﻿const express = require('express');
 const router = express.Router();
 const profileController = require('../controllers/profile.controller');
+const verifyToken = require('../middlewares/verifyToken.middleware');
+const verifyUser = require('../middlewares/verifyUser.middleware');
+const verifyInternalService = require('../middlewares/verifyInternalService.middleware');
 
-router.post('/', profileController.createProfile);
+router.post('/:userId', verifyInternalService, profileController.createProfile);
 
-router.get('/:userId', profileController.getProfileByUserId);
+router.get('/:userId', verifyToken, profileController.getProfileByUserId);
 
-router.put('/:userId', profileController.updateProfile);
+router.put('/:userId', verifyUser, profileController.updateProfile);
 
-router.delete('/:userId', profileController.deleteProfile);
+router.delete('/:userId', verifyUser, profileController.deleteProfile);
 
-router.post('/:id/follow', profileController.followProfile);
+router.post('/:userId/follow', verifyUser, profileController.followProfile);
 
-router.post('/:id/unfollow', profileController.unfollowProfile);
+router.post('/:userId/unfollow', verifyUser, profileController.unfollowProfile);
 
 module.exports = router;

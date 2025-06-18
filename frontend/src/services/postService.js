@@ -35,22 +35,6 @@ export const getAllPosts = async () => {
   }
 };
 
-export const getUserIdFromCookie = async () => {
-  try {
-    const response = await apiAuth.post(
-      "/authenticate",
-      {},
-      {
-        withCredentials: true,
-      }
-    );
-    return response.data.userId;
-  } catch (error) {
-    console.error("Failed to fetch user ID:", error);
-    return null;
-  }
-};
-
 export const addCommentOnPost = async (id, id_comment) => {
   try {
     const res = await apiPost.post("/addCommentOnPost", { id, id_comment });

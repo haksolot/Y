@@ -2,9 +2,9 @@
 import {
   replyToComment,
   getCommentById,
-  getUserIdFromCookie,
+  
 } from "../../services/postService";
-import { getUserById } from "../../services/authService";
+import { getUserById, getUserIdFromCookie } from "../../services/authService";
 function Comment({
   className = "",
   onClick,

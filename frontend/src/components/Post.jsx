@@ -1,13 +1,18 @@
 ﻿import { useState, useEffect } from "react";
 import Comments from "./Comments/Comments";
-import { getUserById } from "../services/authService";
+import {
+  getUserById,
+  getUserIdFromCookie,
+  getUserByProfileName,
+} from "../services/authService";
 import {
   addLikeOnPost,
   deleteLikeOnPost,
   getAllPosts,
   getPostById,
 } from "../services/postService";
-import { getUserIdFromCookie } from "../services/postService";
+import { followProfile, getProfileByUserId } from "../services/profileService";
+
 function Post({
   className = "",
   onClick,
@@ -19,18 +24,49 @@ function Post({
   const [showComments, setShowComments] = useState(false);
   const [comment, setComments] = useState([]);
   const [liked, setLiked] = useState(false);
+  const [isFollower, setIsFollower] = useState(false);
 
   useEffect(() => {
     async function LikedStatus() {
       const infoPost = await getPostById(id_post);
       const likers = infoPost.likes;
       const userId = await getUserIdFromCookie();
-      const hasAlreadyLiked = likers.includes(userId); 
+      const hasAlreadyLiked = likers.includes(userId);
       setLiked(hasAlreadyLiked);
     }
 
     LikedStatus();
   }, [id_post]);
+
+  useEffect(() => {
+    async function checkIfFollower() {
+      const userIdByCookie = await getUserIdFromCookie();
+      const profile = await getProfileByUserId(userIdByCookie);
+      const followers = profile.followers || [];
+
+      const userTargeted = await getUserByProfileName(profileName);
+      const targetedUserId = userTargeted._id;
+
+      const followerStatus = followers.some((follower) => {
+        if (typeof follower === "string") return follower === targetedUserId;
+        return follower._id === targetedUserId;
+      });
+
+      console.log("followers:", followers);
+      console.log("targetedUserId:", targetedUserId);
+      console.log("followerStatus:", followerStatus);
+      setIsFollower(followerStatus);
+    }
+
+    checkIfFollower();
+  }, [profileName]);
+
+  async function handleAddingFollowers(profileName) {
+    const userId = await getUserIdFromCookie();
+    const id_user_targeted = await getUserByProfileName(profileName);
+    const id_profile_targeted = await getProfileByUserId(id_user_targeted._id);
+    await followProfile(userId, id_profile_targeted._id);
+  }
 
   async function handleLike() {
     const infoPost = await getPostById(id_post);
@@ -74,8 +110,12 @@ function Post({
         >
           <div
             id="profile-image"
-            className="w-10 h-10 aspect-square bg-red-500 ring-2 ring-[#ff6600] rounded-xl"
+            onClick={() => handleAddingFollowers(profileName)}
+            className={`cursor-pointer w-10 h-10 aspect-square bg-red-500 rounded-xl ring-2 ${
+              isFollower ? "ring-white" : "ring-[#ff6600]"
+            }`}
           ></div>
+
           <div
             id="profile-name"
             className="text-white font-koulen text-lg bg-[#1F1F1F] pl-2 pr-2"

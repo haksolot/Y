@@ -31,4 +31,26 @@ export const getUserById = async (id) => {
 export const logout = async () => {
   const res = await apiAuth.post("/logout");
   return res.data;
+}
+export const getUserIdFromCookie = async () => {
+  try {
+    const response = await apiAuth.post(
+      "/authenticate",
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data.userId;
+  } catch (error) {
+    console.error("Failed to fetch user ID:", error);
+    return null;
+  }
+};
+
+export const getUserByProfileName = async (profileName) => {
+  const res = await apiAuth.get("/getUserByProfileName", {
+    params: { profileName },
+  });
+  return res.data;
 };
