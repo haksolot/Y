@@ -47,3 +47,10 @@ export const getUserIdFromCookie = async () => {
     return null;
   }
 };
+
+export const getUserByProfileName = async (profileName) => {
+  const res = await apiAuth.get("/getUserByProfileName", {
+    params: { profileName },
+  });
+  return res.data;
+};

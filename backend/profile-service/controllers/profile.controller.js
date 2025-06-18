@@ -11,7 +11,9 @@ exports.createProfile = async (req, res) => {
 
 exports.getProfileByUserId = async (req, res) => {
   try {
+    console.log("req.params.userId", req.params.userId);
     const profile = await profileService.getProfileByUserId(req.params.userId);
+    console.log("profile", profile);
     if (!profile)
       return res.status(404).json({ message: "Profil introuvable" });
     res.json(profile);

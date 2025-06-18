@@ -18,5 +18,6 @@ router.post(
 router.post("/authenticate", authController.authenticate);
 router.get("/getUserById", authController.getUserById);
 router.post("/logout", authController.logout);
+router.get("/getUserByProfileName", authController.getUserByProfileName);
 
 module.exports = router;

@@ -6,11 +6,6 @@ export const getProfileByUserId = async (id) => {
   return res.data;
 };
 
-// export const handleSaveProfile = async (id, profile) => {
-//   const res = await apiProfile.put(`/${id}`, profile);
-//   return res.data;
-// };
-
 export const handleSaveProfile = async (name, Bio, avatarFile) => {
   try {
     const userId = await getUserIdFromCookie();
@@ -28,4 +23,10 @@ export const handleSaveProfile = async (name, Bio, avatarFile) => {
   } catch (err) {
     console.error("Error while updating profile :", err);
   }
+
+export const followProfile = async (id, id_profile) => {
+  const res = await apiProfile.post(`/${id}/follow`, {
+    targetProfileId: id_profile,
+  });
+  return res.data;
 };
