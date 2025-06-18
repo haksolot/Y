@@ -32,8 +32,8 @@ function ProfileEditModal({ onClose, onProfileUpdated, displayName, username, bi
       const reader = new FileReader();
 
       reader.onloadend = () => {
-        const base64Image = reader.result; // ⬅️ ici t’as ton image en base64
-        setPreview(base64Image); // pour l'afficher
+        const base64Image = reader.result; 
+        setPreview(base64Image); 
         setAvatarBase64(base64Image);
       };
 
