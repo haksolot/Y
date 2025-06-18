@@ -1,16 +1,14 @@
 ﻿import { useRef, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
+import { handleSaveProfile } from "../services/profileService";
 
-function ProfileEditModal({
-  onClose,
-  displayName,
-  username,
-  bio,
-  avatar,
-}) {
+function ProfileEditModal({ onClose, onProfileUpdated, displayName, username, bio, avatar }) {
   const fileInputRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const [preview, setPreview] = useState(null);
+  const [name, setName] = useState(displayName);
+  const [description, setDescription] = useState(bio);
+  const [avatarBase64, setAvatarBase64] = useState(null);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 10);
@@ -31,8 +29,15 @@ function ProfileEditModal({
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file && file.type.startsWith("image/")) {
-      const imageUrl = URL.createObjectURL(file);
-      setPreview(imageUrl);
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        const base64Image = reader.result; // ⬅️ ici t’as ton image en base64
+        setPreview(base64Image); // pour l'afficher
+        setAvatarBase64(base64Image);
+      };
+
+      reader.readAsDataURL(file);
     }
   };
 
@@ -54,7 +59,7 @@ function ProfileEditModal({
           {preview ? (
             <img src={preview} className="w-full h-full object-cover" />
           ) : (
-            <div className={`${avatar} w-full h-full`} />
+            <img src={avatar} className="w-full h-full object-cover" />
           )}
         </div>
 
@@ -68,11 +73,13 @@ function ProfileEditModal({
         <textarea
           defaultValue={displayName}
           className="text-lg font-bold h-auto w-auto p-2 bg-[#1F1F1F] text-white resize-none border border-[#ff6600] rounded-lg"
+          onChange={(e) => setName(e.target.value)}
         />
         <div className="text-sm text-[#ffffff88]">@{username}</div>
         <textarea
           defaultValue={bio}
           className="w-full h-24 p-2 bg-[#1F1F1F] text-white resize-none border border-[#ff6600] rounded-lg"
+          onChange={(e) => setDescription(e.target.value)}
         />
         <div className="flex justify-center mt-4 gap-4">
           <button
@@ -81,7 +88,18 @@ function ProfileEditModal({
           >
             Cancel
           </button>
-          <button className="px-4 py-2 rounded-lg bg-[#ff6600] ring-2 ring-[#ff6600] hover:bg-transparent">
+          <button
+            onClick={() => {
+              handleSaveProfile(name, description, avatarBase64);
+              onProfileUpdated({
+                name,
+                description,
+                avatar: preview || avatar,
+              });
+              handleClose();
+            }}
+            className="px-4 py-2 rounded-lg bg-[#ff6600] ring-2 ring-[#ff6600] hover:bg-transparent"
+          >
             Save
           </button>
         </div>

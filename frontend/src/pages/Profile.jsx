@@ -16,13 +16,19 @@ function Profile({ onClick }) {
   const [username, setUsername] = useState();
   const [bio, setBio] = useState();
   const [avatar, setAvatar] = useState();
+
+  const handleProfileUpdated = (updated) => {
+    setDisplayName(updated.name);
+    setBio(updated.description);
+    setAvatar(updated.avatar); // en base64 ou nouvelle url selon backend
+  };
+
   useEffect(() => {
     async function getPosts() {
       const userId = await getUserIdFromCookie();
       const data = await getPostByIdProfile(userId);
       const PostWithName = [];
       for (const post of data) {
-        console.log("idprofile", post.id_profile);
         const user = await getUserById(post.id_profile);
         PostWithName.push({
           ...post,
@@ -40,7 +46,6 @@ function Profile({ onClick }) {
       const userId = await getUserIdFromCookie();
       const user = await getUserById(userId);
       const data = await getProfileByUserId(userId);
-      console.log(data);
       const numberFollowers = data.followers;
       const numberFollowing = data.following;
       setnumberFollowers(numberFollowers.length);
@@ -79,6 +84,7 @@ function Profile({ onClick }) {
           {showProfileEdit && (
             <ProfileEditModal
               onClose={() => setProfileEdit(false)}
+              onProfileUpdated={handleProfileUpdated}
               displayName={displayName}
               username={username}
               bio={bio}
@@ -89,8 +95,10 @@ function Profile({ onClick }) {
         <div id="second" className="flex flex-row gap-4 items-center">
           <div
             id="avatar"
-            className="bg-red-500 ring-2 ring-[#ff6600] rounded-xl w-20 h-20 aspect-square"
-          ></div>
+            className="bg-red-500 ring-2 ring-[#ff6600] rounded-xl w-20 h-20 aspect-square overflow-hidden"
+          >
+            <img src={avatar} className={`w-full h-full object-cover`} />
+          </div>
           <div id="info" className="flex flex-col gap-2">
             <div
               id="username"
