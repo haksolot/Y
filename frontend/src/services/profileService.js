@@ -14,7 +14,7 @@ export const handleSaveProfile = async (name, Bio, avatarFile) => {
       {
         display_name: name,
         bio: Bio,
-        avatar: avatarFile, 
+        avatar: avatarFile,
       },
       { withCredentials: true }
     );
@@ -23,6 +23,7 @@ export const handleSaveProfile = async (name, Bio, avatarFile) => {
   } catch (err) {
     console.error("Error while updating profile :", err);
   }
+};
 
 export const followProfile = async (id, id_profile) => {
   const res = await apiProfile.post(`/${id}/follow`, {
