@@ -24,6 +24,8 @@ function Post({
   content,
   dateCreation,
   id_post,
+  display_name,
+  avatar,
 }) {
   const [showComments, setShowComments] = useState(false);
   const [comment, setComments] = useState([]);
@@ -137,16 +139,21 @@ function Post({
           <div
             id="profile-image"
             onClick={() => handleAddingFollowers(profileName)}
-            className={`cursor-pointer w-10 h-10 aspect-square bg-red-500 rounded-xl ring-2 ${
-              isFollowing ? "ring-white" : "ring-[#ff6600]"
-            }`}
-          ></div>
+          >
+            {" "}
+            <img
+              src={avatar}
+              className={`cursor-pointer w-10 h-10 aspect-square bg-[#ff6600] rounded-xl ring-2 ${
+                isFollowing ? "ring-white" : "ring-[#ff6600]"
+              }`}
+            />
+          </div>
 
           <div
             id="profile-name"
             className="text-white font-koulen text-lg bg-[#1F1F1F] pl-2 pr-2"
           >
-            {profileName}
+            {display_name}
           </div>
           <div
             id="date-creation"

@@ -57,10 +57,9 @@ function FollowingModal({ onClose }) {
               key={following.id}
               className="flex pl-2 pr-2 items-center gap-4 py-3"
             >
-              {following.avatar}
-              <div
-                className="w-10 h-10 rounded-xl"
-                style={{ backgroundColor: "#888" }}
+              <img
+                src={following.avatar}
+                className={`cursor-pointer w-10 h-10 aspect-square bg-[#ff6600] rounded-xl ring-2`}
               />
               <span className="text-white font-koulen text-base">
                 {following.display_name}

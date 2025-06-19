@@ -23,6 +23,7 @@ function FollowersModal({ onClose }) {
       const userId = await getUserIdFromCookie();
       const data = await getProfileByUserId(userId);
       const followers_user = data.followers;
+      console.log("follower", followers_user);
       const infoFollo = await Promise.all(
         followers_user.map(async (followerId) => {
           const profile = await getProfileById(followerId);
@@ -56,10 +57,9 @@ function FollowersModal({ onClose }) {
               key={follower.id}
               className="flex pl-2 pr-2 items-center gap-4 py-3"
             >
-              {follower.avatar}
-              <div
-                className="w-10 h-10 rounded-xl"
-                style={{ backgroundColor: "#888" }}
+              <img
+                src={follower.avatar}
+                className={`cursor-pointer w-10 h-10 aspect-square bg-[#ff6600] rounded-xl ring-2`}
               />
               <span className="text-white font-koulen text-base">
                 {follower.display_name}

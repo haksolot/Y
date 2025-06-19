@@ -8,6 +8,7 @@ import {
 } from "../../services/postService";
 import { getCommentById } from "../../services/postService";
 import { getUserIdFromCookie, getUserById } from "../../services/authService";
+import { getProfileByUserId } from "../../services/profileService";
 function Comments({ onClose, id_post, onPostCreated }) {
   const [isVisible, setIsVisible] = useState(false);
   const [comments, setComments] = useState([]);
@@ -30,14 +31,16 @@ function Comments({ onClose, id_post, onPostCreated }) {
         const enrichedComments = await Promise.all(
           commentsData.map(async (comment) => {
             const user = await getUserById(comment.id_profile);
-
+            const profile = await getProfileByUserId(user._id);
+            console.log("user", user);
             const enrichedReplies = await Promise.all(
               (comment.replies || []).map(async (replyId) => {
                 const replyData = await getCommentById(replyId);
                 const replyUser = await getUserById(replyData.id_profile);
-
+                const replyProfile = await getProfileByUserId(replyUser._id);
                 return {
                   ...replyData,
+                  displayName: replyProfile.display_name,
                   profileName: replyUser.pseudo,
                 };
               })
@@ -45,6 +48,7 @@ function Comments({ onClose, id_post, onPostCreated }) {
 
             return {
               ...comment,
+              displayName: profile.display_name,
               profileName: user.pseudo,
               replies: enrichedReplies,
             };
@@ -80,9 +84,10 @@ function Comments({ onClose, id_post, onPostCreated }) {
     await addCommentOnPost(id_post, createdComment.newComment._id);
 
     const user = await getUserById(createdComment.newComment.id_profile);
-
+    const profile = await getProfileByUserId(user._id);
     const enrichedComment = {
       ...createdComment.newComment,
+      displayName: profile.display_name,
       profileName: user.pseudo,
     };
     console.log("Commentaire enrichi à ajouter :", enrichedComment);
@@ -119,6 +124,7 @@ function Comments({ onClose, id_post, onPostCreated }) {
                   initialReplies={comment.replies || []}
                   id_comment={comment._id}
                   className="w-3/4"
+                  displayName={comment.displayName}
                   profileName={comment.profileName}
                   content={comment.content}
                   dateCreation={new Date(comment.created_at).toLocaleString(
