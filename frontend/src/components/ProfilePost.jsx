@@ -1,8 +1,14 @@
 ﻿import { useState } from "react";
 import PostEdit from "./ProfilePostEditModal";
 
-function ProfilePost({ className = "", content, date_creation }) {
+function ProfilePost({ className = "", id_post, content, date_creation }) {
   const [isEditing, setIsEditing] = useState(false);
+  const [initialText, setInitialText] = useState(content);
+
+  const handleEditedPost = (updated) => {
+    // setIsEditing(true);
+    setInitialText(updated.text);
+  };
 
   return (
     <>
@@ -17,7 +23,7 @@ function ProfilePost({ className = "", content, date_creation }) {
           {date_creation}
         </div>
         <p id="message" className="relative text-white font-roboto text-base">
-          {content}
+          {initialText}
         </p>
         <div
           id="buttons-container"
@@ -49,7 +55,7 @@ function ProfilePost({ className = "", content, date_creation }) {
               />
             </svg>
           </div>
-          {isEditing && <PostEdit onClose={() => setIsEditing(false)} setIsEditing={setIsEditing} />}
+          {isEditing && <PostEdit id_post={id_post} initialText={content} onClose={() => setIsEditing(false)} onPostEdited={handleEditedPost} />}
         </div>
       </div>
     </>

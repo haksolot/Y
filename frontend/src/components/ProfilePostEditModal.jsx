@@ -1,12 +1,16 @@
 ﻿import { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-// import { createPost } from "../../services/postService";
+import { editPost } from "../services/postService";
 import { getUserById, getUserIdFromCookie } from "../services/authService";
 
-function ProfilePostEditModal({ onClose, onPostEdited }) {
+function ProfilePostEditModal({ id_post, initialText, onClose, onPostEdited }) {
+  const [text, setText] = useState("");
   const [isVisible, setIsVisible] = useState(false);
-  const [content, setContent] = useState("");
   const [errorContent, setErrorContent] = useState("");
+
+  useEffect(() => {
+    setText(initialText);
+  }, [initialText]);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 10);
@@ -24,10 +28,18 @@ function ProfilePostEditModal({ onClose, onPostEdited }) {
     const userId = await getUserIdFromCookie();
     console.log("user id", userId);
     setErrorContent("");
-
-    if (content.trim().length === 0) {
+    if (text.trim().length === 0) {
       setErrorContent("Your post is empty");
       return;
+    }
+    try {
+      editPost(id_post, text);
+      onPostEdited({ text });
+    } catch (error) {
+      console.error(
+        "Failed to edit post:",
+        error.response?.data || error.message
+      );
     }
 
     // const newPost = {
@@ -55,11 +67,10 @@ function ProfilePostEditModal({ onClose, onPostEdited }) {
         }`}
       >
         <textarea
-          placeholder="Write something here..."
+          value={text}
+          onChange={(e) => setText(e.target.value)}
           className="w-full h-40 p-3 rounded bg-[#1F1F1F] text-white font-roboto text-base resize-none outline-none"
-          value={content}
           maxLength={280}
-          onChange={(e) => setContent(e.target.value)}
         />
         {errorContent && (
           <p className="text-red-500 text-sm mt-1">{errorContent}</p>

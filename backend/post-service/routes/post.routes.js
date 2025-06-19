@@ -15,5 +15,5 @@ router.delete(
   postController.deleteLikeOnPost
 );
 router.get("/getPostByIdProfile", postController.getPostByIdProfile);
-router.put("/updatePost", verifyUser, postController.updatePost);
+router.put("/updatePost/:userId", verifyUser, postController.updatePost);
 module.exports = router;
