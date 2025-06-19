@@ -115,3 +115,10 @@ export const getPostByIdProfile = async (id_profile) => {
   });
   return res.data;
 };
+
+export const deletePost = async (id) => {
+  const res = await apiPost.delete("/deletePost", {
+    params: { id },
+  });
+  return res.data;
+};

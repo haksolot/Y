@@ -103,7 +103,6 @@ function Post({
     const hasAlreadyLiked = likers.some((id) => id === userId);
 
     if (hasAlreadyLiked) {
-      console.log("id", id_post, userId);
       await deleteLikeOnPost(id_post, userId);
       setLiked(false);
     } else {
@@ -125,7 +124,6 @@ function Post({
       console.error("Erreur lors de l'enrichissement du commentaire :", error);
     }
   }
-  console.log("isFollowing:", isFollowing);
   return (
     <>
       <div

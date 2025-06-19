@@ -23,7 +23,6 @@ function FollowersModal({ onClose }) {
       const userId = await getUserIdFromCookie();
       const data = await getProfileByUserId(userId);
       const followers_user = data.followers;
-      console.log("follower", followers_user);
       const infoFollo = await Promise.all(
         followers_user.map(async (followerId) => {
           const profile = await getProfileById(followerId);
@@ -31,7 +30,6 @@ function FollowersModal({ onClose }) {
         })
       );
 
-      console.log(infoFollo);
       setFollowers(infoFollo);
     }
     getFollowers();

@@ -2,7 +2,14 @@
 import ReactDOM from "react-dom";
 import { handleSaveProfile } from "../services/profileService";
 
-function ProfileEditModal({ onClose, onProfileUpdated, displayName, username, bio, avatar }) {
+function ProfileEditModal({
+  onClose,
+  onProfileUpdated,
+  displayName,
+  username,
+  bio,
+  avatar,
+}) {
   const fileInputRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const [preview, setPreview] = useState(null);
@@ -31,10 +38,24 @@ function ProfileEditModal({ onClose, onProfileUpdated, displayName, username, bi
     if (file && file.type.startsWith("image/")) {
       const reader = new FileReader();
 
-      reader.onloadend = () => {
-        const base64Image = reader.result; 
-        setPreview(base64Image); 
-        setAvatarBase64(base64Image);
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const MAX_WIDTH = 800;
+          const scaleSize = MAX_WIDTH / img.width;
+          canvas.width = MAX_WIDTH;
+          canvas.height = img.height * scaleSize;
+
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+          const compressedBase64 = canvas.toDataURL("image/jpeg", 0.7);
+
+          setPreview(compressedBase64);
+          setAvatarBase64(compressedBase64);
+        };
+        img.src = event.target.result;
       };
 
       reader.readAsDataURL(file);

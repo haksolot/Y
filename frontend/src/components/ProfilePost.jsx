@@ -1,5 +1,14 @@
 ﻿import { useState } from "react";
-function ProfilePost({ className = "", content, date_creation }) {
+import ProfilePostDeleteModal from "./ProfilePostDeleteModal";
+function ProfilePost({
+  className = "",
+  content,
+  date_creation,
+  id_post,
+  onDelete,
+}) {
+  const [showProfilePostDeleteModal, setProfilePostDeleteModal] =
+    useState(false);
   return (
     <>
       <div
@@ -19,7 +28,10 @@ function ProfilePost({ className = "", content, date_creation }) {
           id="buttons-container"
           className="mt-2 left-1/2 -translate-x-1/2 pl-4 pr-4 absolute align-middle items-center flex flex-row gap-4 bg-[#1F1F1F]"
         >
-          <div id="trash-button">
+          <div
+            id="trash-button"
+            onClick={() => setProfilePostDeleteModal(true)}
+          >
             <svg
               class="w-5 h-5 aspect-square cursor-pointer"
               viewBox="0 0 24 28"
@@ -32,6 +44,13 @@ function ProfilePost({ className = "", content, date_creation }) {
               />
             </svg>
           </div>
+          {showProfilePostDeleteModal && (
+            <ProfilePostDeleteModal
+              onClose={() => setProfilePostDeleteModal(false)}
+              id_post={id_post}
+              onDelete={onDelete}
+            />
+          )}
           <div id="edit-post-button">
             <svg
               class="w-5 h-5 aspect-square cursor-pointer"

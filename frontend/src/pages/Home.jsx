@@ -14,9 +14,7 @@ function Home() {
       const data = await getAllPosts();
       const PostWithName = [];
       for (const post of data) {
-        console.log("idprofile", post.id_profile);
         const user = await getUserById(post.id_profile);
-        console.log("idprofile", post.id_profile);
         const profile = await getProfileByUserId(user._id);
         PostWithName.push({
           ...post,
@@ -31,7 +29,6 @@ function Home() {
   }, []);
 
   async function handlePostCreated(newPost) {
-    console.log("crée");
     const user = await getUserById(newPost.id_profile);
     const profile = await getProfileByUserId(user._id);
     const enrichedPost = {
@@ -61,7 +58,7 @@ function Home() {
           .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
           .map((post) => (
             <Post
-              key={post.id}
+              key={post._id}
               className="w-3/4"
               avatar={post.avatar}
               display_name={post.displayName}

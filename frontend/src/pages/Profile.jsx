@@ -25,6 +25,9 @@ function Profile({ onClick }) {
     setBio(updated.description);
     setAvatar(updated.avatar); // en base64 ou nouvelle url selon backend
   };
+  const handlePostDeleted = (deletedId) => {
+    setPosts((prevPosts) => prevPosts.filter((post) => post._id !== deletedId));
+  };
 
   useEffect(() => {
     async function getPosts() {
@@ -40,10 +43,13 @@ function Profile({ onClick }) {
       }
 
       setPosts(PostWithName);
-      setNumberPost(PostWithName.length);
     }
     getPosts();
   }, []);
+
+  useEffect(() => {
+    setNumberPost(posts.length);
+  }, [posts]);
 
   useEffect(() => {
     async function getProfile() {
@@ -214,7 +220,8 @@ function Profile({ onClick }) {
           .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
           .map((post) => (
             <Post
-              key={post.id}
+              onDelete={handlePostDeleted}
+              key={post._id}
               className="w-3/4 sm:w-3/4 md:w-3/5"
               profileName={post.profileName}
               content={post.content}

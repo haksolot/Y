@@ -71,7 +71,6 @@ function Comments({ onClose, id_post, onPostCreated }) {
   };
 
   async function handleSubmit() {
-    console.log("Soumission du commentaire, contenu :", content);
     const userId = await getUserIdFromCookie();
     const newComment = {
       content,
@@ -80,7 +79,6 @@ function Comments({ onClose, id_post, onPostCreated }) {
     };
 
     const createdComment = await createComment(newComment);
-    console.log("Réponse createComment :", createdComment);
     await addCommentOnPost(id_post, createdComment.newComment._id);
 
     const user = await getUserById(createdComment.newComment.id_profile);
@@ -90,7 +88,6 @@ function Comments({ onClose, id_post, onPostCreated }) {
       displayName: profile.display_name,
       profileName: user.pseudo,
     };
-    console.log("Commentaire enrichi à ajouter :", enrichedComment);
     setComments((prevComments) => [enrichedComment, ...prevComments]);
 
     setContent("");

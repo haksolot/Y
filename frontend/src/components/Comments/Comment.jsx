@@ -41,7 +41,6 @@ function Comment({
 
       const user = await getUserById(lastReply.id_profile);
       const profile = await getProfileByUserId(user._id);
-      console.log("profile ici", profile);
       const enrichedReply = {
         ...lastReply,
         displayName: profile.display_name,
