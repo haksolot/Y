@@ -53,7 +53,7 @@ function ProfileEditModal({ onClose, onProfileUpdated, displayName, username, bi
         className="bg-[#1F1F1F] gap-4 flex flex-col text-white p-6 rounded-xl w-11/12 sm:w-2/3 md:w-1/2 lg:w-1/3 shadow-xl ring-2 ring-[#ff6600]"
       >
         <div
-          className="w-16 h-16 rounded-xl ring-2 ring-[#ff6600] cursor-pointer overflow-hidden"
+          className="w-16 h-16 rounded-xl  ring-2 ring-[#ff6600] cursor-pointer overflow-hidden"
           onClick={handleAvatarClick}
         >
           {preview ? (

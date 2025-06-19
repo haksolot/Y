@@ -9,6 +9,10 @@ exports.getProfileByUserId = async (userId) => {
   return await Profile.findOne({ userId });
 };
 
+exports.getProfileById = async (id) => {
+  return await Profile.findById(id);
+};
+
 exports.updateProfile = async (userId, updates) => {
   return await Profile.findOneAndUpdate(
     { userId },

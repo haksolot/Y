@@ -5,10 +5,12 @@ import { getPostByIdProfile } from "../services/postService.js";
 import { getUserIdFromCookie, getUserById } from "../services/authService.js";
 import { apiAuth } from "../utils/axios.js";
 import { getProfileByUserId } from "../services/profileService.js";
-
+import FollowersModal from "../components/FollowersModal.jsx";
+import FollowingModal from "../components/FollowingModal.jsx";
 function Profile({ onClick }) {
   const [showProfileEdit, setProfileEdit] = useState(false);
-  // const [showPostEdit, setPostEdit] = useState(false);
+  const [showFollowersModal, setFollowersModal] = useState(false);
+  const [showFollowingModal, setFollowingModal] = useState(false);
   const [posts, setPosts] = useState([]);
   const [numberPost, setNumberPost] = useState(0);
   const [numberFollowers, setnumberFollowers] = useState(0);
@@ -21,7 +23,7 @@ function Profile({ onClick }) {
   const handleProfileUpdated = (updated) => {
     setDisplayName(updated.name);
     setBio(updated.description);
-    setAvatar(updated.avatar); // en base64 ou nouvelle url selon backend
+    setAvatar(updated.avatar); 
   };
 
   useEffect(() => {
@@ -121,6 +123,8 @@ function Profile({ onClick }) {
         <div class="flex items-center justify-around">
           <div class="flex flex-col items-center">
             <svg
+              className="cursor-pointer"
+              onClick={() => setFollowersModal(true)}
               width="40"
               height="40"
               viewBox="0 0 48 38"
@@ -141,9 +145,16 @@ function Profile({ onClick }) {
               {numberFollowers}
             </p>
           </div>
-
+          {showFollowersModal && (
+            <FollowersModal
+              onClose={() => setFollowersModal(false)}
+              username={username}
+            />
+          )}
           <div class="flex flex-col items-center">
             <svg
+              className="cursor-pointer"
+              onClick={() => setFollowingModal(true)}
               width="40"
               height="40"
               viewBox="0 0 48 38"
@@ -169,7 +180,12 @@ function Profile({ onClick }) {
               {numberFollowing}
             </p>
           </div>
-
+          {showFollowingModal && (
+            <FollowingModal
+              onClose={() => setFollowingModal(false)}
+              username={username}
+            />
+          )}
           <div class="flex flex-col items-center">
             <svg
               width="28"
