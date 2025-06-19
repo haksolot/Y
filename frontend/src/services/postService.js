@@ -1,4 +1,5 @@
 import { apiAuth, apiPost, apiComment } from "../utils/axios";
+import { getUserIdFromCookie } from "./authService";
 export const createPost = async (post) => {
   try {
     const res = await apiPost.post("/createPost", post);
@@ -116,9 +117,29 @@ export const getPostByIdProfile = async (id_profile) => {
   return res.data;
 };
 
+
 export const deletePost = async (id) => {
   const res = await apiPost.delete("/deletePost", {
     params: { id },
   });
   return res.data;
+
+export const editPost = async (postId, content) => {
+  try {
+    const userId = await getUserIdFromCookie();
+    const res = await apiPost.put(
+      `/updatePost/${userId}`,
+      {
+        postId: postId,
+        content: content,
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.error(
+      "Failed to edit post:",
+      error.response?.data || error.message
+    );
+  }
+
 };

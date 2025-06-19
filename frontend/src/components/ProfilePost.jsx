@@ -1,5 +1,7 @@
 ﻿import { useState } from "react";
 import ProfilePostDeleteModal from "./ProfilePostDeleteModal";
+import PostEdit from "./ProfilePostEditModal";
+
 function ProfilePost({
   className = "",
   content,
@@ -9,6 +11,14 @@ function ProfilePost({
 }) {
   const [showProfilePostDeleteModal, setProfilePostDeleteModal] =
     useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [initialText, setInitialText] = useState(content);
+
+  const handleEditedPost = (updated) => {
+    // setIsEditing(true);
+    setInitialText(updated.text);
+  };
+
   return (
     <>
       <div
@@ -22,7 +32,7 @@ function ProfilePost({
           {date_creation}
         </div>
         <p id="message" className="relative text-white font-roboto text-base">
-          {content}
+          {initialText}
         </p>
         <div
           id="buttons-container"
@@ -51,7 +61,7 @@ function ProfilePost({
               onDelete={onDelete}
             />
           )}
-          <div id="edit-post-button">
+          <div id="edit-post-button" onClick={() => setIsEditing(true)}>
             <svg
               class="w-5 h-5 aspect-square cursor-pointer"
               viewBox="0 0 28 28"
@@ -64,6 +74,7 @@ function ProfilePost({
               />
             </svg>
           </div>
+          {isEditing && <PostEdit id_post={id_post} initialText={content} onClose={() => setIsEditing(false)} onPostEdited={handleEditedPost} />}
         </div>
       </div>
     </>
