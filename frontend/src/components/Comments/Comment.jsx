@@ -1,10 +1,7 @@
 ﻿import { useState } from "react";
-import {
-  replyToComment,
-  getCommentById,
-  
-} from "../../services/postService";
+import { replyToComment, getCommentById } from "../../services/postService";
 import { getUserById, getUserIdFromCookie } from "../../services/authService";
+import { getProfileByUserId } from "../../services/profileService";
 function Comment({
   className = "",
   onClick,
@@ -12,6 +9,7 @@ function Comment({
   content,
   dateCreation,
   id_comment,
+  displayName,
   initialReplies = [],
 }) {
   const [showReply, setShowReply] = useState(false);
@@ -42,12 +40,13 @@ function Comment({
       const lastReply = await getCommentById(lastReplyId);
 
       const user = await getUserById(lastReply.id_profile);
-
+      const profile = await getProfileByUserId(user._id);
       const enrichedReply = {
         ...lastReply,
+        displayName: profile.display_name,
         profileName: user.pseudo,
       };
-
+      console.log("enrichedReply", enrichedReply);
       setReplyContent("");
       setShowReply(false);
 
@@ -65,7 +64,7 @@ function Comment({
       >
         <div className="-top-4 left-4 absolute flex flex-row gap-2 items-center w-fit">
           <div className="text-white font-koulen text-lg bg-[#1F1F1F] px-2">
-            {profileName}
+            {displayName}
           </div>
           <div className="text-white font-roboto text-sm bg-[#1F1F1F] px-2">
             {dateCreation}
@@ -146,7 +145,7 @@ function Comment({
                 <div className="flex flex-col w-full">
                   <div className="flex items-center gap-2">
                     <p className="text-white font-koulen text-lg">
-                      {reply.profileName}
+                      {reply.displayName}
                     </p>
                     <span className="text-sm text-gray-500">
                       {new Date(reply.created_at).toLocaleString("fr-FR")}

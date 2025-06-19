@@ -104,6 +104,12 @@ const getPostByIdProfile = async (req, res) => {
   }
 };
 
+
+const deletePost = async (req, res) => {
+  try {
+    const { id } = req.query;
+    const post = await Post.findByIdAndDelete(id);
+
 const updatePost = async (req, res) => {
   try {
     const { postId, content } = req.body;
@@ -126,5 +132,7 @@ module.exports = {
   addLikeOnPost,
   deleteLikeOnPost,
   getPostByIdProfile,
+  deletePost
   updatePost,
+
 };

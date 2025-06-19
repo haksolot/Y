@@ -117,6 +117,13 @@ export const getPostByIdProfile = async (id_profile) => {
   return res.data;
 };
 
+
+export const deletePost = async (id) => {
+  const res = await apiPost.delete("/deletePost", {
+    params: { id },
+  });
+  return res.data;
+
 export const editPost = async (postId, content) => {
   try {
     const userId = await getUserIdFromCookie();
@@ -134,4 +141,5 @@ export const editPost = async (postId, content) => {
       error.response?.data || error.message
     );
   }
+
 };

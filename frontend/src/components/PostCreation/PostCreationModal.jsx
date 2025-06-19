@@ -21,7 +21,6 @@ function PostCreationModal({ onClose, onPostCreated }) {
 
   async function handleSubmit() {
     const userId = await getUserIdFromCookie();
-    console.log("user id", userId);
     setErrorContent("");
 
     if (content.trim().length === 0) {
