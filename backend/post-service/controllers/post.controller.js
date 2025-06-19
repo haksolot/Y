@@ -104,11 +104,17 @@ const getPostByIdProfile = async (req, res) => {
   }
 };
 
-
 const deletePost = async (req, res) => {
   try {
     const { id } = req.query;
     const post = await Post.findByIdAndDelete(id);
+    return res.status(200).json(post);
+  } catch (err) {
+    return res.status(500).json({
+      msg: err,
+    });
+  }
+};
 
 const updatePost = async (req, res) => {
   try {
@@ -132,7 +138,6 @@ module.exports = {
   addLikeOnPost,
   deleteLikeOnPost,
   getPostByIdProfile,
-  deletePost
+  deletePost,
   updatePost,
-
 };

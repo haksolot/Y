@@ -123,7 +123,7 @@ export const deletePost = async (id) => {
     params: { id },
   });
   return res.data;
-
+}
 export const editPost = async (postId, content) => {
   try {
     const userId = await getUserIdFromCookie();
