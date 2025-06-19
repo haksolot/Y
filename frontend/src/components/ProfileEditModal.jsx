@@ -1,8 +1,16 @@
 ﻿import { useRef, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { handleSaveProfile } from "../services/profileService";
+import imageCompression from "browser-image-compression";
 
-function ProfileEditModal({ onClose, onProfileUpdated, displayName, username, bio, avatar }) {
+function ProfileEditModal({
+  onClose,
+  onProfileUpdated,
+  displayName,
+  username,
+  bio,
+  avatar,
+}) {
   const fileInputRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const [preview, setPreview] = useState(null);
@@ -26,18 +34,34 @@ function ProfileEditModal({ onClose, onProfileUpdated, displayName, username, bi
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     const file = e.target.files[0];
-    if (file && file.type.startsWith("image/")) {
-      const reader = new FileReader();
 
-      reader.onloadend = () => {
-        const base64Image = reader.result; 
-        setPreview(base64Image); 
-        setAvatarBase64(base64Image);
+    if (file && file.type.startsWith("image/")) {
+      const options = {
+        maxSizeMB: 0.3, // 300 Ko
+        maxWidthOrHeight: 500,
+        useWebWorker: true,
       };
 
-      reader.readAsDataURL(file);
+      try {
+        const compressedFile = await imageCompression(file, options);
+
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+          const base64Image = reader.result;
+          setPreview(base64Image);
+          setAvatarBase64(base64Image);
+        };
+
+        reader.readAsDataURL(compressedFile);
+      } catch (error) {
+        console.error(
+          "Erreur pendant la compression ou lecture de l'image :",
+          error
+        );
+      }
     }
   };
 
