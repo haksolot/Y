@@ -1,4 +1,5 @@
 const verifyToken = require("../middlewares/verifyToken.middleware");
+const verifyUser = require("../middlewares/verifyUser.middleware");
 const express = require("express");
 const router = express.Router();
 const postController = require("../controllers/post.controller");
@@ -14,4 +15,5 @@ router.delete(
   postController.deleteLikeOnPost
 );
 router.get("/getPostByIdProfile", postController.getPostByIdProfile);
+router.put("/updatePost", verifyUser, postController.updatePost);
 module.exports = router;

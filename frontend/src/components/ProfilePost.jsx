@@ -1,5 +1,9 @@
 ﻿import { useState } from "react";
+import PostEdit from "./ProfilePostEditModal";
+
 function ProfilePost({ className = "", content, date_creation }) {
+  const [isEditing, setIsEditing] = useState(false);
+
   return (
     <>
       <div
@@ -32,7 +36,7 @@ function ProfilePost({ className = "", content, date_creation }) {
               />
             </svg>
           </div>
-          <div id="edit-post-button">
+          <div id="edit-post-button" onClick={() => setIsEditing(true)}>
             <svg
               class="w-5 h-5 aspect-square cursor-pointer"
               viewBox="0 0 28 28"
@@ -45,6 +49,7 @@ function ProfilePost({ className = "", content, date_creation }) {
               />
             </svg>
           </div>
+          {isEditing && <PostEdit onClose={() => setIsEditing(false)} setIsEditing={setIsEditing} />}
         </div>
       </div>
     </>

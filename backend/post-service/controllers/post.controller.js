@@ -104,6 +104,20 @@ const getPostByIdProfile = async (req, res) => {
   }
 };
 
+const updatePost = async (req, res) => {
+  try {
+    const { postId, content } = req.body;
+    const post = await Post.findById(postId);
+    post.content = content;
+    await post.save();
+    return res.status(200).json(post);
+  } catch (err) {
+    return res.status(500).json({
+      msg: err,
+    });
+  }
+};
+
 module.exports = {
   createPost,
   getAllPosts,
@@ -111,5 +125,6 @@ module.exports = {
   addCommentOnPost,
   addLikeOnPost,
   deleteLikeOnPost,
-  getPostByIdProfile
+  getPostByIdProfile,
+  updatePost,
 };

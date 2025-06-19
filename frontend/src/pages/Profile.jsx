@@ -8,6 +8,7 @@ import { getProfileByUserId } from "../services/profileService.js";
 
 function Profile({ onClick }) {
   const [showProfileEdit, setProfileEdit] = useState(false);
+  // const [showPostEdit, setPostEdit] = useState(false);
   const [posts, setPosts] = useState([]);
   const [numberPost, setNumberPost] = useState(0);
   const [numberFollowers, setnumberFollowers] = useState(0);
