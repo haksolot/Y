@@ -53,11 +53,11 @@ function FollowersModal({ onClose }) {
           {followers.map((follower) => (
             <li
               key={follower.id}
-              className="flex pl-2 pr-2 items-center gap-4 py-3"
+              className="flex items-center gap-4 p-2 m-4"
             >
               <img
                 src={follower.avatar}
-                className={`cursor-pointer w-10 h-10 aspect-square bg-[#ff6600] rounded-xl ring-2`}
+                className={`cursor-pointer object-cover w-10 h-10 aspect-square bg-[#ff6600] rounded-xl ring-1 ring-[#ff6600] ring-offset-1 ring-offset-transparent`}
               />
               <span className="text-white font-koulen text-base">
                 {follower.display_name}

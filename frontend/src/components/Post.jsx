@@ -141,7 +141,7 @@ function Post({
             {" "}
             <img
               src={avatar}
-              className={`cursor-pointer w-10 h-10 aspect-square bg-[#ff6600] rounded-xl ring-2 ${
+              className={`cursor-pointer object-cover w-10 h-10 aspect-square bg-[#ff6600] rounded-xl ring-2 ${
                 isFollowing ? "ring-white" : "ring-[#ff6600]"
               }`}
             />
