@@ -23,7 +23,7 @@ function Profile({ onClick }) {
   const handleProfileUpdated = (updated) => {
     setDisplayName(updated.name);
     setBio(updated.description);
-    setAvatar(updated.avatar); // en base64 ou nouvelle url selon backend
+    setAvatar(updated.avatar); 
   };
 
   useEffect(() => {
