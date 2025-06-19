@@ -1,4 +1,5 @@
 ﻿import { useState, useEffect } from "react";
+import ProfileModal from "./ProfileModal";
 import Comments from "./Comments/Comments";
 import {
   getUserById,
@@ -27,6 +28,7 @@ function Post({
   display_name,
   avatar,
 }) {
+  const [showProfileModal, setProfileModal] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [comment, setComments] = useState([]);
   const [liked, setLiked] = useState(false);
@@ -149,10 +151,19 @@ function Post({
 
           <div
             id="profile-name"
-            className="text-white font-koulen text-lg bg-[#1F1F1F] pl-2 pr-2"
+            className="cursor-pointer text-white font-koulen text-lg bg-[#1F1F1F] pl-2 pr-2"
+            onClick={() => setProfileModal(true)}
           >
             {display_name}
           </div>
+          {showProfileModal && (
+            <ProfileModal
+              onClose={() => setProfileModal(false)}
+              displayName={display_name}
+              profileName={profileName}
+              avatar={avatar}
+            />
+          )}
           <div
             id="date-creation"
             className="text-white font-roboto text-sm bg-[#1F1F1F] pl-2 pr-2"
