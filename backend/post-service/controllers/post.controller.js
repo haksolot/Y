@@ -1,4 +1,9 @@
 require("dotenv").config();
+// import axios from "axios";
+
+const jwt = require("jsonwebtoken");
+const axios = require("axios");
+
 const { Post } = require("../models/post");
 const createPost = async (req, res) => {
   const { id_profile, content, created_at, commentaries, likes } = req.body;
@@ -36,6 +41,50 @@ const getAllPosts = async (req, res) => {
       msg: err,
     });
   }
+};
+
+const getFollowedPosts = async (req, res) => {
+  const token = req.cookies.token;
+  const decoded = jwt.verify(token, process.env.ACCESS_JWT_KEY);
+  const userId = decoded._id;
+  try {
+    const response = await axios.get(
+      `http://localhost:3200/api/profile/${userId}`,
+      {
+        headers: {
+          Cookie: `token=${token}`,
+        },
+        withCredentials: true,
+      }
+    );
+    let posts = [];
+    // console.log("response.data.following", response.data.following.length);
+    for (let i = 0 ; i < response.data.following.length; i++) {
+      const followingId = response.data.following[i];
+      console.log("followingId", followingId);
+      const currentPosts = await Post.find({ id_profile: followingId });
+      console.log("currentPosts", currentPosts);
+      posts = posts.concat(currentPosts);
+    }
+
+    console.log("posts", posts);
+
+    const sortedPosts = posts.sort((a, b) => {
+      return b.created_at - a.created_at;
+    });
+
+
+    return res.status(200).json(sortedPosts);
+    // return res.status(200).json(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Erreur lors de l’appel interne :", error);
+    return res.status(500).json({
+      msg: error,
+    });
+  }
+  const posts = await Post.find();
+  return res.status(200).json(posts);
 };
 
 const getPostById = async (req, res) => {
@@ -133,6 +182,7 @@ const updatePost = async (req, res) => {
 module.exports = {
   createPost,
   getAllPosts,
+  getFollowedPosts,
   getPostById,
   addCommentOnPost,
   addLikeOnPost,
