@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { getPostByIdProfile } from "../services/postService";
 import { getUserByProfileName, getUserById } from "../services/authService";
-import { getProfileByUserId } from "../services/profileService";
+import { getProfileByUserId, getProfileById } from "../services/profileService";
 function ProfileModal({ onClose, displayName, avatar, profileName }) {
   const [isVisible, setIsVisible] = useState(false);
   const [bio, setBio] = useState("");
@@ -27,12 +27,13 @@ function ProfileModal({ onClose, displayName, avatar, profileName }) {
     async function getProfile() {
       const user = await getUserByProfileName(profileName);
       const profile = await getProfileByUserId(user._id);
-      const data = await getPostByIdProfile(user._id);
+      const data = await getPostByIdProfile(profile._id);
       const numberfollowers = profile.followers;
       const numberfollowing = profile.following;
       const PostWithName = [];
       for (const post of data) {
-        const user = await getUserById(post.id_profile);
+        const profile = await getProfileById(post.id_profile);
+        const user = await getUserById(profile.userId);
         PostWithName.push({
           ...post,
           profileName: user.pseudo,
