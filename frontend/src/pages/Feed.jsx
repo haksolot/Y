@@ -1,7 +1,7 @@
 ﻿import { useState, useEffect } from "react";
 import PostNotif from "../components/Post.jsx";
-import { getAllPosts, getFollowedPosts } from "../services/postService.js";
-import { getUserById } from "../services/authService.js";
+import { getPostByIdProfile } from "../services/postService.js";
+import { getUserById, getUserIdFromCookie } from "../services/authService.js";
 import { getProfileByUserId } from "../services/profileService.js";
 import { getProfileById } from "../services/profileService.js";
 function Feed() {
@@ -10,19 +10,26 @@ function Feed() {
 
   useEffect(() => {
     async function getPosts() {
-      const data = await getFollowedPosts();
-      const PostWithName = [];
-      for (const post of data) {
-        const profile = await getProfileById(post.id_profile);
-        const user = await getUserById(profile.userId);
-        PostWithName.push({
-          ...post,
-          avatar: profile.avatar,
-          displayName: profile.display_name,
-          profileName: user.pseudo,
-        });
-      }
-      setPosts(PostWithName);
+      const user = await getUserIdFromCookie();
+      const profile = await getProfileByUserId(user);
+      const following = profile.following;
+      const allPosts = await Promise.all(
+        following.map(async (follow) => {
+          const posts = await getPostByIdProfile(follow);
+          const profile = await getProfileById(follow);
+          const user = await getUserById(profile.userId);
+
+          return posts.map((post) => ({
+            ...post,
+            avatar: profile.avatar,
+            displayName: profile.display_name,
+            profileName: user.pseudo,
+          }));
+        })
+      );
+
+      const flatPosts = allPosts.flat();
+      setPosts(flatPosts);
     }
     getPosts();
   }, []);
