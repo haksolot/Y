@@ -1,7 +1,10 @@
 ﻿import { useState } from "react";
 import { replyToComment, getCommentById } from "../../services/postService";
 import { getUserById, getUserIdFromCookie } from "../../services/authService";
-import { getProfileByUserId } from "../../services/profileService";
+import {
+  getProfileByUserId,
+  getProfileById,
+} from "../../services/profileService";
 function Comment({
   className = "",
   onClick,
@@ -25,9 +28,9 @@ function Comment({
   const handleSubmitReply = async () => {
     try {
       const userId = await getUserIdFromCookie();
-
+      const profile_reply = await getProfileByUserId(userId);
       const updatedComment = await replyToComment(
-        userId,
+        profile_reply._id,
         id_comment,
         replyContent,
         new Date().toISOString()
@@ -39,8 +42,8 @@ function Comment({
 
       const lastReply = await getCommentById(lastReplyId);
 
-      const user = await getUserById(lastReply.id_profile);
-      const profile = await getProfileByUserId(user._id);
+      const profile = await getProfileById(lastReply.id_profile);
+      const user = await getUserById(profile.userId);
       const enrichedReply = {
         ...lastReply,
         displayName: profile.display_name,

@@ -4,7 +4,10 @@ import PostCreationButton from "../components/PostCreation/PostCreation.jsx";
 import PostCreationModal from "../components/PostCreation/PostCreationModal.jsx";
 import { getAllPosts } from "../services/postService.js";
 import { getUserById } from "../services/authService.js";
-import { getProfileByUserId } from "../services/profileService.js";
+import {
+  getProfileByUserId,
+  getProfileById,
+} from "../services/profileService.js";
 function Home() {
   const [isPostModalOpen, setIsPostModalOpen] = useState(false);
   const [posts, setPosts] = useState([]);
@@ -14,8 +17,9 @@ function Home() {
       const data = await getAllPosts();
       const PostWithName = [];
       for (const post of data) {
-        const user = await getUserById(post.id_profile);
-        const profile = await getProfileByUserId(user._id);
+        const id_profile = post.id_profile;
+        const profile = await getProfileById(id_profile);
+        const user = await getUserById(profile.userId);
         PostWithName.push({
           ...post,
           avatar: profile.avatar,
@@ -29,8 +33,8 @@ function Home() {
   }, []);
 
   async function handlePostCreated(newPost) {
-    const user = await getUserById(newPost.id_profile);
-    const profile = await getProfileByUserId(user._id);
+    const profile = await getProfileById(newPost.id_profile);
+    const user = await getUserById(profile.userId);
     const enrichedPost = {
       ...newPost,
       avatar: profile.avatar,

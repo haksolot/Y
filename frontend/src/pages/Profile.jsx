@@ -4,7 +4,10 @@ import ProfileEditModal from "../components/ProfileEditModal.jsx";
 import { getPostByIdProfile } from "../services/postService.js";
 import { getUserIdFromCookie, getUserById } from "../services/authService.js";
 import { apiAuth } from "../utils/axios.js";
-import { getProfileByUserId } from "../services/profileService.js";
+import {
+  getProfileByUserId,
+  getProfileById,
+} from "../services/profileService.js";
 import FollowersModal from "../components/FollowersModal.jsx";
 import FollowingModal from "../components/FollowingModal.jsx";
 function Profile({ onClick }) {
@@ -23,7 +26,7 @@ function Profile({ onClick }) {
   const handleProfileUpdated = (updated) => {
     setDisplayName(updated.name);
     setBio(updated.description);
-    setAvatar(updated.avatar); 
+    setAvatar(updated.avatar);
   };
   const handlePostDeleted = (deletedId) => {
     setPosts((prevPosts) => prevPosts.filter((post) => post._id !== deletedId));
@@ -32,10 +35,12 @@ function Profile({ onClick }) {
   useEffect(() => {
     async function getPosts() {
       const userId = await getUserIdFromCookie();
-      const data = await getPostByIdProfile(userId);
+      const profile = await getProfileByUserId(userId);
+      const data = await getPostByIdProfile(profile._id);
       const PostWithName = [];
       for (const post of data) {
-        const user = await getUserById(post.id_profile);
+        const profile = await getProfileById(post.id_profile);
+        const user = await getUserById(profile.userId);
         PostWithName.push({
           ...post,
           profileName: user.pseudo,
