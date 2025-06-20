@@ -1,6 +1,7 @@
 ﻿import { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { createPost } from "../../services/postService";
+import { getProfileByUserId } from "../../services/profileService";
 import { getUserById, getUserIdFromCookie } from "../../services/authService";
 function PostCreationModal({ onClose, onPostCreated }) {
   const [isVisible, setIsVisible] = useState(false);
@@ -21,6 +22,9 @@ function PostCreationModal({ onClose, onPostCreated }) {
 
   async function handleSubmit() {
     const userId = await getUserIdFromCookie();
+    console.log("user id", userId);
+    const profile = await getProfileByUserId(userId);
+    console.log("profile", profile);
     setErrorContent("");
 
     if (content.trim().length === 0) {
@@ -31,7 +35,7 @@ function PostCreationModal({ onClose, onPostCreated }) {
     const newPost = {
       content,
       created_at: new Date().toISOString(),
-      id_profile: userId || "Unknown",
+      id_profile: profile || "Unknown",
     };
 
     const createdPost = await createPost(newPost);

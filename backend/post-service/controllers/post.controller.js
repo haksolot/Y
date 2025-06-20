@@ -134,22 +134,19 @@ const repost = async (req, res) => {
   try {
     const { originalPost, new_id_profile } = req.body;
 
-    const original = await Post.findById(originalPost);
-    if (!original) {
-      return res.status(404).json({ msg: "Post original introuvable" });
-    }
+    const post = await Post.findById(originalPost);
+    if (!post) return res.status(404).json({ msg: "Post not found" });
 
     const newPost = new Post({
-      content: original.content,
       id_profile: new_id_profile,
-      created_at: original.created_at,
-      // isRepost: true,
-      originalPostId: original._id,
+      content: post.content,
+      commentaries: [],
+      likes: [],
+      created_at: new Date(), 
     });
 
     await newPost.save();
-
-    return res.status(201).json(newPost);
+    return res.status(200).json(newPost);
   } catch (err) {
     return res.status(500).json({ msg: err.message });
   }

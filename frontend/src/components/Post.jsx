@@ -123,10 +123,10 @@ function Post({
 
   async function handlePostCreated(newComment) {
     try {
-      const user = await getUserById(newComment.id_profile);
+      // const user = await getUserById(newComment.id_profile);
       const enrichedComment = {
         ...newComment,
-        profileName: user.pseudo,
+        profileName: newComment.id_profile,
       };
 
       setComments((prevComments) => [enrichedComment, ...prevComments]);
