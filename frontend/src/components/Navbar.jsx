@@ -35,7 +35,7 @@ function Navbar({ className = "" }) {
               />
             </svg>
           </li>
-          <li className="text-orange-500">
+          <li className="text-orange-500" onClick={() => navigate("/feed")}>
             <svg
               viewBox="0 0 30 34"
               fill="none"

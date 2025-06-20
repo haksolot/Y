@@ -36,6 +36,20 @@ export const getAllPosts = async () => {
   }
 };
 
+export const getFollowedPosts = async () => {
+  try {
+    // const userId = await getUserIdFromCookie();
+    // const res = await apiPost.get(`/getFollowedPosts/${userId}`);
+    const res = await apiPost.get(`/getFollowedPosts`);
+    return res.data;
+  } catch (error) {
+    console.error(
+      "Failed to get all posts:",
+      error.response?.data || error.message
+    );
+  }
+};
+
 export const addCommentOnPost = async (id, id_comment) => {
   try {
     const res = await apiPost.post("/addCommentOnPost", { id, id_comment });
@@ -117,23 +131,19 @@ export const getPostByIdProfile = async (id_profile) => {
   return res.data;
 };
 
-
 export const deletePost = async (id) => {
   const res = await apiPost.delete("/deletePost", {
     params: { id },
   });
   return res.data;
-}
+};
 export const editPost = async (postId, content) => {
   try {
     const userId = await getUserIdFromCookie();
-    const res = await apiPost.put(
-      `/updatePost/${userId}`,
-      {
-        postId: postId,
-        content: content,
-      }
-    );
+    const res = await apiPost.put(`/updatePost/${userId}`, {
+      postId: postId,
+      content: content,
+    });
     return res.data;
   } catch (error) {
     console.error(
@@ -141,5 +151,16 @@ export const editPost = async (postId, content) => {
       error.response?.data || error.message
     );
   }
+};
 
+export const repost = async (originalPost, new_id_profile) => {
+  try {
+    const res = await apiPost.post("/repost", {
+      originalPost: originalPost,
+      new_id_profile: new_id_profile,
+    });
+    return res.data;
+  } catch (error) {
+    console.error("Failed to repost:", error.response?.data || error.message);
+  }
 };

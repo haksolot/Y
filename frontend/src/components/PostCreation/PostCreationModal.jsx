@@ -23,7 +23,6 @@ function PostCreationModal({ onClose, onPostCreated }) {
   async function handleSubmit() {
     const userId = await getUserIdFromCookie();
     const profile = await getProfileByUserId(userId);
-
     setErrorContent("");
 
     if (content.trim().length === 0) {
