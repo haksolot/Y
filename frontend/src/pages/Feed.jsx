@@ -3,6 +3,7 @@ import PostNotif from "../components/Post.jsx";
 import { getAllPosts, getFollowedPosts } from "../services/postService.js";
 import { getUserById } from "../services/authService.js";
 import { getProfileByUserId } from "../services/profileService.js";
+import { getProfileById } from "../services/profileService.js";
 function Feed() {
   const [isPostModalOpen, setIsPostModalOpen] = useState(false);
   const [posts, setPosts] = useState([]);
@@ -12,8 +13,8 @@ function Feed() {
       const data = await getFollowedPosts();
       const PostWithName = [];
       for (const post of data) {
-        const user = await getUserById(post.id_profile);
-        const profile = await getProfileByUserId(user._id);
+        const profile = await getProfileById(post.id_profile);
+        const user = await getUserById(profile.userId);
         PostWithName.push({
           ...post,
           avatar: profile.avatar,
