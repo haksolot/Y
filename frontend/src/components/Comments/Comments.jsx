@@ -8,7 +8,10 @@ import {
 } from "../../services/postService";
 import { getCommentById } from "../../services/postService";
 import { getUserIdFromCookie, getUserById } from "../../services/authService";
-import { getProfileByUserId } from "../../services/profileService";
+import {
+  getProfileByUserId,
+  getProfileById,
+} from "../../services/profileService";
 function Comments({ onClose, id_post, onPostCreated }) {
   const [isVisible, setIsVisible] = useState(false);
   const [comments, setComments] = useState([]);
@@ -23,20 +26,24 @@ function Comments({ onClose, id_post, onPostCreated }) {
     async function getCommentsFromPost() {
       try {
         const data = await getPostById(id_post);
+        console.log("data", data);
         const comments = data.commentaries;
         const commentsData = await Promise.all(
           comments.map((id) => getCommentById(id))
         );
-
         const enrichedComments = await Promise.all(
           commentsData.map(async (comment) => {
-            const user = await getUserById(comment.id_profile);
-            const profile = await getProfileByUserId(user._id);
+            console.log("comment", comment);
+            const profile = await getProfileById(comment.id_profile);
+            console.log("Profil récupéré:", profile);
+            const user = await getUserById(profile.userId);
             console.log("user", user);
             const enrichedReplies = await Promise.all(
               (comment.replies || []).map(async (replyId) => {
                 const replyData = await getCommentById(replyId);
-                const replyUser = await getUserById(replyData.id_profile);
+                const profile = await getProfileById(replyData.id_profile);
+                const replyUser = await getUserById(profile.userId);
+                console.log("replyUser", replyUser);
                 const replyProfile = await getProfileByUserId(replyUser._id);
                 return {
                   ...replyData,
@@ -72,20 +79,27 @@ function Comments({ onClose, id_post, onPostCreated }) {
 
   async function handleSubmit() {
     const userId = await getUserIdFromCookie();
+    const profile = await getProfileByUserId(userId);
     const newComment = {
       content,
       created_at: new Date().toISOString(),
-      id_profile: userId || "Unknown",
+      id_profile: profile._id || "Unknown",
     };
 
     const createdComment = await createComment(newComment);
     await addCommentOnPost(id_post, createdComment.newComment._id);
-
-    const user = await getUserById(createdComment.newComment.id_profile);
-    const profile = await getProfileByUserId(user._id);
+    console.log("createdComment", createdComment.newComment);
+    const new_comment_profile = await getProfileById(
+      createdComment.newComment.id_profile
+    );
+    const user = await getUserById(new_comment_profile.userId);
+    console.log("user", user);
+    const profile_new = await getProfileByUserId(user._id);
+    console.log("profile_new", profile_new);
+    // const profile = await getProfileByUserId(user._id);
     const enrichedComment = {
       ...createdComment.newComment,
-      displayName: profile.display_name,
+      displayName: profile_new.display_name,
       profileName: user.pseudo,
     };
     setComments((prevComments) => [enrichedComment, ...prevComments]);
@@ -178,7 +192,7 @@ function Comments({ onClose, id_post, onPostCreated }) {
               r="12.5"
               fill="#1F1F1F"
               stroke="#FF6600"
-              stroke-width="2"
+              strokeWidth="2"
             />
             <path
               d="M19.0342 9.62684C19.4935 9.1675 19.4935 8.42153 19.0342 7.96218C18.5749 7.50284 17.8289 7.50284 17.3695 7.96218L13.5 11.8354L9.62684 7.96586C9.1675 7.50651 8.42153 7.50651 7.96218 7.96586C7.50284 8.4252 7.50284 9.17118 7.96218 9.63052L11.8354 13.5L7.96586 17.3732C7.50651 17.8326 7.50651 18.5785 7.96586 19.0379C8.4252 19.4972 9.17118 19.4972 9.63052 19.0379L13.5 15.1647L17.3732 19.0342C17.8326 19.4935 18.5785 19.4935 19.0379 19.0342C19.4972 18.5749 19.4972 17.8289 19.0379 17.3695L15.1647 13.5L19.0342 9.62684Z"

@@ -22,20 +22,17 @@ function PostCreationModal({ onClose, onPostCreated }) {
 
   async function handleSubmit() {
     const userId = await getUserIdFromCookie();
-    console.log("user id", userId);
     const profile = await getProfileByUserId(userId);
-    console.log("profile", profile);
     setErrorContent("");
 
     if (content.trim().length === 0) {
       setErrorContent("Your post is empty");
       return;
     }
-
     const newPost = {
       content,
       created_at: new Date().toISOString(),
-      id_profile: profile || "Unknown",
+      id_profile: profile._id || "Unknown",
     };
 
     const createdPost = await createPost(newPost);

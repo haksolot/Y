@@ -15,6 +15,7 @@ import {
 } from "../services/postService";
 import {
   followProfile,
+  getProfileById,
   getProfileByUserId,
   unfollowProfile,
 } from "../services/profileService";
@@ -123,7 +124,8 @@ function Post({
 
   async function handlePostCreated(newComment) {
     try {
-      // const user = await getUserById(newComment.id_profile);
+      const profile = await getProfileById(newComment.id_profile);
+      const user = await getUserById(profile.userId);
       const enrichedComment = {
         ...newComment,
         profileName: newComment.id_profile,
