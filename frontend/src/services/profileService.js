@@ -43,3 +43,8 @@ export const getProfileById = async (id) => {
   const res = await apiProfile.get(`/${id}/profile`);
   return res.data;
 };
+
+export const createProfile = async (id, profile) => {
+  const res = await apiProfile.post(`/${id}`, profile);
+  return res.data;
+};
