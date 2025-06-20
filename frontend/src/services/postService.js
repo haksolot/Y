@@ -36,20 +36,6 @@ export const getAllPosts = async () => {
   }
 };
 
-export const getFollowedPosts = async () => {
-  try {
-    // const userId = await getUserIdFromCookie();
-    // const res = await apiPost.get(`/getFollowedPosts/${userId}`);
-    const res = await apiPost.get(`/getFollowedPosts`);
-    return res.data;
-  } catch (error) {
-    console.error(
-      "Failed to get all posts:",
-      error.response?.data || error.message
-    );
-  }
-};
-
 export const addCommentOnPost = async (id, id_comment) => {
   try {
     const res = await apiPost.post("/addCommentOnPost", { id, id_comment });
