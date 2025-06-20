@@ -179,6 +179,28 @@ const updatePost = async (req, res) => {
   }
 };
 
+const repost = async (req, res) => {
+  try {
+    const { originalPost, new_id_profile } = req.body;
+
+    const post = await Post.findById(originalPost);
+    if (!post) return res.status(404).json({ msg: "Post not found" });
+
+    const newPost = new Post({
+      id_profile: new_id_profile,
+      content: post.content,
+      commentaries: [],
+      likes: [],
+      created_at: new Date(), 
+    });
+
+    await newPost.save();
+    return res.status(200).json(newPost);
+  } catch (err) {
+    return res.status(500).json({ msg: err.message });
+  }
+};
+
 module.exports = {
   createPost,
   getAllPosts,
@@ -190,4 +212,5 @@ module.exports = {
   getPostByIdProfile,
   deletePost,
   updatePost,
+  repost,
 };
