@@ -20,4 +20,6 @@ router.delete("/deletePost", verifyToken, postController.deletePost);
 
 router.put("/updatePost/:userId", verifyUser, postController.updatePost);
 
+router.post("/repost", verifyToken, postController.repost);
+
 module.exports = router;

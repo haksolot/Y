@@ -130,6 +130,31 @@ const updatePost = async (req, res) => {
   }
 };
 
+const repost = async (req, res) => {
+  try {
+    const { originalPost, new_id_profile } = req.body;
+
+    const original = await Post.findById(originalPost);
+    if (!original) {
+      return res.status(404).json({ msg: "Post original introuvable" });
+    }
+
+    const newPost = new Post({
+      content: original.content,
+      id_profile: new_id_profile,
+      created_at: original.created_at,
+      // isRepost: true,
+      originalPostId: original._id,
+    });
+
+    await newPost.save();
+
+    return res.status(201).json(newPost);
+  } catch (err) {
+    return res.status(500).json({ msg: err.message });
+  }
+};
+
 module.exports = {
   createPost,
   getAllPosts,
@@ -140,4 +165,5 @@ module.exports = {
   getPostByIdProfile,
   deletePost,
   updatePost,
+  repost,
 };

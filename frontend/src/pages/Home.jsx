@@ -33,7 +33,6 @@ function Home() {
     const profile = await getProfileByUserId(user._id);
     const enrichedPost = {
       ...newPost,
-      avatar: profile.avatar,
       displayName: profile.display_name,
       profileName: user.pseudo,
     };

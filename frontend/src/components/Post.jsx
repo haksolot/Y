@@ -11,6 +11,7 @@ import {
   deleteLikeOnPost,
   getAllPosts,
   getPostById,
+  repost,
 } from "../services/postService";
 import {
   followProfile,
@@ -33,6 +34,8 @@ function Post({
   const [comment, setComments] = useState([]);
   const [liked, setLiked] = useState(false);
   const [isFollowing, setIsFollowing] = useState(null); // null = pas encore chargé
+  const [currentProfile, setCurrentProfile] = useState(null);
+
   useEffect(() => {
     async function LikedStatus() {
       const infoPost = await getPostById(id_post);
@@ -51,6 +54,7 @@ function Post({
 
       const userIdByCookie = await getUserIdFromCookie();
       const profile = await getProfileByUserId(userIdByCookie);
+      setCurrentProfile(profile._id);
       const following = profile.following || [];
 
       const userTargeted = await getUserByProfileName(profileName);
@@ -69,6 +73,10 @@ function Post({
 
     checkIfFollowing();
   }, [profileName]);
+
+  async function handleRepost(id_post, id_profile) {
+    await repost(id_post, id_profile);
+  }
 
   async function handleAddingFollowers(profileName) {
     const userId = await getUserIdFromCookie();
@@ -217,6 +225,7 @@ function Post({
 
           <div id="repost-button">
             <svg
+              onClick={() => handleRepost(id_post, currentProfile)}
               viewBox="0 0 38 26"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
