@@ -25,7 +25,6 @@ const createUser = async (req, res) => {
         msg: "Pseudo already exists",
       });
     }
-
     const newUser = new UserInfo({
       pseudo,
       email,
@@ -33,11 +32,9 @@ const createUser = async (req, res) => {
       role,
     });
     await newUser.save();
-    const newUserId = newUser._id;
-    const newProfileData = { userId: newUserId, display_name: pseudo };
-    await createProfile(newUserId, newProfileData);
     return res.status(201).json({
       msg: "New User created !",
+      id: newUser._id,
     });
   } catch (err) {
     return res.status(500).json({
@@ -147,25 +144,6 @@ const logout = async (req, res) => {
     return res.status(500).json({
       msg: err.message,
     });
-  }
-};
-
-const createProfile = async (userId, data) => {
-  try {
-    const response = await axios.post(
-      `http://localhost:3200/api/profile/${userId}`,
-      data,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "y-service-auth": process.env.SERVICE_SECRET,
-        },
-      }
-    );
-    return response.data;
-  } catch (error) {
-    console.error("Erreur lors de l’appel interne :", error);
-    throw error;
   }
 };
 

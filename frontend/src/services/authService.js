@@ -1,16 +1,23 @@
 import { apiAuth } from "../utils/axios";
+import { createProfile } from "./profileService";
 
 export const validateEmail = (email) =>
   /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
 export const registerUser = async (pseudo, email, password) => {
-  const res = await apiAuth.post("/register", {
-    pseudo,
-    email,
-    password,
-    role: "User",
-  });
-  return res.data;
+  try {
+    const res = await apiAuth.post("/register", {
+      pseudo,
+      email,
+      password,
+      role: "User",
+    });
+    console.log("res", res);
+    const profile = await createProfile(res.data.id, { userId: res.data.id, display_name: pseudo });
+    return res.data;
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 export const loginUser = async (pseudo, password) => {
@@ -31,7 +38,7 @@ export const getUserById = async (id) => {
 export const logout = async () => {
   const res = await apiAuth.post("/logout");
   return res.data;
-}
+};
 export const getUserIdFromCookie = async () => {
   try {
     const response = await apiAuth.post(
