@@ -63,18 +63,18 @@ function Comment({
     <>
       <div
         id="comment-container"
-        className={`h-fit w-100 relative rounded-2xl bg-[#1F1F1F] group p-4 ring-2 ring-[#ff6600] ${className}`}
+        className={`h-fit w-100 relative rounded-2xl group p-4 ring-2 ring-[#ff6600] ${className}`}
       >
         <div className="-top-4 left-4 absolute flex flex-row gap-2 items-center w-fit">
-          <div className="text-white font-koulen text-lg bg-[#1F1F1F] px-2">
+          <div className="font-koulen text-lg bg-white dark:bg-[#1F1F1F] px-2">
             {displayName}
           </div>
-          <div className="text-white font-roboto text-sm bg-[#1F1F1F] px-2">
+          <div className="font-roboto text-sm bg-white dark:bg-[#1F1F1F] px-2">
             {dateCreation}
           </div>
         </div>
 
-        <p className="relative text-white font-roboto text-base">{content}</p>
+        <p className="relative font-roboto text-base">{content}</p>
 
         <div id="reply-button">
           <svg
@@ -105,14 +105,14 @@ function Comment({
 
       {showReply && (
         <div
-          className="flex items-center gap-5 px-4 py-0  mt-1 bg-gradient-to-b from-transparent to-[#1F1F1F] backdrop-blur-md rounded-2xl ring-1 ring-[#ff6600]"
+          className="flex items-center gap-5 px-4 py-0  mt-1  backdrop-blur-md rounded-2xl ring-1 ring-[#ff6600]"
           onClick={(e) => e.stopPropagation()}
         >
           <textarea
             value={replyContent}
             onChange={(e) => setReplyContent(e.target.value)}
             placeholder="Write a reply..."
-            className="h-8 resize-none outline-none bg-transparent text-white 
+            className="h-8 resize-none outline-none bg-transparent
                        font-roboto text-base leading-[2] flex-1"
           />
           <svg
@@ -147,15 +147,15 @@ function Comment({
               >
                 <div className="flex flex-col w-full">
                   <div className="flex items-center gap-2">
-                    <p className="text-white font-koulen text-lg">
+                    <p className="font-koulen text-lg">
                       {reply.displayName}
                     </p>
-                    <span className="text-sm text-gray-500">
+                    <span className="text-sm">
                       {new Date(reply.created_at).toLocaleString("fr-FR")}
                     </span>
                   </div>
 
-                  <p className="text-gray-300 font-roboto text-base whitespace-pre-line">
+                  <p className="font-roboto text-base whitespace-pre-line">
                     {reply.content}
                   </p>
                 </div>

@@ -58,7 +58,7 @@ function ProfileModal({ onClose, displayName, avatar, profileName }) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`bg-[#1F1F1F] ring-2 ring-[#ff6600] text-white p-6 rounded-xl shadow-xl transition-transform duration-300 ${
+        className={`bg-white dark:bg-[#1F1F1F] ring-2 ring-[#ff6600] p-6 rounded-xl shadow-xl transition-transform duration-300 ${
           isVisible ? "scale-100" : "scale-90"
         } max-w-[90vw] min-w-[300px] h-auto overflow-y-auto scrollbar `}
       >
@@ -66,7 +66,7 @@ function ProfileModal({ onClose, displayName, avatar, profileName }) {
           <div className="flex flex-col items-left">
             <div
               id="display-name"
-              className="font-koulen text-2xl text-white mb-2"
+              className="font-koulen text-2xl mb-2"
             >
               {displayName}
             </div>
@@ -81,11 +81,11 @@ function ProfileModal({ onClose, displayName, avatar, profileName }) {
               <div id="info" className="flex flex-col gap-2">
                 <div
                   id="username"
-                  className="font-roboto font-bold text-white text-sm"
+                  className="font-roboto font-bold text-sm"
                 >
                   @{profileName}
                 </div>
-                <div id="bio" className="font-roboto text-white text-base">
+                <div id="bio" className="font-roboto text-base">
                   {bio}
                 </div>
               </div>
@@ -95,7 +95,7 @@ function ProfileModal({ onClose, displayName, avatar, profileName }) {
 
         <div
           id="dividing-line"
-          className="pt-4 border-b-2 border-[#ffffff] w-full h-1"
+          className="pt-4 border-b-2 border-black dark:border-[#ffffff] w-full h-1"
         ></div>
 
         <div class="flex items-center mt-4 justify-around">
@@ -118,7 +118,7 @@ function ProfileModal({ onClose, displayName, avatar, profileName }) {
                 fill="#FF6600"
               />
             </svg>
-            <p className="mt-2 font-roboto text-sm text-white">Yolowers</p>
+            <p className="mt-2 font-roboto text-sm ">Yolowers</p>
             <p className="mt-4 font-koulen text-sm text-[#ff6600]">
               {numberfollowers}
             </p>
@@ -148,7 +148,7 @@ function ProfileModal({ onClose, displayName, avatar, profileName }) {
               />
             </svg>
 
-            <p className="mt-2 font-roboto text-sm text-white">Yolowing</p>
+            <p className="mt-2 font-roboto text-sm ">Yolowing</p>
             <p className="mt-4 font-koulen text-sm text-[#ff6600]">
               {numberfollowing}
             </p>
@@ -166,7 +166,7 @@ function ProfileModal({ onClose, displayName, avatar, profileName }) {
                 fill="#FF6600"
               />
             </svg>
-            <p className="mt-4 font-roboto text-sm text-white">Yeets</p>
+            <p className="mt-4 font-roboto text-sm ">Yeets</p>
             <p className="mt-4 font-koulen text-sm text-[#ff6600]">
               {numberPost}
             </p>

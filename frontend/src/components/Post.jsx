@@ -86,7 +86,7 @@ function Post({
   async function handleAddingFollowers(profileName) {
     const userId = await getUserIdFromCookie();
     const userTargeted = await getUserByProfileName(profileName);
-    if (userId === userTargeted._id) return;
+    // if (userId === userTargeted._id) return;
     const profileTargeted = await getProfileByUserId(userTargeted._id);
 
     const currentUserProfile = await getProfileByUserId(userId);
@@ -145,7 +145,7 @@ function Post({
     <>
       <div
         id="post-container"
-        className={`h-fit w-100 relative rounded-2xl bg-[#1F1F1F] p-4 ring-2 ring-[#ff6600] ${className}`}
+        className={`h-fit w-100 relative rounded-2xl p-4 ring-2 ring-[#ff6600] ${className}`}
       >
         <div
           id="profile-info"
@@ -166,7 +166,7 @@ function Post({
 
             <div
               id="profile-name"
-              className="cursor-pointer text-white font-koulen text-lg bg-[#1F1F1F] pl-2 pr-2"
+              className="cursor-pointer text-black font-koulen text-lg dark:bg-[#1F1F1F] dark:text-white bg-white pl-2 pr-2"
               onClick={() => setProfileModal(true)}
             >
               {display_name}
@@ -181,14 +181,14 @@ function Post({
             )}
             <div
               id="date-creation"
-              className="text-white font-roboto text-sm bg-[#1F1F1F] pl-2 pr-2"
+              className="font-roboto text-sm dark:text-white dark:bg-[#1F1F1F] bg-white text-blackpl-2 pr-2"
             >
               {dateCreation}
             </div>
           </div>
 
           {isRepost && (
-            <div className="flex items-center gap-1 text-xs bg-[#1F1F1F] font-koulen text-[#ff6600] px-2 py-2 select-none whitespace-nowrap">
+            <div className="flex items-center gap-1 text-xs bg-white dark:bg-[#1F1F1F] font-koulen text-[#ff6600] px-2 py-2 select-none whitespace-nowrap">
               <svg
                 viewBox="0 0 38 26"
                 fill="none"
@@ -205,12 +205,12 @@ function Post({
           )}
         </div>
 
-        <p id="message" className="relative text-white font-roboto text-base ">
+        <p id="message" className="relative text-black dark:text-white font-roboto text-base ">
           {content}
         </p>
         <div
           id="buttons-container"
-          className="mt-2 left-1/2 -translate-x-1/2 pl-4 pr-4 absolute align-middle items-center flex flex-row gap-4 bg-[#1F1F1F]"
+          className="mt-2 left-1/2 -translate-x-1/2 pl-4 pr-4 absolute align-middle items-center flex flex-row gap-4 bg-white dark:bg-[#1F1F1F]"
         >
           <div id="like-button">
             <svg
@@ -221,7 +221,7 @@ function Post({
               onClick={handleLike}
             >
               <path
-                className={liked ? "fill-white" : "fill-[#FF6600]"}
+                className={liked ? "dark:fill-white fill-black" : "fill-[#FF6600]"}
                 d="M2.60125 14.6705L12.4762 24.254C12.886 24.6516 13.4271 24.8732 13.9899 24.8732C14.5528 24.8732 15.0938 24.6516 15.5037 24.254L25.3786 14.6705C27.0399 13.0629 27.9799 10.8076 27.9799 8.45008V8.1206C27.9799 4.14975 25.2201 0.764012 21.4549 0.110724C18.9629 -0.321014 16.4272 0.52542 14.6457 2.37735L13.9899 3.05904L13.3342 2.37735C11.5526 0.52542 9.01695 -0.321014 6.52499 0.110724C2.75973 0.764012 0 4.14975 0 8.1206V8.45008C0 10.8076 0.939949 13.0629 2.60125 14.6705Z"
                 // fill="#FF6600"
               />

@@ -74,10 +74,10 @@ function ProfileEditModal({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-[#1F1F1F] gap-4 flex flex-col text-white p-6 rounded-xl w-11/12 sm:w-2/3 md:w-1/2 lg:w-1/3 shadow-xl ring-2 ring-[#ff6600]"
+        className="bg-white dark:bg-[#1F1F1F] gap-4 flex flex-col p-6 rounded-xl w-11/12 sm:w-2/3 md:w-1/2 lg:w-1/3 shadow-xl ring-2 ring-[#ff6600]"
       >
         <div
-          className="w-16 h-16 rounded-xl  ring-2 ring-[#ff6600] cursor-pointer overflow-hidden"
+          className="w-16 h-16 rounded-xl ring-2 ring-[#ff6600] cursor-pointer overflow-hidden"
           onClick={handleAvatarClick}
         >
           {preview ? (
@@ -96,13 +96,13 @@ function ProfileEditModal({
         />
         <textarea
           defaultValue={displayName}
-          className="text-lg font-bold h-auto w-auto p-2 bg-[#1F1F1F] text-white resize-none border border-[#ff6600] rounded-lg"
+          className="bg-white dark:bg-[#1F1F1F] text-lg font-bold h-auto w-auto p-2 resize-none border border-[#ff6600] rounded-lg"
           onChange={(e) => setName(e.target.value)}
         />
-        <div className="text-sm text-[#ffffff88]">@{username}</div>
+        <div className="text-sm">@{username}</div>
         <textarea
           defaultValue={bio}
-          className="w-full h-24 p-2 bg-[#1F1F1F] text-white resize-none border border-[#ff6600] rounded-lg"
+          className="bg-white dark:bg-[#1F1F1F] w-full h-24 p-2 resize-none border border-[#ff6600] rounded-lg"
           onChange={(e) => setDescription(e.target.value)}
         />
         <div className="flex justify-center mt-4 gap-4">

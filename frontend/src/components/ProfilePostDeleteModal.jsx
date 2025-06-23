@@ -32,11 +32,11 @@ function ProfilePostDeleteModal({ onClose, onDelete, id_post }) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`bg-[#1F1F1F] ring-2 ring-[#ff6600] text-white p-6 rounded-xl shadow-xl transition-transform duration-300 ${
+        className={`bg-white dark:bg-[#1F1F1F] ring-2 ring-[#ff6600] p-6 rounded-xl shadow-xl transition-transform duration-300 ${
           isVisible ? "scale-100" : "scale-90"
         } max-w-[90vw] min-w-[300px] h-auto overflow-y-auto scrollbar `}
       >
-        <h2 className="text-base font-koulen mb-4 py-4 text-white md:text-2xl">
+        <h2 className="text-base font-koulen mb-4 py-4  md:text-2xl">
           Are you sure you want to yeeyeet this yeet ?
         </h2>
         <div className="flex justify-center mt-4 gap-7">

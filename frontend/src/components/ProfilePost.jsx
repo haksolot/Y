@@ -16,6 +16,8 @@ function ProfilePost({
     useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [initialText, setInitialText] = useState(content);
+  const [dateCreation, setDateCreation] = useState(date_creation);
+
   const handleEditedPost = (updated) => {
     // setIsEditing(true);
     setInitialText(updated.text);
@@ -25,21 +27,21 @@ function ProfilePost({
     <>
       <div
         id="post-container"
-        className={`h-fit w-100 relative rounded-2xl bg-[#1F1F1F] p-4 ring-2 ring-[#ff6600] ${className}`}
+        className={`h-fit w-100 relative rounded-2xl p-4 ring-2 ring-[#ff6600] ${className}`}
       >
         <div
           id="post-timestamp"
-          className="italic text-nowrap -top-3 left-1/2 -translate-x-1/2 absolute text-white font-roboto text-sm bg-[#1F1F1F] pl-2 pr-2"
+          className="italic text-nowrap -top-3 left-1/2 -translate-x-1/2 absolute text-white font-roboto text-sm bg-white dark:bg-[#1F1F1F] pl-2 pr-2"
         >
-          {date_creation}
+          {dateCreation}
         </div>
         <div className="flex flex-row justify-between items-center gap-10">
-          <p id="message" className="relative text-white font-roboto text-base">
+          <p id="message" className="relative  font-roboto text-base">
             {initialText}
           </p>
           <div className="flex flex-col">
             {isRepost && (
-              <div className="flex items-center gap-1 text-xs font-koulen text-[#ff6600] px-2 py-1 select-none whitespace-nowrap">
+              <div className="flex items-center gap-1 text-xs font-koulen px-2 py-1 select-none whitespace-nowrap">
                 <svg
                   viewBox="0 0 38 26"
                   fill="none"
@@ -54,7 +56,7 @@ function ProfilePost({
                 Reyeet
               </div>
             )}
-            <div className="flex items-center gap-1 text-xs font-koulen text-[#ff6600] px-2 py-1 select-none whitespace-nowrap">
+            <div className="flex items-center gap-1 text-xs font-koulen px-2 py-1 select-none whitespace-nowrap">
               <svg
                 viewBox="0 0 28 25"
                 fill="none"
@@ -68,7 +70,7 @@ function ProfilePost({
               </svg>
               {likes.length}
             </div>
-            <div className="flex items-center gap-1 text-xs font-koulen text-[#ff6600] px-2 py-1 select-none whitespace-nowrap">
+            <div className="flex items-center gap-1 text-xs font-koulen px-2 py-1 select-none whitespace-nowrap">
               <svg
                 viewBox="0 0 29 25"
                 fill="none"
@@ -86,14 +88,14 @@ function ProfilePost({
         </div>
         <div
           id="buttons-container"
-          className="mt-2 left-1/2 -translate-x-1/2 pl-4 pr-4 absolute align-middle items-center flex flex-row gap-4 bg-[#1F1F1F]"
+          className="mt-2 left-1/2 -translate-x-1/2 pl-4 pr-4 dark:bg-[#1F1F1F] bg-white absolute align-middle items-center flex flex-row gap-4"
         >
           <div
             id="trash-button"
             onClick={() => setProfilePostDeleteModal(true)}
           >
             <svg
-              class="w-5 h-5 aspect-square cursor-pointer"
+              className="w-5 h-5 aspect-square cursor-pointer"
               viewBox="0 0 24 28"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -113,7 +115,7 @@ function ProfilePost({
           )}
           <div id="edit-post-button" onClick={() => setIsEditing(true)}>
             <svg
-              class="w-5 h-5 aspect-square cursor-pointer"
+              className="w-5 h-5 aspect-square cursor-pointer"
               viewBox="0 0 28 28"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
