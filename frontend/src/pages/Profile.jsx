@@ -3,7 +3,7 @@ import Post from "../components/ProfilePost.jsx";
 import ProfileEditModal from "../components/ProfileEditModal.jsx";
 import { getPostByIdProfile } from "../services/postService.js";
 import { getUserIdFromCookie, getUserById } from "../services/authService.js";
-import { apiAuth } from "../utils/axios.js";
+
 import {
   getProfileByUserId,
   getProfileById,
