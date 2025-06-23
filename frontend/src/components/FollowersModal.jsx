@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { getUserIdFromCookie } from "../services/authService";
 import { getProfileByUserId, getProfileById } from "../services/profileService";
 import { followProfile } from "../services/profileService";
-function FollowersModal({ onClose }) {
+function FollowersModal({ onClose, onFollowChange }) {
   const [followers, setFollowers] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
   const [isFollowing, setIsFollowing] = useState(null);
@@ -19,6 +19,7 @@ function FollowersModal({ onClose }) {
       onClose();
     }, 300);
   };
+
 
   useEffect(() => {
     async function getFollowers() {
@@ -45,8 +46,11 @@ function FollowersModal({ onClose }) {
     if (isFollowing.includes(profileId)) return;
 
     await followProfile(userId, profileId);
-
     setIsFollowing((prev) => [...prev, profileId]);
+
+    if (onFollowChange) {
+      onFollowChange();
+    }
   }
 
   const modal = (

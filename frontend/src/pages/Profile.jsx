@@ -22,8 +22,6 @@ function Profile({ onClick }) {
   const [username, setUsername] = useState();
   const [bio, setBio] = useState();
   const [avatar, setAvatar] = useState();
-  const [followingProfiles, setFollowingProfiles] = useState([]);
-
   const handleProfileUpdated = (updated) => {
     setDisplayName(updated.name);
     setBio(updated.description);
@@ -32,21 +30,6 @@ function Profile({ onClick }) {
   const handlePostDeleted = (deletedId) => {
     setPosts((prevPosts) => prevPosts.filter((post) => post._id !== deletedId));
   };
-
-  useEffect(() => {
-    async function loadFollowings() {
-      const userId = await getUserIdFromCookie();
-      const data = await getProfileByUserId(userId);
-      const following_user = data.following;
-
-      const profiles = await Promise.all(
-        following_user.map((id) => getProfileById(id))
-      );
-      setFollowingProfiles(profiles);
-    }
-
-    loadFollowings();
-  }, []);
 
   useEffect(() => {
     async function getPosts() {
@@ -71,6 +54,22 @@ function Profile({ onClick }) {
   useEffect(() => {
     setNumberPost(posts.length);
   }, [posts]);
+
+  useEffect(() => {
+    setnumberFollowing(numberFollowing);
+  }, [numberFollowing]);
+
+  useEffect(() => {
+    if (!showFollowersModal || !showFollowingModal) {
+      async function updateFollowingCount() {
+        const userId = await getUserIdFromCookie();
+        const profile = await getProfileByUserId(userId);
+        console.log("profile", profile.following.length);
+        setnumberFollowing(profile.following.length);
+      }
+      updateFollowingCount();
+    }
+  }, [showFollowersModal, showFollowingModal]);
 
   useEffect(() => {
     async function getProfile() {
@@ -101,7 +100,7 @@ function Profile({ onClick }) {
           </div>
           <div onClick={() => setProfileEdit(true)}>
             <svg
-              class="w-6 h-6 aspect-square cursor-pointer"
+              className="w-6 h-6 aspect-square cursor-pointer"
               viewBox="0 0 25 25"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -208,14 +207,13 @@ function Profile({ onClick }) {
               Yolowing
             </p>
             <p className="mt-4 font-koulen text-sm text-[#ff6600]">
-              {followingProfiles.length}
+              {numberFollowing}
             </p>
           </div>
           {showFollowingModal && (
             <FollowingModal
               onClose={() => setFollowingModal(false)}
               username={username}
-              followingProfiles={followingProfiles}
             />
           )}
           <div class="flex flex-col items-center">
