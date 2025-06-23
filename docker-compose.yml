@@ -1,0 +1,83 @@
+﻿version: "3.8"
+
+services:
+  # Auth service + mongo
+  auth:
+    build: ./backend/auth-service
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    environment:
+      - MONGO_URI=mongodb://auth-mongo:27017/authdb
+      - PORT=3000
+    depends_on:
+      - auth-mongo
+
+  auth-mongo:
+    image: mongo:6
+    restart: unless-stopped
+    volumes:
+      - auth-mongo-data:/data/db
+
+  # Profile service + mongo
+  profile:
+    build: ./backend/profile-service
+    restart: unless-stopped
+    ports:
+      - "3003:3000"
+    environment:
+      - MONGO_URI=mongodb://profile-mongo:27017/profiledb
+      - PORT=3000
+    depends_on:
+      - profile-mongo
+
+  profile-mongo:
+    image: mongo:6
+    restart: unless-stopped
+    volumes:
+      - profile-mongo-data:/data/db
+
+  # Post service + mongo
+  post:
+    build: ./backend/post-service
+    restart: unless-stopped
+    ports:
+      - "3002:3000"
+    environment:
+      - MONGO_URI=mongodb://post-mongo:27017/postdb
+      - PORT=3000
+    depends_on:
+      - post-mongo
+
+  post-mongo:
+    image: mongo:6
+    restart: unless-stopped
+    volumes:
+      - post-mongo-data:/data/db
+
+  # Frontend service - nginx will serve it
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    # environment:
+      # - NODE_ENV=production
+
+  # Nginx reverse proxy + HTTPS
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    ports:
+      - "443:443"
+    depends_on:
+      - frontend
+      - auth
+      - profile
+      - post
+    volumes:
+      - ./certs:/etc/nginx/certs:ro
+
+volumes:
+  auth-mongo-data:
+  profile-mongo-data:
+  post-mongo-data:
