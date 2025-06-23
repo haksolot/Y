@@ -29,10 +29,10 @@ const Home = () => {
           id="titres"
           className="flex flex-col items-left gap-y-8 ml-10 md:mt-48"
         >
-          <div className="font-koulen text-white text-4xl md:text-7xl">
+          <div className="select-none font-koulen text-white text-4xl md:text-7xl">
             Happened yesterday
           </div>
-          <div className="font-koulen text-white text-2xl md:text-4xl">
+          <div className="select-none font-koulen text-white text-2xl md:text-4xl">
             Leave tomorrow.
           </div>
         </div>

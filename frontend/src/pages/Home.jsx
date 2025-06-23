@@ -57,7 +57,7 @@ function Home() {
           onPostCreated={handlePostCreated}
         />
       )}
-      <div className="flex flex-col items-center gap-14 pt-24 pb-32 min-h-screen overflow-y-auto w-full sm:w-3/4 md:w-3/5">
+      <div className="flex flex-col items-center gap-14 pt-24 pb-32 min-h-screen overflow-y-auto scrollbar w-full sm:w-3/4 md:w-3/5 ">
         {posts
           .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
           .map((post) => (

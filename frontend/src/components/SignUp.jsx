@@ -1,5 +1,4 @@
 import logo from "../assets/logo.png";
-import closeButton from "../assets/close-button.png";
 import React, { useState } from "react";
 import { registerUser, validateEmail } from "../services/authService";
 
@@ -67,14 +66,28 @@ const SignUpModal = ({ isOpen, onClose }) => {
       >
         <button
           onClick={onClose}
-          className="absolute -top-6 -right-7 w-[60px] h-[60px] bg-transparent border-none cursor-pointer z-10 md:-right-9 md:w-[90px] md:h-[90px]"
+          className="absolute -top-8 -right-12 w-[60px] h-[60px] bg-transparent border-none cursor-pointer z-10 md:-right-9 md:w-[90px] md:h-[90px]"
           type="button"
         >
-          <img
-            className="h-full w-full object-scale-down pointer-events-auto"
-            src={closeButton}
-            alt="Close button"
-          />
+          <svg
+            className="w-7 h-7 aspect-square"
+            viewBox="0 0 74 74"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="37"
+              cy="37"
+              r="34"
+              fill="#1F1F1F"
+              stroke="#FF6600"
+              stroke-width="6"
+            />
+            <path
+              d="M52.0529 26.4649C53.3024 25.2155 53.3024 23.1865 52.0529 21.9371C50.8035 20.6876 48.7745 20.6876 47.5251 21.9371L37 32.4721L26.4649 21.9471C25.2155 20.6976 23.1865 20.6976 21.9371 21.9471C20.6876 23.1965 20.6876 25.2255 21.9371 26.4749L32.4721 37L21.9471 47.5351C20.6976 48.7845 20.6976 50.8135 21.9471 52.0629C23.1965 53.3124 25.2255 53.3124 26.4749 52.0629L37 41.5279L47.5351 52.0529C48.7845 53.3024 50.8135 53.3024 52.0629 52.0529C53.3124 50.8035 53.3124 48.7745 52.0629 47.5251L41.5279 37L52.0529 26.4649Z"
+              fill="#FF6600"
+            />
+          </svg>
         </button>
 
         <div className="relative flex flex-col gap-4">
@@ -178,7 +191,7 @@ const SignUpModal = ({ isOpen, onClose }) => {
             <button
               type="submit"
               onClick={create}
-              className="text-sm font-roboto mx-auto shadow-[3px_2px_8.3px_3px_rgba(0,0,0,0.25)] transition delay-50 bg-[#FF6600] font-roboto border-2 border-[#FF6600] hover:bg-transparent text-white py-2 px-4 rounded-[8vw] w-28 md:py-4 md:rounded-[0.9vw] md:w-80"
+              className="text-sm mx-auto shadow-[3px_2px_8.3px_3px_rgba(0,0,0,0.25)] transition delay-50 bg-[#FF6600] font-roboto border-2 border-[#FF6600] hover:bg-transparent text-white py-2 px-4 rounded-[8vw] w-28 md:py-4 md:rounded-[0.9vw] md:w-80"
             >
               Sign Up
             </button>

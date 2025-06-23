@@ -10,7 +10,7 @@ function MainLayout() {
       <div className="flex items-center justify-center fixed top-0 w-full h-16 bg-gradient-to-b from-transparent to-[#1F1F1F] backdrop-blur-md z-10">
         <img src={logo} alt="Shrimp" className="w-12 h-12 object-cover" />
       </div>
-      <div className="flex flex-col items-center justify-center min-h-screen">
+      <div className="flex flex-col items-center justify-center min-h-screen scrollbar">
         <Outlet />
       </div>
       <div
