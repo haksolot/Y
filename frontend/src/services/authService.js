@@ -5,19 +5,18 @@ export const validateEmail = (email) =>
   /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
 export const registerUser = async (pseudo, email, password) => {
-  try {
-    const res = await apiAuth.post("/register", {
-      pseudo,
-      email,
-      password,
-      role: "User",
-    });
-    console.log("res", res);
-    const profile = await createProfile(res.data.id, { userId: res.data.id, display_name: pseudo });
-    return res.data;
-  } catch (err) {
-    console.error(err);
-  }
+  const res = await apiAuth.post("/register", {
+    pseudo,
+    email,
+    password,
+    role: "User",
+  });
+  console.log("res", res);
+  const profile = await createProfile(res.data.id, {
+    userId: res.data.id,
+    display_name: pseudo,
+  });
+  return res.data;
 };
 
 export const loginUser = async (pseudo, password) => {
