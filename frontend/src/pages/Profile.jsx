@@ -22,6 +22,7 @@ function Profile({ onClick }) {
   const [username, setUsername] = useState();
   const [bio, setBio] = useState();
   const [avatar, setAvatar] = useState();
+  const [followingProfiles, setFollowingProfiles] = useState([]);
 
   const handleProfileUpdated = (updated) => {
     setDisplayName(updated.name);
@@ -31,6 +32,21 @@ function Profile({ onClick }) {
   const handlePostDeleted = (deletedId) => {
     setPosts((prevPosts) => prevPosts.filter((post) => post._id !== deletedId));
   };
+
+  useEffect(() => {
+    async function loadFollowings() {
+      const userId = await getUserIdFromCookie();
+      const data = await getProfileByUserId(userId);
+      const following_user = data.following;
+
+      const profiles = await Promise.all(
+        following_user.map((id) => getProfileById(id))
+      );
+      setFollowingProfiles(profiles);
+    }
+
+    loadFollowings();
+  }, []);
 
   useEffect(() => {
     async function getPosts() {
@@ -151,7 +167,9 @@ function Profile({ onClick }) {
                 fill="#FF6600"
               />
             </svg>
-            <p className="select-none mt-2 font-roboto text-sm text-white">Yolowers</p>
+            <p className="select-none mt-2 font-roboto text-sm text-white">
+              Yolowers
+            </p>
             <p className="mt-4 font-koulen text-sm text-[#ff6600]">
               {numberFollowers}
             </p>
@@ -186,15 +204,18 @@ function Profile({ onClick }) {
               />
             </svg>
 
-            <p className="select-none mt-2 font-roboto text-sm text-white">Yolowing</p>
+            <p className="select-none mt-2 font-roboto text-sm text-white">
+              Yolowing
+            </p>
             <p className="mt-4 font-koulen text-sm text-[#ff6600]">
-              {numberFollowing}
+              {followingProfiles.length}
             </p>
           </div>
           {showFollowingModal && (
             <FollowingModal
               onClose={() => setFollowingModal(false)}
               username={username}
+              followingProfiles={followingProfiles}
             />
           )}
           <div class="flex flex-col items-center">
@@ -210,7 +231,9 @@ function Profile({ onClick }) {
                 fill="#FF6600"
               />
             </svg>
-            <p className="select-none mt-4 font-roboto text-sm text-white">Yeets</p>
+            <p className="select-none mt-4 font-roboto text-sm text-white">
+              Yeets
+            </p>
             <p className="mt-4 font-koulen text-sm text-[#ff6600]">
               {numberPost}
             </p>
@@ -233,6 +256,8 @@ function Profile({ onClick }) {
               dateCreation={new Date(post.created_at).toLocaleString("fr-FR")}
               id_post={post._id}
               isRepost={post.isRepost}
+              likes={post.likes}
+              commentaries={post.commentaries}
             />
           ))}
       </div>

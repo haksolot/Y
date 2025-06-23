@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { getUserIdFromCookie } from "../services/authService";
 import { getProfileByUserId, getProfileById } from "../services/profileService";
 import Follow from "./Follow";
-function FollowingModal({ onClose }) {
+function FollowingModal({ onClose, followingProfiles }) {
   const [followings, setFollowing] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
   useEffect(() => {
@@ -52,11 +52,8 @@ function FollowingModal({ onClose }) {
       >
         <h2 className="text-2xl font-koulen mb-4 text-[#ff6600]">Yolowing</h2>
         <ul className="max-h-64 overflow-y-auto">
-          {followings.map((following) => (
-            <li
-              key={following.id}
-              className="flex items-center gap-4 m-4 p-2"
-            >
+          {followingProfiles.map((following) => (
+            <li key={following.id} className="flex items-center gap-4 m-4 p-2">
               <img
                 src={following.avatar}
                 className={`cursor-pointer object-cover w-10 h-10 aspect-square bg-[#ff6600] rounded-xl ring-1 ring-[#ff6600] ring-offset-1 ring-offset-transparent`}
