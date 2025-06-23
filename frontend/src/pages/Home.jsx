@@ -70,6 +70,8 @@ function Home() {
               content={post.content}
               dateCreation={new Date(post.created_at).toLocaleString("fr-FR")}
               id_post={post._id}
+              onPostCreated={handlePostCreated}
+              isRepost={post.isRepost}
             />
           ))}
       </div>

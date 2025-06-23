@@ -43,7 +43,6 @@ const getAllPosts = async (req, res) => {
   }
 };
 
-
 const getPostById = async (req, res) => {
   try {
     const { id } = req.query;
@@ -146,9 +145,11 @@ const repost = async (req, res) => {
     const newPost = new Post({
       id_profile: new_id_profile,
       content: post.content,
-      commentaries: [],
+      commentaries: post.commentaries,
       likes: [],
-      created_at: new Date(), 
+      created_at: new Date(),
+      isRepost: true,
+      originalPostId: originalPost,
     });
 
     await newPost.save();

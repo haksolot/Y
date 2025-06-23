@@ -25,6 +25,14 @@ const PostSchema = new mongoose.Schema({
       ref: "Profile",
     },
   ],
+  isRepost: {
+    type: Boolean,
+    default: false,
+  },
+  originalPostId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Post",
+  },
 });
 
 const CommentSchema = new mongoose.Schema({
@@ -45,7 +53,7 @@ const CommentSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: "Commentaries",
     },
-  ]
+  ],
 });
 
 const Post = mongoose.model("Post", PostSchema);
