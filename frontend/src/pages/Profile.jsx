@@ -3,7 +3,7 @@ import Post from "../components/ProfilePost.jsx";
 import ProfileEditModal from "../components/ProfileEditModal.jsx";
 import { getPostByIdProfile } from "../services/postService.js";
 import { getUserIdFromCookie, getUserById } from "../services/authService.js";
-import { apiAuth } from "../utils/axios.js";
+
 import {
   getProfileByUserId,
   getProfileById,
@@ -22,7 +22,6 @@ function Profile({ onClick }) {
   const [username, setUsername] = useState();
   const [bio, setBio] = useState();
   const [avatar, setAvatar] = useState();
-
   const handleProfileUpdated = (updated) => {
     setDisplayName(updated.name);
     setBio(updated.description);
@@ -57,6 +56,22 @@ function Profile({ onClick }) {
   }, [posts]);
 
   useEffect(() => {
+    setnumberFollowing(numberFollowing);
+  }, [numberFollowing]);
+
+  useEffect(() => {
+    if (!showFollowersModal || !showFollowingModal) {
+      async function updateFollowingCount() {
+        const userId = await getUserIdFromCookie();
+        const profile = await getProfileByUserId(userId);
+        console.log("profile", profile.following.length);
+        setnumberFollowing(profile.following.length);
+      }
+      updateFollowingCount();
+    }
+  }, [showFollowersModal, showFollowingModal]);
+
+  useEffect(() => {
     async function getProfile() {
       const userId = await getUserIdFromCookie();
       const user = await getUserById(userId);
@@ -85,7 +100,7 @@ function Profile({ onClick }) {
           </div>
           <div onClick={() => setProfileEdit(true)}>
             <svg
-              class="w-6 h-6 aspect-square cursor-pointer"
+              className="w-6 h-6 aspect-square cursor-pointer"
               viewBox="0 0 25 25"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -151,7 +166,9 @@ function Profile({ onClick }) {
                 fill="#FF6600"
               />
             </svg>
-            <p className="select-none mt-2 font-roboto text-sm text-white">Yolowers</p>
+            <p className="select-none mt-2 font-roboto text-sm text-white">
+              Yolowers
+            </p>
             <p className="mt-4 font-koulen text-sm text-[#ff6600]">
               {numberFollowers}
             </p>
@@ -186,7 +203,9 @@ function Profile({ onClick }) {
               />
             </svg>
 
-            <p className="select-none mt-2 font-roboto text-sm text-white">Yolowing</p>
+            <p className="select-none mt-2 font-roboto text-sm text-white">
+              Yolowing
+            </p>
             <p className="mt-4 font-koulen text-sm text-[#ff6600]">
               {numberFollowing}
             </p>
@@ -210,7 +229,9 @@ function Profile({ onClick }) {
                 fill="#FF6600"
               />
             </svg>
-            <p className="select-none mt-4 font-roboto text-sm text-white">Yeets</p>
+            <p className="select-none mt-4 font-roboto text-sm text-white">
+              Yeets
+            </p>
             <p className="mt-4 font-koulen text-sm text-[#ff6600]">
               {numberPost}
             </p>
@@ -233,6 +254,8 @@ function Profile({ onClick }) {
               dateCreation={new Date(post.created_at).toLocaleString("fr-FR")}
               id_post={post._id}
               isRepost={post.isRepost}
+              likes={post.likes}
+              commentaries={post.commentaries}
             />
           ))}
       </div>
