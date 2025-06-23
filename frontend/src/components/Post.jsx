@@ -56,6 +56,7 @@ function Post({
       if (!profileName) return;
 
       const userIdByCookie = await getUserIdFromCookie();
+
       const profile = await getProfileByUserId(userIdByCookie);
       setCurrentProfile(profile._id);
       const following = profile.following || [];
@@ -85,6 +86,7 @@ function Post({
   async function handleAddingFollowers(profileName) {
     const userId = await getUserIdFromCookie();
     const userTargeted = await getUserByProfileName(profileName);
+    if (userId === userTargeted._id) return;
     const profileTargeted = await getProfileByUserId(userTargeted._id);
 
     const currentUserProfile = await getProfileByUserId(userId);
