@@ -16,7 +16,7 @@ function ProfileEditModal({
   const [preview, setPreview] = useState(null);
   const [name, setName] = useState(displayName);
   const [description, setDescription] = useState(bio);
-  const [avatarBase64, setAvatarBase64] = useState(null);
+  const [avatarBase64, setAvatarBase64] = useState(avatar);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 10);
