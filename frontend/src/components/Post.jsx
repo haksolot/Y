@@ -169,7 +169,14 @@ function Post({
             >
               {display_name}
             </div>
-
+            {showProfileModal && (
+              <ProfileModal
+                onClose={() => setProfileModal(false)}
+                displayName={display_name}
+                profileName={profileName}
+                avatar={avatar}
+              />
+            )}
             <div
               id="date-creation"
               className="text-white font-roboto text-sm bg-[#1F1F1F] pl-2 pr-2"
@@ -191,7 +198,7 @@ function Post({
                   fill="#ff6600"
                 />
               </svg>
-              Reposted
+              Reyeet
             </div>
           )}
         </div>

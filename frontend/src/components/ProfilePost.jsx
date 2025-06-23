@@ -49,7 +49,7 @@ function ProfilePost({
                   fill="#ff6600"
                 />
               </svg>
-              Reposted
+              Reyeet
             </div>
           )}
         </div>
