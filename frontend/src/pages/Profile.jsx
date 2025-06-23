@@ -151,7 +151,7 @@ function Profile({ onClick }) {
                 fill="#FF6600"
               />
             </svg>
-            <p className="mt-2 font-roboto text-sm text-white">Yolowers</p>
+            <p className="select-none mt-2 font-roboto text-sm text-white">Yolowers</p>
             <p className="mt-4 font-koulen text-sm text-[#ff6600]">
               {numberFollowers}
             </p>
@@ -186,7 +186,7 @@ function Profile({ onClick }) {
               />
             </svg>
 
-            <p className="mt-2 font-roboto text-sm text-white">Yolowing</p>
+            <p className="select-none mt-2 font-roboto text-sm text-white">Yolowing</p>
             <p className="mt-4 font-koulen text-sm text-[#ff6600]">
               {numberFollowing}
             </p>
@@ -210,7 +210,7 @@ function Profile({ onClick }) {
                 fill="#FF6600"
               />
             </svg>
-            <p className="mt-4 font-roboto text-sm text-white">Yeets</p>
+            <p className="select-none mt-4 font-roboto text-sm text-white">Yeets</p>
             <p className="mt-4 font-koulen text-sm text-[#ff6600]">
               {numberPost}
             </p>
