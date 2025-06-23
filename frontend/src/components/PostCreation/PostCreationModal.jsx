@@ -49,13 +49,13 @@ function PostCreationModal({ onClose, onPostCreated }) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`bg-[#1F1F1F] text-white p-6 rounded-xl w-11/12 sm:w-2/3 md:w-1/2 lg:w-1/3 shadow-xl ring-2 ring-[#ff6600] transition-transform duration-300 ${
+        className={`bg-white dark:bg-[#1F1F1F] p-6 rounded-xl w-11/12 sm:w-2/3 md:w-1/2 lg:w-1/3 shadow-xl ring-2 ring-[#ff6600] transition-transform duration-300 ${
           isVisible ? "scale-100" : "scale-90"
         }`}
       >
         <textarea
           placeholder="Write something here..."
-          className="w-full h-40 p-3 rounded bg-[#1F1F1F] text-white font-roboto text-base resize-none outline-none"
+          className="w-full h-40 p-3 rounded bg-white dark:bg-[#1F1F1F] font-roboto text-base resize-none outline-none"
           value={content}
           maxLength={280}
           onChange={(e) => setContent(e.target.value)}

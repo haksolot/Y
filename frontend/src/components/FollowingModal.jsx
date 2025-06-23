@@ -56,7 +56,7 @@ function FollowingModal({ onClose }) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`bg-[#1F1F1F] ring-2 ring-[#ff6600] text-white p-6 rounded-xl shadow-xl transition-transform duration-300 ${
+        className={`bg-white dark:bg-[#1F1F1F] ring-2 ring-[#ff6600] p-6 rounded-xl shadow-xl transition-transform duration-300 ${
           isVisible ? "scale-100" : "scale-90"
         } max-w-[90vw] min-w-[300px] h-auto overflow-y-auto scrollbar`}
       >
@@ -68,7 +68,7 @@ function FollowingModal({ onClose }) {
                 src={following.avatar}
                 className={`cursor-pointer object-cover w-10 h-10 aspect-square bg-[#ff6600] rounded-xl ring-1 ring-[#ff6600] ring-offset-1 ring-offset-transparent`}
               />
-              <span className="text-white font-koulen text-base">
+              <span className="font-koulen text-base">
                 {following.display_name}
               </span>
               <svg

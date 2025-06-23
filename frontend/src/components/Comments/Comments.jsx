@@ -124,8 +124,8 @@ function Comments({ onClose, id_post, onPostCreated }) {
                 isVisible ? "scale-100" : "scale-90"
               }`}
       >
-        <div className="max-h-[80vh] overflow-y-auto bg-[#1F1F1F] p-6 pb-28">
-          <h2 className="text-white text-xl font-bold mb-6">Comments</h2>
+        <div className="max-h-[80vh] dark:bg-[#1F1F1F] bg-white overflow-y-auto p-6 pb-28">
+          <h2 className="text-xl font-bold mb-6">Comments</h2>
           <div className="flex flex-col items-center gap-6">
             {comments
               .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
@@ -154,15 +154,15 @@ function Comments({ onClose, id_post, onPostCreated }) {
           onClick={(e) => e.stopPropagation()}
           id="post-comment-button"
           className="flex flex-1 items-center gap-4 px-6 py-2
-                     bg-gradient-to-b from-transparent to-[#1F1F1F] 
+          dark:bg-gradient-to-b from-transparent to-[#1F1F1F]
                      backdrop-blur-md rounded-2xl ring-2 ring-[#ff6600] 
-                     text-[#ffffffcc] text-sm font-roboto select-none z-50"
+                      text-sm font-roboto select-none z-50"
         >
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder="Write something here..."
-            className="h-8 resize-none outline-none bg-transparent text-white 
+            className="h-8 resize-none outline-none bg-transparent
                        font-roboto text-base leading-[2] flex-1"
           />
           <svg

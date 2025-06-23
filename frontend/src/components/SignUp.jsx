@@ -62,7 +62,7 @@ const SignUpModal = ({ isOpen, onClose }) => {
     <div className="shadow-[0_10px_30px_-5px_rgba(0,0,0,0.6)] fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50">
       <div
         onClick={(e) => e.stopPropagation()}
-        className="animate-fadeIn delay-50 relative bg-[#1F1F1F] rounded-[6vw] p-6 w-10/12 min-h-[30vh] shadow-lg md:rounded-[1vw] md:w-[600px] md:h-[600px]"
+        className="animate-fadeIn delay-50 relative bg-white dark:bg-[#1F1F1F] rounded-[6vw] p-6 w-10/12 min-h-[30vh] shadow-lg md:rounded-[1vw] md:w-[600px] md:h-[600px]"
       >
         <button
           onClick={onClose}
@@ -102,14 +102,14 @@ const SignUpModal = ({ isOpen, onClose }) => {
             />
           </div>
           <div className="modal-body w-full h-2/3 flex flex-col">
-            <h1 className="font-koulen text-white text-xl md:text-4xl">
+            <h1 className="font-koulen text-xl md:text-4xl">
               Create your account.
             </h1>
           </div>
           <div className="relative flex flex-col gap-6 md:gap-10">
             <div>
               <div className="relative w-70 mt-6">
-                <label className="font-koulen absolute -top-3 left-9 px-3 bg-[#1F1F1F] text-xl text-white md:text-2xl">
+                <label className="font-koulen absolute -top-3 left-9 px-3 bg-white dark:bg-[#1F1F1F] text-xl md:text-2xl">
                   Pseudo
                 </label>
                 <input
@@ -121,7 +121,7 @@ const SignUpModal = ({ isOpen, onClose }) => {
                   required
                   className={`font-roboto text-sm pl-11 block w-full rounded-[8vw] border-2 ${
                     errorPseudo ? "border-red-500" : "border-[#FF6600]"
-                  } bg-transparent py-3 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 ${
+                  } bg-transparent py-3 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 ${
                     errorPseudo ? "focus:ring-red-500" : "focus:ring-[#FF6600]"
                   } md:rounded-[0.9vw] md:py-4`}
                 />
@@ -130,7 +130,7 @@ const SignUpModal = ({ isOpen, onClose }) => {
                 )}
               </div>
               <div className="relative w-70 mt-6">
-                <label className="font-koulen absolute -top-3 left-9 px-3 bg-[#1F1F1F] text-xl text-white md:text-2xl">
+                <label className="font-koulen absolute -top-3 left-9 px-3 bg-white dark:bg-[#1F1F1F] text-xl md:text-2xl">
                   Email
                 </label>
                 <input
@@ -142,7 +142,7 @@ const SignUpModal = ({ isOpen, onClose }) => {
                   required
                   className={`font-roboto text-sm pl-11 block w-full rounded-[8vw] border-2 ${
                     errorEmail ? "border-red-500" : "border-[#FF6600]"
-                  } bg-transparent py-3 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 ${
+                  } bg-transparent py-3 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 ${
                     errorEmail ? "focus:ring-red-500" : "focus:ring-[#FF6600]"
                   } md:rounded-[0.9vw] md:py-4`}
                 />
@@ -151,7 +151,7 @@ const SignUpModal = ({ isOpen, onClose }) => {
                 )}
               </div>
               <div className="relative w-70 mt-6">
-                <label className="font-koulen absolute -top-3 left-9 px-3 bg-[#1F1F1F] text-xl text-white md:text-2xl">
+                <label className="font-koulen absolute -top-3 left-9 px-3 bg-white dark:bg-[#1F1F1F] text-xl md:text-2xl">
                   Password
                 </label>
                 <input
@@ -163,7 +163,7 @@ const SignUpModal = ({ isOpen, onClose }) => {
                   required
                   className={`font-roboto text-sm pl-11 block w-full rounded-[8vw] border-2 ${
                     errorPassword ? "border-red-500" : "border-[#FF6600]"
-                  } bg-transparent py-3 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 ${
+                  } bg-transparent py-3 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 ${
                     errorPassword
                       ? "focus:ring-red-500"
                       : "focus:ring-[#FF6600]"
@@ -191,7 +191,7 @@ const SignUpModal = ({ isOpen, onClose }) => {
             <button
               type="submit"
               onClick={create}
-              className="text-sm mx-auto shadow-[3px_2px_8.3px_3px_rgba(0,0,0,0.25)] transition delay-50 bg-[#FF6600] font-roboto border-2 border-[#FF6600] hover:bg-transparent text-white py-2 px-4 rounded-[8vw] w-28 md:py-4 md:rounded-[0.9vw] md:w-80"
+              className="text-sm mx-auto shadow-[3px_2px_8.3px_3px_rgba(0,0,0,0.25)] transition delay-50 bg-[#FF6600] font-roboto border-2 border-[#FF6600] hover:bg-transparent py-2 px-4 rounded-[8vw] w-28 md:py-4 md:rounded-[0.9vw] md:w-80"
             >
               Sign Up
             </button>

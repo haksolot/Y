@@ -95,7 +95,7 @@ function Profile({ onClick }) {
         className="relative left-1/2 -translate-x-1/2 flex flex-col gap-4 w-9/12 sm:w-3/4 md:w-3/5 pt-20"
       >
         <div id="first" className="flex flex-row items-center gap-4">
-          <div id="display-name" className="font-koulen text-4xl text-white">
+          <div id="display-name" className="font-koulen text-4xl">
             {displayName}
           </div>
           <div onClick={() => setProfileEdit(true)}>
@@ -132,22 +132,22 @@ function Profile({ onClick }) {
           <div id="info" className="flex flex-col gap-2">
             <div
               id="username"
-              className="font-roboto font-bold text-white text-sm"
+              className="font-roboto font-bold text-sm"
             >
               @{username}
             </div>
-            <div id="bio" className="font-roboto text-white text-base">
+            <div id="bio" className="font-roboto text-base">
               {bio}
             </div>
           </div>
         </div>
         <div
           id="dividing-line"
-          className="pt-4 border-b-2 border-[#ffffff] w-full h-1"
+          className="pt-4 border-b-2 border-black dark:border-white w-full h-1"
         ></div>
 
-        <div class="flex items-center justify-around">
-          <div class="flex flex-col items-center">
+        <div className="flex items-center justify-around">
+          <div className="flex flex-col items-center">
             <svg
               className="cursor-pointer"
               onClick={() => setFollowersModal(true)}
@@ -166,7 +166,7 @@ function Profile({ onClick }) {
                 fill="#FF6600"
               />
             </svg>
-            <p className="select-none mt-2 font-roboto text-sm text-white">
+            <p className="select-none mt-2 font-roboto text-sm ">
               Yolowers
             </p>
             <p className="mt-4 font-koulen text-sm text-[#ff6600]">
@@ -179,7 +179,7 @@ function Profile({ onClick }) {
               username={username}
             />
           )}
-          <div class="flex flex-col items-center">
+          <div className="flex flex-col items-center">
             <svg
               className="cursor-pointer"
               onClick={() => setFollowingModal(true)}
@@ -203,7 +203,7 @@ function Profile({ onClick }) {
               />
             </svg>
 
-            <p className="select-none mt-2 font-roboto text-sm text-white">
+            <p className="select-none mt-2 font-roboto text-sm">
               Yolowing
             </p>
             <p className="mt-4 font-koulen text-sm text-[#ff6600]">
@@ -216,7 +216,7 @@ function Profile({ onClick }) {
               username={username}
             />
           )}
-          <div class="flex flex-col items-center">
+          <div className="flex flex-col items-center">
             <svg
               width="28"
               height="28"
@@ -229,7 +229,7 @@ function Profile({ onClick }) {
                 fill="#FF6600"
               />
             </svg>
-            <p className="select-none mt-4 font-roboto text-sm text-white">
+            <p className="select-none mt-4 font-roboto text-sm">
               Yeets
             </p>
             <p className="mt-4 font-koulen text-sm text-[#ff6600]">
