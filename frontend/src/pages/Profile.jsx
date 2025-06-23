@@ -232,6 +232,7 @@ function Profile({ onClick }) {
               content={post.content}
               dateCreation={new Date(post.created_at).toLocaleString("fr-FR")}
               id_post={post._id}
+              isRepost={post.isRepost}
             />
           ))}
       </div>
