@@ -1,0 +1,111 @@
+﻿version: "3.8"
+
+services:
+  # Auth service + mongo
+  auth:
+    build: ./backend/auth-service
+    restart: unless-stopped
+    # ports:
+    #   - "3001:3000"
+    environment:
+      - MONGO_URI=mongodb://auth-mongo:27017/authdb
+      - PORT=3000
+      - API_URL=${API_URL:-https://localhost:443}
+      - ACCESS_JWT_KEY=${ACCESS_JWT_KEY:-cle}
+    depends_on:
+      - auth-mongo
+    networks:
+      - app-network
+
+  auth-mongo:
+    image: mongo:6
+    restart: unless-stopped
+    volumes:
+      - auth-mongo-data:/data/db
+    networks:
+      - app-network
+
+  # Profile service + mongo
+  profile:
+    build: ./backend/profile-service
+    restart: unless-stopped
+    # ports:
+    #   - "3003:3000"
+    environment:
+      - MONGO_URI=mongodb://profile-mongo:27017/profiledb
+      - PORT=3000
+      - API_URL=${API_URL:-https://localhost:443}
+      - ACCESS_JWT_KEY=${ACCESS_JWT_KEY:-cle}
+    depends_on:
+      - profile-mongo
+    networks:
+      - app-network
+
+  profile-mongo:
+    image: mongo:6
+    restart: unless-stopped
+    volumes:
+      - profile-mongo-data:/data/db
+    networks:
+      - app-network
+
+  # Post service + mongo
+  post:
+    build: ./backend/post-service
+    restart: unless-stopped
+    # ports:
+    #   - "3002:3000"
+    environment:
+      - MONGO_URI=mongodb://post-mongo:27017/postdb
+      - PORT=3000
+      - API_URL=${API_URL:-https://localhost:443}
+      - ACCESS_JWT_KEY=${ACCESS_JWT_KEY:-cle}
+    depends_on:
+      - post-mongo
+    networks:
+      - app-network
+
+  post-mongo:
+    image: mongo:6
+    restart: unless-stopped
+    volumes:
+      - post-mongo-data:/data/db
+    networks:
+      - app-network
+
+  # Frontend service - nginx will serve it
+  frontend:
+    build: ./frontend
+
+    # restart: unless-stopped
+    # ports:
+    #   - "80:80"
+    environment:
+      - API_URL=${API_URL:-https://localhost:443}
+    # - NODE_ENV=production
+
+  # Nginx reverse proxy + HTTPS
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    ports:
+      - "443:443"
+    depends_on:
+      - frontend
+      - auth
+      - profile
+      - post
+    volumes:
+      - ./certs:/etc/nginx/certs:ro
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - app-network
+
+volumes:
+  auth-mongo-data:
+  profile-mongo-data:
+  post-mongo-data:
+
+networks:
+  app-network:
