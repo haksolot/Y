@@ -123,6 +123,18 @@ const deletePost = async (req, res) => {
   }
 };
 
+const deletePostByIdProfile = async (req, res) => {
+  try {
+    const { id_profile } = req.query;
+    const posts = await Post.deleteMany({ id_profile });
+    return res.status(200).json(posts);
+  } catch (err) {
+    return res.status(500).json({
+      msg: err,
+    });
+  }
+};
+
 const updatePost = async (req, res) => {
   try {
     const { postId, content } = req.body;
@@ -173,4 +185,5 @@ module.exports = {
   deletePost,
   updatePost,
   repost,
+  deletePostByIdProfile,
 };

@@ -48,3 +48,13 @@ export const createProfile = async (id, profile) => {
   const res = await apiProfile.post(`/${id}`, profile);
   return res.data;
 };
+
+export const deleteProfile = async (userId) => {
+  try {
+    const res = await apiProfile.delete(`/${userId}`);
+    return res.data;
+  } catch (error) {
+    console.error("Erreur lors de la suppression du profil :", error);
+    throw error;
+  }
+};

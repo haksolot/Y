@@ -33,6 +33,9 @@ function Home() {
     getPosts();
   }, []);
 
+  const handlePostDeleted = (deletedId) => {
+    setPosts((prevPosts) => prevPosts.filter((post) => post._id !== deletedId));
+  };  
   async function handlePostCreated(newPost) {
     const profile = await getProfileById(newPost.id_profile);
     const user = await getUserById(profile.userId);
@@ -75,6 +78,7 @@ function Home() {
               id_post={post._id}
               onPostCreated={handlePostCreated}
               isRepost={post.isRepost}
+              onDelete={handlePostDeleted}
             />
           ))}
       </div>

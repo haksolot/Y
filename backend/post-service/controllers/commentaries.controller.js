@@ -17,7 +17,11 @@ const createComment = async (req, res) => {
     return res.status(400).json({ msg: "Missing parameters" });
   }
   try {
-    const newComment = await createCommentObject(id_profile, content, created_at);
+    const newComment = await createCommentObject(
+      id_profile,
+      content,
+      created_at
+    );
     return res.status(201).json({
       msg: "New Comment created !",
       newComment,
@@ -56,7 +60,11 @@ const replyToComment = async (req, res) => {
     if (!id_profile || !id_comment || !content_reply || !created_at) {
       return res.status(400).json({ msg: "Missing parameters" });
     }
-    const replyComment = await createCommentObject(id_profile, content_reply, created_at);
+    const replyComment = await createCommentObject(
+      id_profile,
+      content_reply,
+      created_at
+    );
     const comment = await Commentaries.findById(id_comment);
     if (!comment) {
       return res.status(404).json({ msg: "Comment not found" });
@@ -69,10 +77,22 @@ const replyToComment = async (req, res) => {
   }
 };
 
+const deleteCommentByIdProfile = async (req, res) => {
+  try {
+    const { id_profile } = req.query;
+    const commentaries = await Commentaries.deleteMany({ id_profile });
+    return res.status(200).json(commentaries);
+  } catch (err) {
+    return res.status(500).json({
+      msg: err,
+    });
+  }
+};
 
 module.exports = {
   createComment,
   getAllCommentaries,
   getCommentById,
   replyToComment,
+  deleteCommentByIdProfile,
 };

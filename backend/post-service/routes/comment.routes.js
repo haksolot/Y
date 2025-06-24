@@ -16,5 +16,10 @@ router.post(
   commentariesController.replyToComment
 );
 
+router.delete(
+  "/deleteCommentByIdProfile",
+  verifyToken,
+  commentariesController.deleteCommentByIdProfile
+);
+
 module.exports = router;
-  

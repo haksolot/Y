@@ -21,8 +21,8 @@ exports.updateProfile = async (userId, updates) => {
   );
 };
 
-exports.deleteProfile = async (userId) => {
-  const result = await Profile.findOneAndDelete({ userId });
+exports.deleteProfile = async (id) => {
+  const result = await Profile.findOneAndDelete({ userId:id });
   return result !== null;
 };
 

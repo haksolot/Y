@@ -1,5 +1,6 @@
 ﻿import { useState, useEffect } from "react";
 import ProfileModal from "./ProfileModal";
+import ProfilePostDeleteModal from "./ProfilePostDeleteModal";
 import Comments from "./Comments/Comments";
 import {
   getUserById,
@@ -9,7 +10,6 @@ import {
 import {
   addLikeOnPost,
   deleteLikeOnPost,
-  getAllPosts,
   getPostById,
   repost,
 } from "../services/postService";
@@ -33,6 +33,7 @@ function Post({
   avatar,
   onPostCreated,
   isRepost,
+  onDelete
 }) {
   const [showProfileModal, setProfileModal] = useState(false);
   const [showComments, setShowComments] = useState(false);
@@ -40,6 +41,9 @@ function Post({
   const [liked, setLiked] = useState(false);
   const [isFollowing, setIsFollowing] = useState(null); // null = pas encore chargé
   const [currentProfile, setCurrentProfile] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [showProfilePostDeleteModal, setProfilePostDeleteModal] =
+    useState(false);
 
   useEffect(() => {
     async function LikedStatus() {
@@ -58,7 +62,9 @@ function Post({
       if (!profileName) return;
 
       const userIdByCookie = await getUserIdFromCookie();
-
+      const user = await getUserById(userIdByCookie);
+      setCurrentUser(user);
+      console.log("user", currentUser);
       const profile = await getProfileByUserId(userIdByCookie);
       setCurrentProfile(profile._id);
       const following = profile.following || [];
@@ -96,7 +102,6 @@ function Post({
     const userId = await getUserIdFromCookie();
     const profile = await getProfileByUserId(userId);
     const userTargeted = await getUserByProfileName(profileName);
-    // if (userId === userTargeted._id) return;
     const profileTargeted = await getProfileByUserId(userTargeted._id);
 
     const currentUserProfile = await getProfileByUserId(userId);
@@ -305,6 +310,34 @@ function Post({
               />
             </svg>
           </div>
+          {currentUser?.role === "Moderator" && (
+            <div
+              id="trash-button"
+              onClick={() => setProfilePostDeleteModal(true)}
+            >
+              <svg
+                className="w-5 h-5 aspect-square cursor-pointer"
+                viewBox="0 0 24 28"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M7.24286 0.967969L6.85714 1.75H1.71429C0.766071 1.75 0 2.53203 0 3.5C0 4.46797 0.766071 5.25 1.71429 5.25H22.2857C23.2339 5.25 24 4.46797 24 3.5C24 2.53203 23.2339 1.75 22.2857 1.75H17.1429L16.7571 0.967969C16.4679 0.371875 15.8732 0 15.225 0H8.775C8.12679 0 7.53214 0.371875 7.24286 0.967969ZM22.2857 7H1.71429L2.85 25.5391C2.93571 26.9227 4.06071 28 5.41607 28H18.5839C19.9393 28 21.0643 26.9227 21.15 25.5391L22.2857 7Z"
+                  fill="#FF6600"
+                />
+              </svg>
+            </div>
+          )}
+          {showProfilePostDeleteModal && (
+            <ProfilePostDeleteModal
+              onClose={() => setProfilePostDeleteModal(false)}
+              id_post={id_post}
+              onDelete={() => {
+                setProfilePostDeleteModal(false);
+                onDelete?.(id_post); 
+              }}
+            />
+          )}
         </div>
       </div>
     </>
