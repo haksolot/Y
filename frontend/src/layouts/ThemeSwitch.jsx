@@ -7,7 +7,7 @@ export default function ThemeSwitch() {
   return (
     <button
       onClick={toggleDarkMode}
-      className="fixed top-4 right-4 px-3 py-2 rounded bg-white text-gray-900 dark:bg-[#1F1F1F] dark:text-gray-100 z-50"
+      className="fixed top-4 right-4 px-3 py-2 rounded bg-transparent text-gray-900 dark:text-gray-100 z-50"
     >
       <svg
         width="18"

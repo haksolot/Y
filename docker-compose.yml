@@ -97,8 +97,10 @@ services:
     build:
       context: .
       dockerfile: nginx/Dockerfile
-    environment:
-      - API_URL=${API_URL:-https://localhost:443}
+      args:
+        VITE_API_URL: ${VITE_API_URL:-https://localhost:443}
+    # environment:
+    #   - API_URL=${API_URL:-https://localhost:443}
     ports:
       - "443:443"
     depends_on:

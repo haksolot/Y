@@ -22,7 +22,7 @@ module.exports = {
       addUtilities({
         ".scrollbar": {
           "scrollbar-width": "thin",
-          "scrollbar-color": "#ff6600 #1F1F1F",
+          "scrollbar-color": "#ff6600 transparent",
         },
         ".scrollbar::-webkit-scrollbar": {
           width: "6px",

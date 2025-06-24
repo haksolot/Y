@@ -7,7 +7,6 @@ function Notif({
   type_notif,
   created_at,
 }) {
-
   function parseDateFrenchFormat(dateStr) {
     const [datePart, timePart] = dateStr.split(" ");
     const [day, month, year] = datePart.split("/");
@@ -57,18 +56,18 @@ function Notif({
     <>
       <div
         id="post-container"
-        className={`h-fit w-100 relative rounded-2xl p-4 ring-2 ring-black dark:ring-white ${className}`}
+        className={`h-fit w-5/6 relative rounded-2xl p-4 ring-2 ring-black dark:ring-white flex flex-row gap-2 items-center ${className}`}
       >
+        <div id="profile-image" className="w-8 h-8 aspect-square flex-none">
+          <img
+            src={avatar}
+            className="w-8 h-8 aspect-square object-cover bg-[#ff6600] ring-[#ff6600] rounded-xl ring-2 flex-none shrink-0"
+          />
+        </div>
         <div
           id="message"
-          className="flex flex-row gap-2 items-center dark:text-white font-roboto text-base"
+          className=" dark:text-white font-roboto text-base"
         >
-          <div id="profile-image">
-            <img
-              src={avatar}
-              className="object-cover w-8 h-8 aspect-square bg-[#ff6600] ring-[#ff6600] rounded-xl ring-2 flex-shrink-0"
-            />
-          </div>
           {messageNotif}
         </div>
       </div>

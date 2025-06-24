@@ -3,7 +3,7 @@
     <div
       onClick={onClick}
       id="post-button"
-      className={`text-[#ffffff66] text-sm select-none font-roboto text-nowrap gap-8 p-0 pl-6 pr-4 items-center flex dark:bg-gradient-to-b from-transparent to-[#1F1F1F] backdrop-blur-md rounded-2xl ring-2 ring-[#ff6600] cursor-pointer ${className}`}
+      className={`text-black dark:text-[#ffffff66]  text-sm select-none font-roboto text-nowrap gap-8 p-0 pl-6 pr-4 items-center flex dark:bg-gradient-to-b from-transparent to-[#1F1F1F] backdrop-blur-md rounded-2xl ring-2 ring-[#ff6600] cursor-pointer ${className}`}
     >
       Type something in here...
       <svg
