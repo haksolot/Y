@@ -17,7 +17,7 @@ import {
   getProfileByUserId,
   unfollowProfile,
 } from "../services/profileService";
-
+import { createNotif } from "../services/notifService";
 function PostNotif({
   className = "",
   onClick,
@@ -72,6 +72,7 @@ function PostNotif({
 
   async function handleAddingFollowers(profileName) {
     const userId = await getUserIdFromCookie();
+    const profile = await getProfileByUserId(userId);
     const userTargeted = await getUserByProfileName(profileName);
     const profileTargeted = await getProfileByUserId(userTargeted._id);
 
@@ -84,8 +85,20 @@ function PostNotif({
 
     if (currentlyFollowing) {
       await unfollowProfile(userId, profileTargeted._id);
+      await createNotif({
+        id_sender: profile._id,
+        id_receiver: profileTargeted._id,
+        type_notif: "unfollow",
+        created_at: new Date(),
+      });
     } else {
       await followProfile(userId, profileTargeted._id);
+      await createNotif({
+        id_sender: profile._id,
+        id_receiver: profileTargeted._id,
+        type_notif: "follow",
+        created_at: new Date(),
+      });
     }
 
     const updatedUserProfile = await getProfileByUserId(userId);

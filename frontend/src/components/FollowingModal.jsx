@@ -6,7 +6,7 @@ import {
   getProfileById,
   unfollowProfile,
 } from "../services/profileService";
-import Follow from "./Follow";
+import { createNotif } from "../services/notifService";
 function FollowingModal({ onClose }) {
   const [followings, setFollowing] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
@@ -24,7 +24,14 @@ function FollowingModal({ onClose }) {
 
   async function handleRemovingFollowers(profileName, profileId) {
     const userId = await getUserIdFromCookie();
+    const profile = await getProfileByUserId(userId);
     await unfollowProfile(userId, profileId);
+    await createNotif({
+      id_sender: profile._id,
+      id_receiver: profileId,
+      type_notif: "unfollow",
+      created_at: new Date(),
+    });
     setFollowing((prev) => prev.filter((profile) => profile._id !== profileId));
   }
 

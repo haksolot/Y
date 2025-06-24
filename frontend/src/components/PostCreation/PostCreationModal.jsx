@@ -2,7 +2,7 @@
 import ReactDOM from "react-dom";
 import { createPost } from "../../services/postService";
 import { getProfileByUserId } from "../../services/profileService";
-import { getUserById, getUserIdFromCookie } from "../../services/authService";
+import { getUserIdFromCookie } from "../../services/authService";
 function PostCreationModal({ onClose, onPostCreated }) {
   const [isVisible, setIsVisible] = useState(false);
   const [content, setContent] = useState("");

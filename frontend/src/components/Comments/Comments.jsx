@@ -12,6 +12,8 @@ import {
   getProfileByUserId,
   getProfileById,
 } from "../../services/profileService";
+import { createNotif } from "../../services/notifService";
+
 function Comments({ onClose, id_post, onPostCreated }) {
   const [isVisible, setIsVisible] = useState(false);
   const [comments, setComments] = useState([]);
@@ -85,10 +87,15 @@ function Comments({ onClose, id_post, onPostCreated }) {
       created_at: new Date().toISOString(),
       id_profile: profile._id || "Unknown",
     };
-
+    const post = await getPostById(id_post);
     const createdComment = await createComment(newComment);
     await addCommentOnPost(id_post, createdComment.newComment._id);
-    console.log("createdComment", createdComment.newComment);
+    await createNotif({
+      id_sender: profile._id,
+      id_receiver: post.id_profile,
+      type_notif: "comment",
+      created_at: new Date(),
+    });
     const new_comment_profile = await getProfileById(
       createdComment.newComment.id_profile
     );

@@ -1,5 +1,6 @@
 import { apiAuth, apiPost, apiComment } from "../utils/axios";
 import { getUserIdFromCookie } from "./authService";
+import { createNotif } from "./notifService";
 export const createPost = async (post) => {
   try {
     const res = await apiPost.post("/createPost", post);
