@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL = import.meta.env.API_URL || "https://localhost:443";
+const BASE_URL = import.meta.env.VITE_API_URL || "https://localhost:443";
 // ou .env : VITE_API_URL=https://192.168.1.42
 
 

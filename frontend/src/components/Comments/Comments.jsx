@@ -197,7 +197,7 @@ function Comments({ onClose, id_post, onPostCreated }) {
               cx="13.5"
               cy="13.5"
               r="12.5"
-              fill="#1F1F1F"
+              fill="none"
               stroke="#FF6600"
               strokeWidth="2"
             />

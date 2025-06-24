@@ -51,7 +51,7 @@ const SignInModal = ({ isOpen, onClose, onSwitch }) => {
       >
         <button
           onClick={onClose}
-          className="absolute -top-8 -right-12 w-[60px] h-[60px] bg-transparent border-none cursor-pointer z-10 md:-right-9 md:w-[90px] md:h-[90px]"
+          className="absolute -top-8 -right-7 w-[60px] h-[60px] bg-transparent border-none cursor-pointer z-10 md:-right-9 md:w-[90px] md:h-[90px] flex items-center justify-center"
           type="button"
         >
           <svg
@@ -64,7 +64,7 @@ const SignInModal = ({ isOpen, onClose, onSwitch }) => {
               cx="37"
               cy="37"
               r="34"
-              fill="#1F1F1F"
+              fill="none"
               stroke="#FF6600"
               stroke-width="6"
             />
