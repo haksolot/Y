@@ -1,7 +1,6 @@
 ﻿version: "3.8"
 
 services:
-  # Auth service + mongo
   auth:
     build: ./backend/auth-service
     restart: unless-stopped
@@ -25,7 +24,6 @@ services:
     networks:
       - app-network
 
-  # Profile service + mongo
   profile:
     build: ./backend/profile-service
     restart: unless-stopped
@@ -49,7 +47,6 @@ services:
     networks:
       - app-network
 
-  # Post service + mongo
   post:
     build: ./backend/post-service
     restart: unless-stopped
@@ -73,29 +70,42 @@ services:
     networks:
       - app-network
 
-  # Frontend service - nginx will serve it
-  frontend:
-    build: ./frontend
-
-    # restart: unless-stopped
+  notif:
+    build: ./backend/notif-service
+    restart: unless-stopped
     # ports:
-    #   - "80:80"
+    #   - "3004:3000"
     environment:
+      - MONGO_URI=mongodb://notif-mongo:27017/notifdb
+      - PORT=3000
       - API_URL=${API_URL:-https://localhost:443}
-    # - NODE_ENV=production
+      - ACCESS_JWT_KEY=${ACCESS_JWT_KEY:-cle}
+    depends_on:
+      - notif-mongo
+    networks:
+      - app-network
 
-  # Nginx reverse proxy + HTTPS
+  notif-mongo:
+    image: mongo:6
+    restart: unless-stopped
+    volumes:
+      - notif-mongo-data:/data/db
+    networks:
+      - app-network
+
   nginx:
     build:
       context: .
       dockerfile: nginx/Dockerfile
+    environment:
+      - API_URL=${API_URL:-https://localhost:443}
     ports:
       - "443:443"
     depends_on:
-      - frontend
       - auth
       - profile
       - post
+      - notif
     volumes:
       - ./certs:/etc/nginx/certs:ro
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
@@ -106,6 +116,7 @@ volumes:
   auth-mongo-data:
   profile-mongo-data:
   post-mongo-data:
+  notif-mongo-data:
 
 networks:
   app-network:

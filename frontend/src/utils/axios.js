@@ -30,7 +30,8 @@ export const apiProfile = axios.create({
 });
 
 export const apiNotif = axios.create({
-  baseURL: "http://localhost:3300/api/notif",
+  // baseURL: "http://localhost:3300/api/notif",
+  baseURL: BASE_URL + "/api/notif",
   withCredentials: true,
 })
 
