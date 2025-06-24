@@ -23,6 +23,7 @@ function Feed() {
 
           return posts.map((post) => ({
             ...post,
+            image: post.image,
             avatar: profile.avatar,
             displayName: profile.display_name,
             profileName: user.pseudo,
@@ -87,6 +88,7 @@ function Feed() {
               content={item.content}
               dateCreation={new Date(item.created_at).toLocaleString("fr-FR")}
               id_post={item._id}
+              image={item.image}
             />
           ) : (
             <Notif

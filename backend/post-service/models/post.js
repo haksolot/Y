@@ -33,6 +33,10 @@ const PostSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Post",
   },
+  image: {
+    type: String,
+    default: "",
+  },
 });
 
 const CommentSchema = new mongoose.Schema({

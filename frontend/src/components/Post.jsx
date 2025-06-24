@@ -26,6 +26,7 @@ function Post({
   onClick,
   profileName,
   content,
+  image,
   dateCreation,
   id_post,
   display_name,
@@ -239,6 +240,14 @@ function Post({
         >
           {content}
         </p>
+        {image && image !== "" && (
+          <img
+            src={image}
+            className="object-cover w-full h-full aspect-square rounded-xl"
+            alt="Post"
+          />
+        )}
+
         <div
           id="buttons-container"
           className="mt-2 left-1/2 -translate-x-1/2 pl-4 pr-4 absolute align-middle items-center flex flex-row gap-4 bg-white dark:bg-[#1F1F1F]"

@@ -255,6 +255,7 @@ function Profile({ onClick }) {
               id_post={post._id}
               isRepost={post.isRepost}
               likes={post.likes}
+              image={post.image} 
               commentaries={post.commentaries}
             />
           ))}
