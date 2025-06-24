@@ -11,6 +11,7 @@ function ProfilePost({
   isRepost,
   likes,
   commentaries,
+  image,
 }) {
   const [showProfilePostDeleteModal, setProfilePostDeleteModal] =
     useState(false);
@@ -35,27 +36,39 @@ function ProfilePost({
         >
           {dateCreation}
         </div>
-        <div className="flex flex-row justify-between items-center gap-10">
-          <p id="message" className="relative  font-roboto text-base">
-            {initialText}
-          </p>
+        <div className="flex flex-row justify-between items-center">
           <div className="flex flex-col">
-            {isRepost && (
-              <div className="flex items-center gap-1 text-xs font-koulen px-2 py-1 select-none whitespace-nowrap">
-                <svg
-                  viewBox="0 0 38 26"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-4 h-4 aspect-square"
-                >
-                  <path
-                    d="M18.2962 23.0435C19.4435 23.0435 20.3704 22.1076 20.3704 20.9491C20.3704 19.7906 19.4435 18.8547 18.2962 18.8547H11.0364C9.88905 18.8547 8.96212 17.9187 8.96212 16.7603V8.38259H11.0364C11.8725 8.38259 12.6309 7.87207 12.955 7.08667C13.2791 6.30126 13.0976 5.40458 12.5078 4.80244L8.3593 0.6136C7.54905 -0.204533 6.23321 -0.204533 5.42296 0.6136L1.27449 4.80244C0.678149 5.40458 0.503136 6.30126 0.827235 7.08667C1.15133 7.87207 1.90324 8.38259 2.7459 8.38259H4.82014V16.7603C4.82014 20.2291 7.60739 23.0435 11.0428 23.0435H18.3027H18.2962ZM20.3704 2.09933C19.2231 2.09933 18.2962 3.03527 18.2962 4.19375C18.2962 5.35222 19.2231 6.28817 20.3704 6.28817H27.6302C28.7775 6.28817 29.7045 7.22411 29.7045 8.38259V16.7603H27.6302C26.7941 16.7603 26.0357 17.2708 25.7116 18.0562C25.3875 18.8416 25.569 19.7383 26.1588 20.3404L30.3073 24.5293C31.1175 25.3474 32.4334 25.3474 33.2436 24.5293L37.3921 20.3404C37.9884 19.7383 38.1634 18.8416 37.8393 18.0562C37.5152 17.2708 36.7633 16.7603 35.9207 16.7603H33.8464V8.38259C33.8464 4.9137 31.0592 2.09933 27.6237 2.09933H20.3704Z"
-                    fill="#ff6600"
-                  />
-                </svg>
-                Reyeet
-              </div>
+            <p id="message" className="relative  font-roboto text-base">
+              {initialText}
+            </p>
+            {image && image !== "" && (
+              <img
+                src={image}
+                className="object-cover w-full h-full aspect-square rounded-xl"
+                alt="Post"
+              />
             )}
+          </div>
+
+          <div>
+            <div className="flex flex-col">
+              {isRepost && (
+                <div className="flex items-center gap-1 text-xs font-koulen px-2 py-1 select-none whitespace-nowrap">
+                  <svg
+                    viewBox="0 0 38 26"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-4 h-4 aspect-square"
+                  >
+                    <path
+                      d="M18.2962 23.0435C19.4435 23.0435 20.3704 22.1076 20.3704 20.9491C20.3704 19.7906 19.4435 18.8547 18.2962 18.8547H11.0364C9.88905 18.8547 8.96212 17.9187 8.96212 16.7603V8.38259H11.0364C11.8725 8.38259 12.6309 7.87207 12.955 7.08667C13.2791 6.30126 13.0976 5.40458 12.5078 4.80244L8.3593 0.6136C7.54905 -0.204533 6.23321 -0.204533 5.42296 0.6136L1.27449 4.80244C0.678149 5.40458 0.503136 6.30126 0.827235 7.08667C1.15133 7.87207 1.90324 8.38259 2.7459 8.38259H4.82014V16.7603C4.82014 20.2291 7.60739 23.0435 11.0428 23.0435H18.3027H18.2962ZM20.3704 2.09933C19.2231 2.09933 18.2962 3.03527 18.2962 4.19375C18.2962 5.35222 19.2231 6.28817 20.3704 6.28817H27.6302C28.7775 6.28817 29.7045 7.22411 29.7045 8.38259V16.7603H27.6302C26.7941 16.7603 26.0357 17.2708 25.7116 18.0562C25.3875 18.8416 25.569 19.7383 26.1588 20.3404L30.3073 24.5293C31.1175 25.3474 32.4334 25.3474 33.2436 24.5293L37.3921 20.3404C37.9884 19.7383 38.1634 18.8416 37.8393 18.0562C37.5152 17.2708 36.7633 16.7603 35.9207 16.7603H33.8464V8.38259C33.8464 4.9137 31.0592 2.09933 27.6237 2.09933H20.3704Z"
+                      fill="#ff6600"
+                    />
+                  </svg>
+                  Reyeet
+                </div>
+              )}
+            </div>
             <div className="flex items-center gap-1 text-xs font-koulen px-2 py-1 select-none whitespace-nowrap">
               <svg
                 viewBox="0 0 28 25"
@@ -86,6 +99,7 @@ function ProfilePost({
             </div>
           </div>
         </div>
+
         <div
           id="buttons-container"
           className="mt-2 left-1/2 -translate-x-1/2 pl-4 pr-4 dark:bg-[#1F1F1F] bg-white absolute align-middle items-center flex flex-row gap-4"

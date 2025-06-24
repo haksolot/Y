@@ -6,7 +6,8 @@ const axios = require("axios");
 
 const { Post } = require("../models/post");
 const createPost = async (req, res) => {
-  const { id_profile, content, created_at, commentaries, likes } = req.body;
+  const { id_profile, content, created_at, commentaries, likes, image } =
+    req.body;
   if (!id_profile || !content || !created_at) {
     return res.status(400).json({
       msg: "Missing parameters",
@@ -14,6 +15,7 @@ const createPost = async (req, res) => {
   }
   try {
     const newPost = new Post({
+      image,
       id_profile,
       content,
       created_at,
@@ -143,6 +145,7 @@ const repost = async (req, res) => {
     if (!post) return res.status(404).json({ msg: "Post not found" });
 
     const newPost = new Post({
+      image: post.image,
       id_profile: new_id_profile,
       content: post.content,
       commentaries: post.commentaries,

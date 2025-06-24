@@ -4,9 +4,7 @@ import PostCreationButton from "../components/PostCreation/PostCreation.jsx";
 import PostCreationModal from "../components/PostCreation/PostCreationModal.jsx";
 import { getAllPosts } from "../services/postService.js";
 import { getUserById } from "../services/authService.js";
-import {
-  getProfileById,
-} from "../services/profileService.js";
+import { getProfileById } from "../services/profileService.js";
 function Home() {
   const [isPostModalOpen, setIsPostModalOpen] = useState(false);
   const [posts, setPosts] = useState([]);
@@ -67,6 +65,7 @@ function Home() {
               display_name={post.displayName}
               profileName={post.profileName}
               content={post.content}
+              image={post.image}
               dateCreation={new Date(post.created_at).toLocaleString("fr-FR")}
               id_post={post._id}
               onPostCreated={handlePostCreated}
