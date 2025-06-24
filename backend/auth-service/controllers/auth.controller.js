@@ -148,6 +148,18 @@ const logout = async (req, res) => {
   }
 };
 
+const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.query;
+    const user = await UserInfo.findByIdAndDelete(id);
+    return res.status(200).json(user);
+  } catch (err) {
+    return res.status(500).json({
+      msg: err,
+    });
+  }
+};
+
 module.exports = {
   createUser,
   getAllUsers,
@@ -156,4 +168,5 @@ module.exports = {
   getUserById,
   logout,
   getUserByProfileName,
+  deleteUser
 };

@@ -11,7 +11,7 @@ router.get("/:userId", verifyToken, profileController.getProfileByUserId);
 
 router.put("/:userId", verifyUser, profileController.updateProfile);
 
-router.delete("/:userId", verifyUser, profileController.deleteProfile);
+router.delete("/:userId", profileController.deleteProfile);
 
 router.post("/:userId/follow", verifyUser, profileController.followProfile);
 

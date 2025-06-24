@@ -60,3 +60,15 @@ export const getUserByProfileName = async (profileName) => {
   });
   return res.data;
 };
+
+export const getAllUsers = async () => {
+  const res = await apiAuth.get("/getAllUsers");
+  return res.data;
+};
+
+export const deleteUser = async (id) => {
+  const res = await apiAuth.delete("/deleteUser", {
+    params: { id },
+  });
+  return res.data;
+};

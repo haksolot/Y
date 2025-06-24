@@ -12,22 +12,30 @@ function Home() {
   useEffect(() => {
     async function getPosts() {
       const data = await getAllPosts();
-      const PostWithName = [];
-      for (const post of data) {
-        const profile = await getProfileById(post.id_profile);
-        const user = await getUserById(profile.userId);
-        PostWithName.push({
-          ...post,
-          avatar: profile.avatar,
-          displayName: profile.display_name,
-          profileName: user.pseudo,
-        });
-      }
-      setPosts(PostWithName);
+
+      const postsWithExtras = await Promise.all(
+        data.map(async (post) => {
+          const profile = await getProfileById(post.id_profile);
+          const user = await getUserById(profile.userId);
+
+          return {
+            ...post,
+            avatar: profile.avatar,
+            displayName: profile.display_name,
+            profileName: user.pseudo,
+          };
+        })
+      );
+
+      setPosts(postsWithExtras);
     }
+
     getPosts();
   }, []);
 
+  const handlePostDeleted = (deletedId) => {
+    setPosts((prevPosts) => prevPosts.filter((post) => post._id !== deletedId));
+  };  
   async function handlePostCreated(newPost) {
     const profile = await getProfileById(newPost.id_profile);
     const user = await getUserById(profile.userId);
@@ -70,6 +78,7 @@ function Home() {
               id_post={post._id}
               onPostCreated={handlePostCreated}
               isRepost={post.isRepost}
+              onDelete={handlePostDeleted}
             />
           ))}
       </div>

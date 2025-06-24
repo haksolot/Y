@@ -1,8 +1,13 @@
 ﻿import { useEffect, useState } from "react";
 import Post from "../components/ProfilePost.jsx";
 import ProfileEditModal from "../components/ProfileEditModal.jsx";
+import UsersModal from "../components/UsersModal.jsx";
 import { getPostByIdProfile } from "../services/postService.js";
-import { getUserIdFromCookie, getUserById } from "../services/authService.js";
+import {
+  getUserIdFromCookie,
+  getUserById,
+  getAllUsers,
+} from "../services/authService.js";
 
 import {
   getProfileByUserId,
@@ -13,6 +18,8 @@ import FollowingModal from "../components/FollowingModal.jsx";
 function Profile({ onClick }) {
   const [showProfileEdit, setProfileEdit] = useState(false);
   const [showFollowersModal, setFollowersModal] = useState(false);
+  const [showUsersModal, setUsersModal] = useState(false);
+
   const [showFollowingModal, setFollowingModal] = useState(false);
   const [posts, setPosts] = useState([]);
   const [numberPost, setNumberPost] = useState(0);
@@ -22,6 +29,9 @@ function Profile({ onClick }) {
   const [username, setUsername] = useState();
   const [bio, setBio] = useState();
   const [avatar, setAvatar] = useState();
+  const [currentUser, setCurrentUser] = useState(null);
+  const [numberUsers, setNumberUsers] = useState(0);
+
   const handleProfileUpdated = (updated) => {
     setDisplayName(updated.name);
     setBio(updated.description);
@@ -34,21 +44,35 @@ function Profile({ onClick }) {
   useEffect(() => {
     async function getPosts() {
       const userId = await getUserIdFromCookie();
+      const user = await getUserById(userId);
+      setCurrentUser(user);
       const profile = await getProfileByUserId(userId);
       const data = await getPostByIdProfile(profile._id);
-      const PostWithName = [];
-      for (const post of data) {
-        const profile = await getProfileById(post.id_profile);
-        const user = await getUserById(profile.userId);
-        PostWithName.push({
-          ...post,
-          profileName: user.pseudo,
-        });
-      }
 
-      setPosts(PostWithName);
+      const postsWithName = await Promise.all(
+        data.map(async (post) => {
+          const profile = await getProfileById(post.id_profile);
+          const user = await getUserById(profile.userId);
+          return {
+            ...post,
+            profileName: user.pseudo,
+          };
+        })
+      );
+
+      setPosts(postsWithName);
     }
+
     getPosts();
+  }, []);
+
+  useEffect(() => {
+    async function getAllUsersFonction() {
+      const users = await getAllUsers();
+      setNumberUsers(users.length);
+    }
+
+    getAllUsersFonction();
   }, []);
 
   useEffect(() => {
@@ -60,16 +84,17 @@ function Profile({ onClick }) {
   }, [numberFollowing]);
 
   useEffect(() => {
-    if (!showFollowersModal || !showFollowingModal) {
+    if (!showFollowersModal || !showFollowingModal || !showUsersModal) {
       async function updateFollowingCount() {
         const userId = await getUserIdFromCookie();
         const profile = await getProfileByUserId(userId);
-        console.log("profile", profile.following.length);
+        const users = await getAllUsers();
         setnumberFollowing(profile.following.length);
+        setNumberUsers(users.length);
       }
       updateFollowingCount();
     }
-  }, [showFollowersModal, showFollowingModal]);
+  }, [showFollowersModal, showFollowingModal, showUsersModal]);
 
   useEffect(() => {
     async function getProfile() {
@@ -130,10 +155,7 @@ function Profile({ onClick }) {
             <img src={avatar} className={`w-full h-full object-cover`} />
           </div>
           <div id="info" className="flex flex-col gap-2">
-            <div
-              id="username"
-              className="font-roboto font-bold text-sm"
-            >
+            <div id="username" className="font-roboto font-bold text-sm">
               @{username}
             </div>
             <div id="bio" className="font-roboto text-base">
@@ -147,6 +169,38 @@ function Profile({ onClick }) {
         ></div>
 
         <div className="flex items-center justify-around">
+          {currentUser?.role === "Moderator" && (
+            <div className="flex flex-col items-center">
+              <svg
+                className="cursor-pointer"
+                onClick={() => setUsersModal(true)}
+                width="40"
+                height="40"
+                viewBox="0 0 48 38"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3.25 10.625C1.45742 10.625 0 12.0824 0 13.875C0 15.6676 1.45742 17.125 3.25 17.125H3.30078C3.48867 21.6395 7.21094 25.25 11.7812 25.25H14.625V15.5H13.4062H4.50938H3.25C2.35117 15.5 1.625 14.7738 1.625 13.875C1.625 12.9762 2.35117 12.25 3.25 12.25H23.5625C24.0094 12.25 24.375 11.8844 24.375 11.4375C24.375 10.9906 24.0094 10.625 23.5625 10.625H3.25ZM11.375 32.1562C11.375 32.8316 11.9184 33.375 12.5938 33.375H16.25V29.7086L12.9949 28.5711C12.3602 28.3477 11.6645 28.6828 11.441 29.3176C11.2176 29.9523 11.5527 30.648 12.1875 30.8715L12.416 30.9527C11.832 31.034 11.375 31.5418 11.375 32.1562ZM17.875 33.3395C19.7234 33.1719 21.4043 32.4457 22.7551 31.3285L18.3625 29.5715C18.2102 29.6629 18.0477 29.734 17.875 29.7898V33.3395ZM23.9992 30.0742C25.2484 28.5355 26 26.5754 26 24.4375C26 23.8129 25.934 23.2035 25.8121 22.6145L19.4391 27.0324C19.4797 27.2051 19.5 27.3879 19.5 27.5707C19.5 27.8043 19.4645 28.0277 19.4035 28.2359L23.9992 30.0742ZM17.0625 15.5H16.25V25.25H17.1793C17.682 25.25 18.1492 25.4125 18.5301 25.6816L25.3094 20.9895C23.9586 17.7648 20.7746 15.5 17.0625 15.5ZM8.53125 18.75C8.53125 18.4268 8.65965 18.1168 8.88821 17.8882C9.11677 17.6597 9.42677 17.5312 9.75 17.5312C10.0732 17.5312 10.3832 17.6597 10.6118 17.8882C10.8403 18.1168 10.9688 18.4268 10.9688 18.75C10.9687 19.0732 10.8403 19.3832 10.6118 19.6118C10.3832 19.8403 10.0732 19.9688 9.75 19.9688C9.42677 19.9688 9.11677 19.8403 8.88821 19.6118C8.65965 19.3832 8.53125 19.0732 8.53125 18.75Z"
+                  fill="#FF6600"
+                />
+                <path
+                  d="M13.25 1.625C11.4574 1.625 10 3.08242 10 4.875C10 6.66758 11.4574 8.125 13.25 8.125H13.3008C13.4887 12.6395 17.2109 16.25 21.7812 16.25H24.625V6.5H23.4062H14.5094H13.25C12.3512 6.5 11.625 5.77383 11.625 4.875C11.625 3.97617 12.3512 3.25 13.25 3.25H33.5625C34.0094 3.25 34.375 2.88438 34.375 2.4375C34.375 1.99062 34.0094 1.625 33.5625 1.625H13.25ZM21.375 23.1562C21.375 23.8316 21.9184 24.375 22.5938 24.375H26.25V20.7086L22.9949 19.5711C22.3602 19.3477 21.6645 19.6828 21.441 20.3176C21.2176 20.9523 21.5527 21.648 22.1875 21.8715L22.416 21.9527C21.832 22.034 21.375 22.5418 21.375 23.1562ZM27.875 24.3395C29.7234 24.1719 31.4043 23.4457 32.7551 22.3285L28.3625 20.5715C28.2102 20.6629 28.0477 20.734 27.875 20.7898V24.3395ZM33.9992 21.0742C35.2484 19.5355 36 17.5754 36 15.4375C36 14.8129 35.934 14.2035 35.8121 13.6145L29.4391 18.0324C29.4797 18.2051 29.5 18.3879 29.5 18.5707C29.5 18.8043 29.4645 19.0277 29.4035 19.2359L33.9992 21.0742ZM27.0625 6.5H26.25V16.25H27.1793C27.682 16.25 28.1492 16.4125 28.5301 16.6816L35.3094 11.9895C33.9586 8.76484 30.7746 6.5 27.0625 6.5ZM18.5312 9.75C18.5312 9.42677 18.6597 9.11677 18.8882 8.88821C19.1168 8.65965 19.4268 8.53125 19.75 8.53125C20.0732 8.53125 20.3832 8.65965 20.6118 8.88821C20.8403 9.11677 20.9688 9.42677 20.9688 9.75C20.9688 10.0732 20.8403 10.3832 20.6118 10.6118C20.3832 10.8403 20.0732 10.9687 19.75 10.9688C19.4268 10.9687 19.1168 10.8403 18.8882 10.6118C18.6597 10.3832 18.5312 10.0732 18.5312 9.75Z"
+                  fill="#FF6600"
+                />
+              </svg>
+              <p className="select-none mt-2 font-roboto text-sm ">All Yolos</p>
+              <p className="mt-4 font-koulen text-sm text-[#ff6600]">
+                {numberUsers}
+              </p>
+            </div>
+          )}
+          {showUsersModal && (
+            <UsersModal
+              onClose={() => setUsersModal(false)}
+              username={username}
+            />
+          )}
           <div className="flex flex-col items-center">
             <svg
               className="cursor-pointer"
@@ -166,9 +220,7 @@ function Profile({ onClick }) {
                 fill="#FF6600"
               />
             </svg>
-            <p className="select-none mt-2 font-roboto text-sm ">
-              Yolowers
-            </p>
+            <p className="select-none mt-2 font-roboto text-sm ">Yolowers</p>
             <p className="mt-4 font-koulen text-sm text-[#ff6600]">
               {numberFollowers}
             </p>
@@ -203,9 +255,7 @@ function Profile({ onClick }) {
               />
             </svg>
 
-            <p className="select-none mt-2 font-roboto text-sm">
-              Yolowing
-            </p>
+            <p className="select-none mt-2 font-roboto text-sm">Yolowing</p>
             <p className="mt-4 font-koulen text-sm text-[#ff6600]">
               {numberFollowing}
             </p>
@@ -229,9 +279,7 @@ function Profile({ onClick }) {
                 fill="#FF6600"
               />
             </svg>
-            <p className="select-none mt-4 font-roboto text-sm">
-              Yeets
-            </p>
+            <p className="select-none mt-4 font-roboto text-sm">Yeets</p>
             <p className="mt-4 font-koulen text-sm text-[#ff6600]">
               {numberPost}
             </p>
@@ -240,7 +288,7 @@ function Profile({ onClick }) {
       </div>
       <div
         id="posts"
-        className="w-screen flex flex-col gap-14 pt-1 mt-8 items-center overflow-y-auto scrollbar pb-32"
+        className="w-screen flex flex-col gap-14 pt-2 mt-8 items-center overflow-y-auto scrollbar pb-32"
       >
         {posts
           .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
@@ -251,11 +299,11 @@ function Profile({ onClick }) {
               className="w-3/4 sm:w-3/4 md:w-3/5"
               profileName={post.profileName}
               content={post.content}
-              dateCreation={new Date(post.created_at).toLocaleString("fr-FR")}
+              date_creation={new Date(post.created_at).toLocaleString("fr-FR")}
               id_post={post._id}
               isRepost={post.isRepost}
               likes={post.likes}
-              image={post.image} 
+              image={post.image}
               commentaries={post.commentaries}
             />
           ))}

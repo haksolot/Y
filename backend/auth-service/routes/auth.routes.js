@@ -19,5 +19,7 @@ router.post("/authenticate", authController.authenticate);
 router.get("/getUserById", authController.getUserById);
 router.post("/logout", authController.logout);
 router.get("/getUserByProfileName", authController.getUserByProfileName);
+router.get("/getAllUsers", authController.getAllUsers);
+router.delete("/deleteUser", authController.deleteUser);
 
 module.exports = router;

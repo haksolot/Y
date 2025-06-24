@@ -151,3 +151,17 @@ export const repost = async (originalPost, new_id_profile) => {
     console.error("Failed to repost:", error.response?.data || error.message);
   }
 };
+
+export const deletePostByIdProfile = async (id_profile) => {
+  const res = await apiPost.delete("/deletePostByIdProfile", {
+    params: { id_profile },
+  });
+  return res.data;
+};
+
+export const deleteCommentByIdProfile = async (id_profile) => {
+  const res = await apiComment.delete("/deleteCommentByIdProfile", {
+    params: { id_profile },
+  });
+  return res.data;
+};

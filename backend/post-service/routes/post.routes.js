@@ -23,4 +23,9 @@ router.put("/updatePost/:userId", verifyUser, postController.updatePost);
 
 router.post("/repost", verifyToken, postController.repost);
 
+router.delete(
+  "/deletePostByIdProfile",
+  verifyToken,
+  postController.deletePostByIdProfile
+);
 module.exports = router;
