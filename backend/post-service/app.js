@@ -3,13 +3,13 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 
+const BASE_URL = process.env.API_URL || "https://localhost:443";
+
 const app = express();
 const cors = require("cors");
 
 const whitelist = [
-  "http://localhost:5173",
-  "http://localhost",
-  "https://localhost",
+  BASE_URL,
   "https://y.com",
 ];
 

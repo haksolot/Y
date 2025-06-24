@@ -10,6 +10,8 @@ services:
     environment:
       - MONGO_URI=mongodb://auth-mongo:27017/authdb
       - PORT=3000
+      - API_URL=${API_URL:-https://localhost:443}
+      - ACCESS_JWT_KEY=${ACCESS_JWT_KEY:-cle}
     depends_on:
       - auth-mongo
     networks:
@@ -32,6 +34,8 @@ services:
     environment:
       - MONGO_URI=mongodb://profile-mongo:27017/profiledb
       - PORT=3000
+      - API_URL=${API_URL:-https://localhost:443}
+      - ACCESS_JWT_KEY=${ACCESS_JWT_KEY:-cle}
     depends_on:
       - profile-mongo
     networks:
@@ -54,6 +58,8 @@ services:
     environment:
       - MONGO_URI=mongodb://post-mongo:27017/postdb
       - PORT=3000
+      - API_URL=${API_URL:-https://localhost:443}
+      - ACCESS_JWT_KEY=${ACCESS_JWT_KEY:-cle}
     depends_on:
       - post-mongo
     networks:
@@ -70,10 +76,12 @@ services:
   # Frontend service - nginx will serve it
   frontend:
     build: ./frontend
+
     # restart: unless-stopped
     # ports:
     #   - "80:80"
-    # environment:
+    environment:
+      - API_URL=${API_URL:-https://localhost:443}
     # - NODE_ENV=production
 
   # Nginx reverse proxy + HTTPS
