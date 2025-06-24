@@ -5,14 +5,26 @@ const jwt = require("jsonwebtoken");
 const axios = require("axios");
 
 const { Post } = require("../models/post");
+const MAX_IMAGE_SIZE = 2_000_000; // 1 Mo (à ajuster selon ta BDD)
+
 const createPost = async (req, res) => {
   const { id_profile, content, created_at, commentaries, likes, image } =
     req.body;
+
   if (!id_profile || !content || !created_at) {
-    return res.status(400).json({
-      msg: "Missing parameters",
-    });
+    return res.status(400).json({ msg: "Missing parameters" });
   }
+  if (image) {
+    const base64Str = image.split(',')[1] || image;
+    const imageSizeInBytes = (base64Str.length * 3) / 4;
+
+    if (imageSizeInBytes > MAX_IMAGE_SIZE) {
+      return res.status(413).json({
+        msg: "Image too large. Max size is 1MB.",
+      });
+    }
+  }
+
   try {
     const newPost = new Post({
       image,
@@ -33,6 +45,7 @@ const createPost = async (req, res) => {
     });
   }
 };
+
 
 const getAllPosts = async (req, res) => {
   try {

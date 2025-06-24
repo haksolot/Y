@@ -44,7 +44,7 @@ function ProfilePost({
             {image && image !== "" && (
               <img
                 src={image}
-                className="object-cover w-full h-full aspect-square rounded-xl"
+                className="w-full h-auto rounded-xl"
                 alt="Post"
               />
             )}

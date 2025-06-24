@@ -4,6 +4,7 @@ import { createNotif } from "./notifService";
 export const createPost = async (post) => {
   try {
     const res = await apiPost.post("/createPost", post);
+    if (res.status === 413) throw new Error("Image too large");
     return res.data;
   } catch (error) {
     console.error(
