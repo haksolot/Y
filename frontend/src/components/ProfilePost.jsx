@@ -32,7 +32,7 @@ function ProfilePost({
       >
         <div
           id="post-timestamp"
-          className="italic text-nowrap -top-3 left-1/2 -translate-x-1/2 absolute text-white font-roboto text-sm bg-white dark:bg-[#1F1F1F] pl-2 pr-2"
+          className="text-nowrap -top-3 left-1/2 -translate-x-1/2 absolute font-roboto text-sm bg-white dark:bg-[#1F1F1F] pl-4 pr-4"
         >
           {dateCreation}
         </div>

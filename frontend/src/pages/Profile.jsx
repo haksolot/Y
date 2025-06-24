@@ -36,18 +36,21 @@ function Profile({ onClick }) {
       const userId = await getUserIdFromCookie();
       const profile = await getProfileByUserId(userId);
       const data = await getPostByIdProfile(profile._id);
-      const PostWithName = [];
-      for (const post of data) {
-        const profile = await getProfileById(post.id_profile);
-        const user = await getUserById(profile.userId);
-        PostWithName.push({
-          ...post,
-          profileName: user.pseudo,
-        });
-      }
 
-      setPosts(PostWithName);
+      const postsWithName = await Promise.all(
+        data.map(async (post) => {
+          const profile = await getProfileById(post.id_profile);
+          const user = await getUserById(profile.userId);
+          return {
+            ...post,
+            profileName: user.pseudo,
+          };
+        })
+      );
+
+      setPosts(postsWithName);
     }
+
     getPosts();
   }, []);
 
@@ -130,10 +133,7 @@ function Profile({ onClick }) {
             <img src={avatar} className={`w-full h-full object-cover`} />
           </div>
           <div id="info" className="flex flex-col gap-2">
-            <div
-              id="username"
-              className="font-roboto font-bold text-sm"
-            >
+            <div id="username" className="font-roboto font-bold text-sm">
               @{username}
             </div>
             <div id="bio" className="font-roboto text-base">
@@ -166,9 +166,7 @@ function Profile({ onClick }) {
                 fill="#FF6600"
               />
             </svg>
-            <p className="select-none mt-2 font-roboto text-sm ">
-              Yolowers
-            </p>
+            <p className="select-none mt-2 font-roboto text-sm ">Yolowers</p>
             <p className="mt-4 font-koulen text-sm text-[#ff6600]">
               {numberFollowers}
             </p>
@@ -203,9 +201,7 @@ function Profile({ onClick }) {
               />
             </svg>
 
-            <p className="select-none mt-2 font-roboto text-sm">
-              Yolowing
-            </p>
+            <p className="select-none mt-2 font-roboto text-sm">Yolowing</p>
             <p className="mt-4 font-koulen text-sm text-[#ff6600]">
               {numberFollowing}
             </p>
@@ -229,9 +225,7 @@ function Profile({ onClick }) {
                 fill="#FF6600"
               />
             </svg>
-            <p className="select-none mt-4 font-roboto text-sm">
-              Yeets
-            </p>
+            <p className="select-none mt-4 font-roboto text-sm">Yeets</p>
             <p className="mt-4 font-koulen text-sm text-[#ff6600]">
               {numberPost}
             </p>
@@ -240,7 +234,7 @@ function Profile({ onClick }) {
       </div>
       <div
         id="posts"
-        className="w-screen flex flex-col gap-14 pt-1 mt-8 items-center overflow-y-auto scrollbar pb-32"
+        className="w-screen flex flex-col gap-14 pt-2 mt-8 items-center overflow-y-auto scrollbar pb-32"
       >
         {posts
           .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
@@ -251,11 +245,11 @@ function Profile({ onClick }) {
               className="w-3/4 sm:w-3/4 md:w-3/5"
               profileName={post.profileName}
               content={post.content}
-              dateCreation={new Date(post.created_at).toLocaleString("fr-FR")}
+              date_creation={new Date(post.created_at).toLocaleString("fr-FR")}
               id_post={post._id}
               isRepost={post.isRepost}
               likes={post.likes}
-              image={post.image} 
+              image={post.image}
               commentaries={post.commentaries}
             />
           ))}
