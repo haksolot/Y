@@ -50,7 +50,7 @@ const Home = () => {
           />
           <div className="relative flex py-5 items-center w-80 md:w-96">
             <div className="flex-grow border-t border-black dark:border-white"></div>
-            <span className="flex-shrink mx-2 text-sm">OR</span>
+            <span className="select-none flex-shrink mx-2 text-sm">OR</span>
             <div className="flex-grow border-t border-black dark:border-white"></div>
           </div>
 
