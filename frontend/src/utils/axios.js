@@ -18,4 +18,10 @@ export const apiComment = axios.create({
 export const apiProfile = axios.create({
   baseURL: "http://localhost:3200/api/profile",
   withCredentials: true,
+});
+
+export const apiNotif = axios.create({
+  baseURL: "http://localhost:3300/api/notif",
+  withCredentials: true,
 })
+

@@ -1,5 +1,5 @@
 import logo from "../assets/logo.png";
-import React, { useState } from "react";
+import { useState } from "react";
 import { registerUser, validateEmail } from "../services/authService";
 
 const SignUpModal = ({ isOpen, onClose }) => {

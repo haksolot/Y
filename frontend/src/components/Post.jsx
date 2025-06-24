@@ -19,6 +19,7 @@ import {
   getProfileByUserId,
   unfollowProfile,
 } from "../services/profileService";
+import { createNotif } from "../services/notifService";
 
 function Post({
   className = "",
@@ -79,12 +80,20 @@ function Post({
   }, [profileName]);
 
   async function handleRepost(id_post, id_profile) {
+    const post = await getPostById(id_post);
     const res = await repost(id_post, id_profile);
+    await createNotif({
+      id_sender: id_profile,
+      id_receiver: post.id_profile,
+      type_notif: "repost",
+      created_at: new Date(),
+    });
     onPostCreated(res);
   }
 
   async function handleAddingFollowers(profileName) {
     const userId = await getUserIdFromCookie();
+    const profile = await getProfileByUserId(userId);
     const userTargeted = await getUserByProfileName(profileName);
     // if (userId === userTargeted._id) return;
     const profileTargeted = await getProfileByUserId(userTargeted._id);
@@ -98,8 +107,20 @@ function Post({
 
     if (currentlyFollowing) {
       await unfollowProfile(userId, profileTargeted._id);
+      await createNotif({
+        id_sender: profile._id,
+        id_receiver: profileTargeted._id,
+        type_notif: "unfollow",
+        created_at: new Date(),
+      });
     } else {
       await followProfile(userId, profileTargeted._id);
+      await createNotif({
+        id_sender: profile._id,
+        id_receiver: profileTargeted._id,
+        type_notif: "follow",
+        created_at: new Date(),
+      });
     }
 
     const updatedUserProfile = await getProfileByUserId(userId);
@@ -116,6 +137,7 @@ function Post({
     const infoPost = await getPostById(id_post);
     const likers = infoPost.likes;
     const userId = await getUserIdFromCookie();
+    const profile = await getProfileByUserId(userId);
     const hasAlreadyLiked = likers.some((id) => id === userId);
 
     if (hasAlreadyLiked) {
@@ -123,6 +145,12 @@ function Post({
       setLiked(false);
     } else {
       await addLikeOnPost(id_post, userId);
+      await createNotif({
+        id_sender: profile._id,
+        id_receiver: infoPost.id_profile,
+        type_notif: "like",
+        created_at: new Date(),
+      });
       setLiked(true);
     }
   }
@@ -205,7 +233,10 @@ function Post({
           )}
         </div>
 
-        <p id="message" className="relative text-black dark:text-white font-roboto text-base ">
+        <p
+          id="message"
+          className="relative text-black dark:text-white font-roboto text-base "
+        >
           {content}
         </p>
         <div
@@ -221,7 +252,9 @@ function Post({
               onClick={handleLike}
             >
               <path
-                className={liked ? "dark:fill-white fill-black" : "fill-[#FF6600]"}
+                className={
+                  liked ? "dark:fill-white fill-black" : "fill-[#FF6600]"
+                }
                 d="M2.60125 14.6705L12.4762 24.254C12.886 24.6516 13.4271 24.8732 13.9899 24.8732C14.5528 24.8732 15.0938 24.6516 15.5037 24.254L25.3786 14.6705C27.0399 13.0629 27.9799 10.8076 27.9799 8.45008V8.1206C27.9799 4.14975 25.2201 0.764012 21.4549 0.110724C18.9629 -0.321014 16.4272 0.52542 14.6457 2.37735L13.9899 3.05904L13.3342 2.37735C11.5526 0.52542 9.01695 -0.321014 6.52499 0.110724C2.75973 0.764012 0 4.14975 0 8.1206V8.45008C0 10.8076 0.939949 13.0629 2.60125 14.6705Z"
                 // fill="#FF6600"
               />

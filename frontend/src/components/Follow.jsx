@@ -1,29 +1,7 @@
-import { useState, useEffect } from "react";
-import Comments from "./Comments/Comments";
-import {
-  getUserById,
-  getUserIdFromCookie,
-  getUserByProfileName,
-} from "../services/authService";
-import {
-  addLikeOnPost,
-  deleteLikeOnPost,
-  getAllPosts,
-  getPostById,
-} from "../services/postService";
-import {
-  followProfile,
-  getProfileByUserId,
-  unfollowProfile,
-} from "../services/profileService";
-
 function Follow({
   className = "",
-  onClick,
   displayName,
-  username,
   avatarColor,
-  id_profile,
 }) {
   return (
     <>

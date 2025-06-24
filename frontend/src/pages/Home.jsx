@@ -6,7 +6,6 @@ import { getAllPosts } from "../services/postService.js";
 import { getUserById } from "../services/authService.js";
 import {
   getProfileById,
-  getProfileByUserId,
 } from "../services/profileService.js";
 function Home() {
   const [isPostModalOpen, setIsPostModalOpen] = useState(false);

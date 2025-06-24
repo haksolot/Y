@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { getUserIdFromCookie } from "../services/authService";
 import { getProfileByUserId, getProfileById } from "../services/profileService";
 import { followProfile } from "../services/profileService";
+import { createNotif } from "../services/notifService";
 function FollowersModal({ onClose, onFollowChange }) {
   const [followers, setFollowers] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
@@ -19,7 +20,6 @@ function FollowersModal({ onClose, onFollowChange }) {
       onClose();
     }, 300);
   };
-
 
   useEffect(() => {
     async function getFollowers() {
@@ -42,10 +42,16 @@ function FollowersModal({ onClose, onFollowChange }) {
 
   async function handleAddingFollowers(profileName, profileId) {
     const userId = await getUserIdFromCookie();
-
+    const profile = await getProfileByUserId(userId);
     if (isFollowing.includes(profileId)) return;
 
     await followProfile(userId, profileId);
+    await createNotif({
+      id_sender: profile._id,
+      id_receiver: profileId,
+      type_notif: "follow",
+      created_at: new Date(),
+    });
     setIsFollowing((prev) => [...prev, profileId]);
 
     if (onFollowChange) {

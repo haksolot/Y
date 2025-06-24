@@ -1,7 +1,7 @@
 ﻿import { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { editPost } from "../services/postService";
-import { getUserById, getUserIdFromCookie } from "../services/authService";
+import { getUserIdFromCookie } from "../services/authService";
 
 function ProfilePostEditModal({ id_post, initialText, onClose, onPostEdited }) {
   const [text, setText] = useState("");
