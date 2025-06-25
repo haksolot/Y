@@ -33,7 +33,7 @@ function Post({
   avatar,
   onPostCreated,
   isRepost,
-  onDelete
+  onDelete,
 }) {
   const [showProfileModal, setProfileModal] = useState(false);
   const [showComments, setShowComments] = useState(false);
@@ -189,10 +189,11 @@ function Post({
             <div
               id="profile-image"
               onClick={() => handleAddingFollowers(profileName)}
+              className="flex-none"
             >
               <img
                 src={avatar}
-                className={`cursor-pointer object-cover w-10 h-10 aspect-square bg-[#ff6600] rounded-xl ring-2 ${
+                className={`flex-none shrink-0 cursor-pointer object-cover w-10 h-10 aspect-square bg-[#ff6600] rounded-xl ring-2 ${
                   isFollowing ? "ring-white" : "ring-[#ff6600]"
                 }`}
               />
@@ -200,7 +201,7 @@ function Post({
 
             <div
               id="profile-name"
-              className="cursor-pointer text-black font-koulen text-lg dark:bg-[#1F1F1F] dark:text-white bg-white pl-2 pr-2"
+              className="text-nowrap cursor-pointer text-black font-koulen text-lg dark:bg-[#1F1F1F] dark:text-white bg-white pl-2 pr-2"
               onClick={() => setProfileModal(true)}
             >
               {display_name}
@@ -215,7 +216,7 @@ function Post({
             )}
             <div
               id="date-creation"
-              className="font-roboto text-sm dark:text-white dark:bg-[#1F1F1F] bg-white text-blackpl-2 pr-2"
+              className="text-nowrap font-roboto text-sm dark:text-white dark:bg-[#1F1F1F] bg-white text-black px-2"
             >
               {dateCreation}
             </div>
@@ -248,7 +249,7 @@ function Post({
         {image && image !== "" && (
           <img
             src={image}
-            className="object-cover w-full h-full aspect-square rounded-xl"
+            className="w-full h-auto rounded-xl"
             alt="Post"
           />
         )}
@@ -334,7 +335,7 @@ function Post({
               id_post={id_post}
               onDelete={() => {
                 setProfilePostDeleteModal(false);
-                onDelete?.(id_post); 
+                onDelete?.(id_post);
               }}
             />
           )}

@@ -43,6 +43,7 @@ function PostCreationModal({ onClose, onPostCreated }) {
     };
     console.log("newPost", newPost);
     const createdPost = await createPost(newPost);
+    if(createdPost.error) setErrorContent(createdPost.error);
     onPostCreated(createdPost.newPost);
     handleClose();
   }
