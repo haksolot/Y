@@ -201,7 +201,7 @@ function Post({
 
             <div
               id="profile-name"
-              className="cursor-pointer text-black font-koulen text-lg dark:bg-[#1F1F1F] dark:text-white bg-white pl-2 pr-2"
+              className="text-nowrap cursor-pointer text-black font-koulen text-lg dark:bg-[#1F1F1F] dark:text-white bg-white pl-2 pr-2"
               onClick={() => setProfileModal(true)}
             >
               {display_name}
@@ -216,7 +216,7 @@ function Post({
             )}
             <div
               id="date-creation"
-              className="font-roboto text-sm dark:text-white dark:bg-[#1F1F1F] bg-white text-blackpl-2 pr-2"
+              className="text-nowrap font-roboto text-sm dark:text-white dark:bg-[#1F1F1F] bg-white text-black px-2"
             >
               {dateCreation}
             </div>
