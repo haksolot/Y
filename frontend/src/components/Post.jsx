@@ -64,7 +64,7 @@ function Post({
       const userIdByCookie = await getUserIdFromCookie();
       const user = await getUserById(userIdByCookie);
       setCurrentUser(user);
-      console.log("user", currentUser);
+      // console.log("user", currentUser);
       const profile = await getProfileByUserId(userIdByCookie);
       setCurrentProfile(profile._id);
       const following = profile.following || [];
@@ -193,7 +193,7 @@ function Post({
             >
               <img
                 src={avatar}
-                className={`flex-none shrink-0 cursor-pointer object-cover w-10 h-10 aspect-square bg-[#ff6600] rounded-xl ring-2 ${
+                className={`flex-none shrink-0 cursor-pointer object-cover w-10 h-10 aspect-square bg-transparent rounded-xl ring-2 ${
                   isFollowing ? "ring-white" : "ring-[#ff6600]"
                 }`}
               />

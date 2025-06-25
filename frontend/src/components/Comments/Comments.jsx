@@ -28,24 +28,24 @@ function Comments({ onClose, id_post, onPostCreated }) {
     async function getCommentsFromPost() {
       try {
         const data = await getPostById(id_post);
-        console.log("data", data);
+        // console.log("data", data);
         const comments = data.commentaries;
         const commentsData = await Promise.all(
           comments.map((id) => getCommentById(id))
         );
         const enrichedComments = await Promise.all(
           commentsData.map(async (comment) => {
-            console.log("comment", comment);
+            // console.log("comment", comment);
             const profile = await getProfileById(comment.id_profile);
-            console.log("Profil récupéré:", profile);
+            // console.log("Profil récupéré:", profile);
             const user = await getUserById(profile.userId);
-            console.log("user", user);
+            // console.log("user", user);
             const enrichedReplies = await Promise.all(
               (comment.replies || []).map(async (replyId) => {
                 const replyData = await getCommentById(replyId);
                 const profile = await getProfileById(replyData.id_profile);
                 const replyUser = await getUserById(profile.userId);
-                console.log("replyUser", replyUser);
+                // console.log("replyUser", replyUser);
                 const replyProfile = await getProfileByUserId(replyUser._id);
                 return {
                   ...replyData,
@@ -100,9 +100,9 @@ function Comments({ onClose, id_post, onPostCreated }) {
       createdComment.newComment.id_profile
     );
     const user = await getUserById(new_comment_profile.userId);
-    console.log("user", user);
+    // console.log("user", user);
     const profile_new = await getProfileByUserId(user._id);
-    console.log("profile_new", profile_new);
+    // console.log("profile_new", profile_new);
     // const profile = await getProfileByUserId(user._id);
     const enrichedComment = {
       ...createdComment.newComment,

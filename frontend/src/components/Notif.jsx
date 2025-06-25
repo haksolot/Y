@@ -16,7 +16,7 @@ function Notif({
   }
 
   function getNotifMessage(type, senderName, created_at) {
-    console.log("RAW created_at:", created_at);
+    // console.log("RAW created_at:", created_at);
 
     const date = parseDateFrenchFormat(created_at);
 
@@ -29,7 +29,7 @@ function Notif({
       minute: "2-digit",
       hour12: true,
     })}`;
-    console.log("formattedDate", formattedDate);
+    // console.log("formattedDate", formattedDate);
     switch (type) {
       case "like":
         return `${senderName} liked one of your post on ${formattedDate}.`;
@@ -61,7 +61,7 @@ function Notif({
         <div id="profile-image" className="w-8 h-8 aspect-square flex-none">
           <img
             src={avatar}
-            className="w-8 h-8 aspect-square object-cover bg-[#ff6600] ring-[#ff6600] rounded-xl ring-2 flex-none shrink-0"
+            className="w-8 h-8 aspect-square object-cover bg-transparent ring-[#ff6600] rounded-xl ring-2 flex-none shrink-0"
           />
         </div>
         <div

@@ -43,12 +43,11 @@ function FollowingModal({ onClose }) {
       const infoFollo = await Promise.all(
         following_user.map(async (followingId) => {
           const profile = await getProfileById(followingId);
-          console.log("Profil récupéré:", profile);
+          // console.log("Profil récupéré:", profile);
           return profile;
         })
       );
-
-      console.log(infoFollo);
+      // console.log(infoFollo);
       setFollowing(infoFollo);
     }
     getFollowing();

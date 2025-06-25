@@ -26,7 +26,7 @@ function PostCreationModal({ onClose, onPostCreated }) {
   };
 
   async function handleSubmit() {
-    console.log("avatarBase64", avatarBase64);
+    // console.log("avatarBase64", avatarBase64);
     const userId = await getUserIdFromCookie();
     const profile = await getProfileByUserId(userId);
     setErrorContent("");
@@ -41,7 +41,7 @@ function PostCreationModal({ onClose, onPostCreated }) {
       created_at: new Date().toISOString(),
       id_profile: profile._id || "Unknown",
     };
-    console.log("newPost", newPost);
+    // console.log("newPost", newPost);
     const createdPost = await createPost(newPost);
     if(createdPost.error) setErrorContent(createdPost.error);
     onPostCreated(createdPost.newPost);

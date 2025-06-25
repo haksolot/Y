@@ -26,7 +26,7 @@ function ProfilePostEditModal({ id_post, initialText, onClose, onPostEdited }) {
 
   async function handleSubmit() {
     const userId = await getUserIdFromCookie();
-    console.log("user id", userId);
+    // console.log("user id", userId);
     setErrorContent("");
     if (text.trim().length === 0) {
       setErrorContent("Your post is empty");

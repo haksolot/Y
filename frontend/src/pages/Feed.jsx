@@ -45,11 +45,11 @@ function Feed() {
       const userId = await getUserIdFromCookie();
       const receiverProfile = await getProfileByUserId(userId);
       const notifs = await getNotifByIdReceiver(receiverProfile._id);
-      console.log("notifs", notifs);
+      // console.log("notifs", notifs);
       if (notifs.length === 0) return;
       const enrichedNotifs = await Promise.all(
         notifs.map(async (notif) => {
-          console.log("notif", notif);
+          // console.log("notif", notif);
           const senderProfile = await getProfileById(notif.id_sender);
           const senderUser = await getUserById(senderProfile.userId);
 

@@ -11,7 +11,7 @@ export const registerUser = async (pseudo, email, password) => {
     password,
     role: "User",
   });
-  console.log("res", res);
+  // console.log("res", res);
   const profile = await createProfile(res.data.id, {
     userId: res.data.id,
     display_name: pseudo,

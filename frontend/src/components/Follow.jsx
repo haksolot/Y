@@ -15,7 +15,7 @@ function Follow({
         >
           <div
             id="profile-image"
-            className={"cursor-pointer w-10 h-10 aspect-square bg-red-500 rounded-xl ring-2"}
+            className={"cursor-pointer w-10 h-10 aspect-square bg-transparent rounded-xl ring-2"}
           ></div>
 
           <div

@@ -150,7 +150,7 @@ function Profile({ onClick }) {
         <div id="second" className="flex flex-row gap-4 items-center">
           <div
             id="avatar"
-            className="bg-red-500 ring-2 ring-[#ff6600] rounded-xl w-20 h-20 aspect-square overflow-hidden"
+            className="bg-transparent ring-2 ring-[#ff6600] rounded-xl w-20 h-20 aspect-square overflow-hidden"
           >
             <img src={avatar} className={`w-full h-full object-cover`} />
           </div>

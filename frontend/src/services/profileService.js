@@ -18,7 +18,7 @@ export const handleSaveProfile = async (name, Bio, avatarFile) => {
       },
       { withCredentials: true }
     );
-    console.log("Profile updated succesfully", res.data);
+    // console.log("Profile updated succesfully", res.data);
     handleClose();
   } catch (err) {
     console.error("Error while updating profile :", err);

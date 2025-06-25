@@ -49,7 +49,7 @@ function Comment({
         displayName: profile.display_name,
         profileName: user.pseudo,
       };
-      console.log("enrichedReply", enrichedReply);
+      // console.log("enrichedReply", enrichedReply);
       setReplyContent("");
       setShowReply(false);
 

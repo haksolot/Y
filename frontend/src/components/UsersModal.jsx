@@ -25,7 +25,7 @@ function UsersModal({ onClose, onFollowChange, onDelete }) {
   useEffect(() => {
     async function getUsers() {
       const users = await getAllUsers();
-      console.log("users", users);
+      // console.log("users", users);
       const profile = await Promise.all(
         users.map(async (user) => {
           const profile_user = await getProfileByUserId(user._id);
