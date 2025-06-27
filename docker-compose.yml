@@ -19,6 +19,8 @@ services:
   auth-mongo:
     image: mongo:6
     restart: unless-stopped
+    ports:
+      - "27018:27017"
     volumes:
       - auth-mongo-data:/data/db
     networks:
